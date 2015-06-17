@@ -74,7 +74,7 @@ namespace Client
                     }
                     else if (ma is AliveMessage)
                     {
-                        byte[] response = Protocol.GetByteArrayFromMessage(ma);
+                        byte[] response = Protocol.GetByteArrayFromMessage((AliveMessage)ma);
 
                         networkStream.Write(response, 0, response.Length);
                     }
