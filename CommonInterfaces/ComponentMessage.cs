@@ -9,10 +9,12 @@ namespace CommonInterfaces
     [Serializable]
     public class ComponentMessage : Message
     {
-        public ComponentMessage(MessageType type) : base(type)
+        
+
+        public ComponentMessage(MessageType type, Guid ID) : base(ID,type)
         {
         }
-        public ComponentMessage()
+        public ComponentMessage(Guid ID) : this(MessageType.Unknown, ID)
         {
         }
 

@@ -9,12 +9,15 @@ namespace CommonInterfaces
     [Serializable]
     public class Message
     {
-        public Message(MessageType type)
+        private Guid id;
+
+        public Message(Guid id, MessageType type)
         {
+            this.id = id;
             this.Type = type;
         }
 
-        public Message() : this(MessageType.Unknown)
+        public Message(Guid id) : this(id, MessageType.Unknown)
         {
         }
 
@@ -22,6 +25,14 @@ namespace CommonInterfaces
         {
             get;
             set;
+        }
+
+        public Guid ID
+        {
+            get
+            {
+                return this.id;
+            }
         }
     }
 }

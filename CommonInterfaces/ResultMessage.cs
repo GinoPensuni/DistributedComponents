@@ -11,12 +11,13 @@ namespace CommonInterfaces
     {
         private ResultStatusCode status;
 
-        public ResultMessage(ResultStatusCode status, MessageType type) : base(type)
+        public ResultMessage(ResultStatusCode status, MessageType type, Guid ID) : base(ID, type)
         {
             this.status = status;
         }
-        public ResultMessage(ResultStatusCode status) : this(status, MessageType.Unknown)
+        public ResultMessage(ResultStatusCode status, Guid ID) : this(status, MessageType.Unknown, ID)
         {
+            
         }
 
         public IEnumerable<object> Result

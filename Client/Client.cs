@@ -75,7 +75,8 @@ namespace Client
                             Console.WriteLine(compmsg.Component.ComponentGuid.ToString());
                         }
 
-                        ResultMessage rsm = new ResultMessage(ResultStatusCode.Successful);
+                        ResultMessage rsm = new ResultMessage(ResultStatusCode.Successful, compmsg.ID);
+
                         rsm.Result = compmsg.Component.Evaluate(compmsg.Values);
 
                         byte[] response = Protocol.GetByteArrayFromMessage(rsm);
