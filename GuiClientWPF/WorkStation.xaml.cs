@@ -74,8 +74,9 @@ namespace GuiClientWPF
                 comp.ClipToBounds = true;
                 rect.ClipToBounds = true;
                 comp.Children.Add(rect);
+                comp.ClipToBounds = true;
                 comp.AllowDrop = true;
-                comp.MouseMove += comp_MouseMove;
+                this.ComponentBuilder.MouseMove += comp_MouseMove;
                 comp.MouseLeftButtonDown += comp_MouseLeftButtonDown;
                 comp.MouseLeftButtonUp += comp_MouseLeftButtonUp;
                 comp.MouseRightButtonDown += comp_MouseRightButtonDown;
@@ -105,10 +106,12 @@ namespace GuiClientWPF
                 line.Stroke = Brushes.Violet;
                 line.StrokeThickness = 3;
                 line.StrokeDashArray = new DoubleCollection() { 1.0, 2.0 };
-                line.X1 = Canvas.GetLeft(this.selectedComponent);
-                line.Y1 = Canvas.GetTop(this.selectedComponent);
-                line.X2 = Canvas.GetLeft(secondSelectedComponent);
-                line.Y2 = Canvas.GetTop(secondSelectedComponent);
+
+
+                line.X1 = double.IsNaN(Canvas.GetLeft(this.selectedComponent)) ? 1 : Canvas.GetLeft(this.selectedComponent);
+                line.Y1 = double.IsNaN(Canvas.GetTop(this.selectedComponent)) ? 1 : Canvas.GetTop(this.selectedComponent);
+                line.X2 = double.IsNaN(Canvas.GetLeft(secondSelectedComponent)) ? 1 : Canvas.GetLeft(secondSelectedComponent);
+                line.Y2 = double.IsNaN(Canvas.GetTop(secondSelectedComponent)) ? 1 : Canvas.GetTop(secondSelectedComponent);
                 Canvas.SetZIndex(line, -100);
                 this.ComponentBuilder.Children.Add(line);
                 this.selectedComponent.Background = Brushes.White;
@@ -140,7 +143,7 @@ namespace GuiClientWPF
                 return;
             }
 
-            Canvas canvas = sender as Canvas;
+            Canvas canvas = this.draggedObject as Canvas;
             if (e.LeftButton == MouseButtonState.Pressed)
             {
                 var position = e.GetPosition(this.ComponentBuilder);
