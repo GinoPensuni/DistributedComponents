@@ -8,6 +8,6 @@ namespace CommonInterfaces
 {
     public interface IStore
     {
-        Task<bool> Store(byte[] assemblyCode);
+        bool Store(byte[] assemblyCode);
     }
 }
