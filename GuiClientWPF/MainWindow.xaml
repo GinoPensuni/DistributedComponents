@@ -10,7 +10,6 @@
             <ResourceDictionary>
                 <ResourceDictionary.MergedDictionaries>
                     <ResourceDictionary  Source="Assets/Style/MainWindowStyle.xaml"/>
-                    <ResourceDictionary  Source="Assets/Style/ComponentsStyle.xaml"/>
                 </ResourceDictionary.MergedDictionaries>
             </ResourceDictionary>
         </Grid.Resources>

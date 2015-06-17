@@ -86,9 +86,9 @@ namespace GuiClientWPF
 
         private void DeleteDebug_Click(object sender, RoutedEventArgs e)
         {
-            this.Manager.SimpleComponents.Clear();
-            this.Manager.ComplexComponents.Clear();
-            this.Manager.OtherComponents.Clear();
+            this.Manager.CathegoryCollection[0].Components.Clear();
+            this.Manager.CathegoryCollection[1].Components.Clear();
+            this.Manager.CathegoryCollection[2].Components.Clear();
         }
     }
 }

@@ -53,16 +53,13 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Assets\DataAccessLayer\Category.cs" />
     <Compile Include="Assets\DataAccessLayer\ComplexComponent.cs" />
     <Compile Include="Assets\DataAccessLayer\Components.cs" />
     <Compile Include="Assets\DataAccessLayer\SimpleComponent.cs" />
     <Compile Include="ComponentTreeView.xaml.cs">
       <DependentUpon>ComponentTreeView.xaml</DependentUpon>
     </Compile>
-    <Page Include="Assets\Style\ComponentsStyle.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
     <Page Include="Assets\Style\MainWindowStyle.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

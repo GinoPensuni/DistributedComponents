@@ -11,47 +11,23 @@
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="Assets/Style/MainWindowStyle.xaml"/>
-                <ResourceDictionary Source="Assets/Style/ComponentsStyle.xaml"/>
             </ResourceDictionary.MergedDictionaries>
-            <DataTemplate x:Key="ComponetTreeViewTemplate" DataType="TreeViewItem">
-                <TreeViewItem  Header="{Binding FriendlyName}"
-                               Style="{StaticResource Components}" 
-                               />
-                <!--<TreeViewItem  Header="{Binding FriendlyName}"
-                               Style="{StaticResource Components}" 
-                               DragEnter="Component_DragEnter" DragOver="Component_DragOver" Drop="Component_Drop"/>-->
-            </DataTemplate>
         </ResourceDictionary>
     </UserControl.Resources>
     <!--TODO : Fix the style issue -->
 
-    <Grid>
-        <Grid.DataContext>
-            <collections:ClientManager/>
-        </Grid.DataContext>
-        <TreeView Style="{StaticResource TreeViewStyle}">
-            <TreeView.DataContext>
-                <collections:Components x:Uid="TeeViewItemCategoryContext"/>
-            </TreeView.DataContext>
-            
-            <TreeViewItem Header="Simple Components"
-                          Style="{StaticResource TreeViewCathegoriesStyle}"
-                          Name="SimpleComponents" 
-                          ItemTemplate="{StaticResource ComponetTreeViewTemplate}"
-                          />
-            
-            <TreeViewItem Header="Complex Components" 
-                          Style="{StaticResource TreeViewCathegoriesStyle}"
-                          Name="ComplexComponents"
-                          ItemTemplate="{StaticResource ComponetTreeViewTemplate}"
-                          />
-            
-            <TreeViewItem Header="Other Components"
-                          Style="{StaticResource TreeViewCathegoriesStyle}"
-                          Name="OtherComponents" 
-                          ItemTemplate="{StaticResource ComponetTreeViewTemplate}" 
-                          />
-
+    <Grid Name="DataContextSet">
+        <TreeView Style="{StaticResource TreeViewStyle}" ItemsSource="{Binding CathegoryCollection}" Name="ComponentsTee">
+            <TreeView.ItemTemplate>
+                <HierarchicalDataTemplate x:Name="test" ItemsSource="{Binding Components}">
+                    <TextBlock Text="{Binding Name}" />
+                    <HierarchicalDataTemplate.ItemTemplate>
+                        <DataTemplate DataType="TreeViewItem">
+                            <TextBlock Text="{Binding FriendlyName}" Name="Component" MouseDown="Component_MouseDown" Tag="{Binding  UniqueID}"/>
+                        </DataTemplate>
+                    </HierarchicalDataTemplate.ItemTemplate>
+                </HierarchicalDataTemplate>
+            </TreeView.ItemTemplate>
         </TreeView>
     </Grid>
 </UserControl>

@@ -37,26 +37,15 @@ namespace GuiClientWPF
         public ComponentTreeView()
         {
             InitializeComponent();
-            this.SimpleComponents.ItemsSource = this.Manager.SimpleComponents;
-            this.ComplexComponents.ItemsSource = this.Manager.ComplexComponents;
-            this.OtherComponents.ItemsSource = this.Manager.OtherComponents;
+            this.DataContextSet.DataContext = this.Manager;
         }
 
-        private void Component_DragEnter(object sender, DragEventArgs e)
+        private void Component_MouseDown(object sender, MouseButtonEventArgs e)
         {
-
+            if (e.RightButton == MouseButtonState.Pressed)
+            {
+                Manager.AddCanvasComponent(((sender as TextBlock).Tag as Guid?));
+            }
         }
-
-        private void Component_DragOver(object sender, DragEventArgs e)
-        {
-
-        }
-
-        private void Component_Drop(object sender, DragEventArgs e)
-        {
-
-        }
-
-
     }
 }

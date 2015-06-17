@@ -26,19 +26,7 @@ namespace GuiClientWPF
             }
         }
 
-        public ObservableCollection<SimpleComponent> SimpleComponents
-        {
-            get;
-            set;
-        }
-
-        public ObservableCollection<ComplexComponent> ComplexComponents
-        {
-            get;
-            set;
-        }
-
-        public ObservableCollection<Components> OtherComponents
+        public ObservableCollection<Category> CathegoryCollection
         {
             get;
             set;
@@ -53,10 +41,10 @@ namespace GuiClientWPF
         public ClientManager()
         {
             logic = default(ILogic);
-            SimpleComponents = new ObservableCollection<SimpleComponent>();
-            ComplexComponents = new ObservableCollection<ComplexComponent>();
-            OtherComponents = new ObservableCollection<Components>();
-            CanvasComponents = new ObservableCollection<Components>();
+            CathegoryCollection = new ObservableCollection<Category>();
+            CathegoryCollection.Add(new Category() { Name = "Simple" });
+            CathegoryCollection.Add(new Category() { Name = "Complex" });
+            CathegoryCollection.Add(new Category() { Name = "Other" });
         }
 
         internal Task Disconnect()
@@ -98,14 +86,14 @@ namespace GuiClientWPF
                {
                    if (entry.Item2.GetType().Equals(typeof(SimpleComponent)))
                    {
-                       this.SimpleComponents.Add(entry.Item2 as SimpleComponent);
+                       this.CathegoryCollection[0].Components.Add(entry.Item2 as SimpleComponent);
                    }
                    else if (entry.Item2.GetType().Equals(typeof(ComplexComponent)))
                    {
-                       this.ComplexComponents.Add(entry.Item2 as ComplexComponent);
+                       this.CathegoryCollection[1].Components.Add(entry.Item2 as ComplexComponent);
                    }
                    else if(entry.Item2.GetType().Equals(typeof(Components))){
-                       this.OtherComponents.Add(entry.Item2 as Components);
+                       this.CathegoryCollection[2].Components.Add(entry.Item2 as Components);
                    }
                }
            });
@@ -121,20 +109,28 @@ namespace GuiClientWPF
 
         internal void FillTestDataAsync()
         {
-            this.SimpleComponents.Add(new SimpleComponent("Addition"));
-            this.SimpleComponents.Add(new SimpleComponent("Substraction"));
-            this.SimpleComponents.Add(new SimpleComponent("Division"));
-            this.SimpleComponents.Add(new SimpleComponent("Multiplication"));
+            this.CathegoryCollection[0].Components.Add(new SimpleComponent("Addition"));
+            this.CathegoryCollection[0].Components.Add(new SimpleComponent("Substraction"));
+            this.CathegoryCollection[0].Components.Add(new SimpleComponent("Division"));
+            this.CathegoryCollection[0].Components.Add(new SimpleComponent("Multiplication"));
 
-            this.ComplexComponents.Add(new ComplexComponent("Complex Addition"));
-            this.ComplexComponents.Add(new ComplexComponent("Complex Substraction"));
-            this.ComplexComponents.Add(new ComplexComponent("Complex Division"));
-            this.ComplexComponents.Add(new ComplexComponent("Complex Multiplication"));
+            this.CathegoryCollection[1].Components.Add(new ComplexComponent("Complex Addition"));
+            this.CathegoryCollection[1].Components.Add(new ComplexComponent("Complex Substraction"));
+            this.CathegoryCollection[1].Components.Add(new ComplexComponent("Complex Division"));
+            this.CathegoryCollection[1].Components.Add(new ComplexComponent("Complex Multiplication"));
 
-            this.OtherComponents.Add(new SimpleComponent("Simple other Addition"));
-            this.OtherComponents.Add(new ComplexComponent("Complex other Substraction"));
-            this.OtherComponents.Add(new ComplexComponent("Complex other Division"));
-            this.OtherComponents.Add(new SimpleComponent("Simple otherMultiplication"));
+            this.CathegoryCollection[2].Components.Add(new SimpleComponent("Simple other Addition"));
+            this.CathegoryCollection[2].Components.Add(new ComplexComponent("Complex other Substraction"));
+            this.CathegoryCollection[2].Components.Add(new ComplexComponent("Complex other Division"));
+            this.CathegoryCollection[2].Components.Add(new SimpleComponent("Simple otherMultiplication"));
+        }
+
+        internal void AddCanvasComponent(Guid? id)
+        {
+            if (id == null)
+            {
+                return;
+            }
         }
     }
 }
