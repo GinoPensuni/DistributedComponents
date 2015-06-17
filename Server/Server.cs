@@ -56,10 +56,6 @@ namespace Server
             {
                 if (clientStream.DataAvailable)
                 {
-                    /*StreamReader str = new StreamReader(clientStream);
-                    string packet = str.ReadToEnd();
-                    Console.WriteLine(packet);*/
-
                     byte[] length = new byte[4];
 
                     clientStream.Read(length, 0, length.Length);
@@ -74,7 +70,7 @@ namespace Server
                     {
                         List<object> dd = ((ResultMessage)msg).Result.ToList();
 
-                        for (int i = 0; i< dd.Count; i++)
+                        for (int i = 0; i < dd.Count; i++)
                         {
                             Console.WriteLine(dd[i].ToString());
                         }
@@ -97,7 +93,7 @@ namespace Server
             msg.Component = new Component(Guid.NewGuid(), "test", null, null);
 
             byte[] test = Protocol.GetByteArrayFromMessage(msg);
-            
+
             clientStream.Write(test, 0, test.Length);
         }
 
@@ -111,41 +107,47 @@ namespace Server
         {
             TcpClient client = (TcpClient)clientobj;
             NetworkStream stream = client.GetStream();
-            stream.ReadTimeout = 3000;
             bool clientAlive = true;
+            stream.ReadTimeout = 3000;
 
             while (clientAlive)
             {
+                Thread.Sleep(30000);
                 Guid aliveGuid = Guid.NewGuid();
-                Message aliveMsg = new Message(aliveGuid);
+                AliveMessage aliveMsg = new AliveMessage(aliveGuid);
                 Message msg = null;
-
-                byte[] alivebytes = Protocol.GetByteArrayFromMessage(aliveMsg);
-                stream.Write(alivebytes, 0, alivebytes.Length);
-
-                byte[] response = new byte[alivebytes.Length];
-                stream.Read(response, 0, response.Length);
 
                 try
                 {
+
+                    byte[] alivebytes = Protocol.GetByteArrayFromMessage(aliveMsg);
+                    stream.Write(alivebytes, 0, alivebytes.Length);
+
+                    Console.WriteLine("asked client");
+                    byte[] response = new byte[alivebytes.Length - 4];
+                    byte[] lengthBytes = new byte[4];
+                    stream.Read(lengthBytes, 0, lengthBytes.Length);
+
+                    if (BitConverter.ToInt32(lengthBytes, 0) == alivebytes.Length - 4)
+                    {
+                        stream.Read(response, 0, response.Length);
+                    }
+
                     msg = Protocol.GetComponentMessageFromByteArray(response);
+                    if (!msg.ID.Equals(aliveGuid) || !(msg is AliveMessage))
+                    {
+                        clientAlive = false;
+                    }
                 }
                 catch (Exception e)
                 {
-                    this.RemoveClientFromList(client);
-                    clientAlive = false;
-                }
-               
-
-                if (!msg.ID.Equals(aliveGuid) || !(msg is AliveMessage))
-                {
-                    this.RemoveClientFromList(client);
                     clientAlive = false;
                 }
 
-                Console.WriteLine("asked client");
-                Thread.Sleep(30000);
+
             }
+
+            this.RemoveClientFromList(client);
         }
 
         public void RemoveClientFromList(TcpClient client)
