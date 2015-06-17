@@ -46,8 +46,8 @@ namespace Server
 
         public void ClientWorker(object clientobj)
         {
+            //TODO: connection trennen
             TcpClient client = (TcpClient)clientobj;
-
             NetworkStream clientStream = client.GetStream();
 
             this.SendComponents(clientStream);
