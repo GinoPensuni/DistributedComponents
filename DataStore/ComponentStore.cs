@@ -29,7 +29,7 @@ namespace DataStore
             }
         }
 
-        public async Task<bool> Store(byte[] assemblyCode)
+        public bool Store(byte[] assemblyCode)
         {
 
              int hash = assemblyCode.GetHashCode();
@@ -41,7 +41,7 @@ namespace DataStore
              var datacomponent = new DataComponent();
              datacomponent.HashCode = hash;
              datacomponent.Assembly = assemblyCode;
-             await this.DbContext.SaveChangesAsync();
+             this.DbContext.SaveChanges();
              return true;
         }
     }
