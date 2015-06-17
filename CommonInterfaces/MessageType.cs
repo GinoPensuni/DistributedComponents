@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace CommonInterfaces
 {
-    enum MessageType
+    public enum MessageType
     {
         RequestForComponentExecution = 1
     }

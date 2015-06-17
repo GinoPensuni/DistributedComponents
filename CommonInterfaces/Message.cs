@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace CommonInterfaces
 {
-    class Message
+    public class Message
     {
     }
 }
