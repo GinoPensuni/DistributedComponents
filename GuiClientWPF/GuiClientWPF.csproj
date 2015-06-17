@@ -60,6 +60,9 @@
     <Compile Include="ComponentTreeView.xaml.cs">
       <DependentUpon>ComponentTreeView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="WorkStation.xaml.cs">
+      <DependentUpon>WorkStation.xaml</DependentUpon>
+    </Compile>
     <Page Include="Assets\Style\MainWindowStyle.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -92,6 +95,10 @@
       <SubType>Code</SubType>
     </Compile>
     <Page Include="ComponentTreeView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="WorkStation.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

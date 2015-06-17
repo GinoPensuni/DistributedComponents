@@ -137,5 +137,6 @@ namespace GuiClientWPF
             if (queryRes != null) 
                 this.CanvasComponents.Add(queryRes);
         }
+
     }
 }
