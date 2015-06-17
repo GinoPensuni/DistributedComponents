@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Net.Sockets;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using Client;
@@ -14,9 +15,15 @@ namespace DistributedComponentsFinal
     {
         static void Main(string[] args)
         {
-            Client.Client c = new Client.Client();
+            dynamic dd = (new Int32()).GetType();
 
-            c.Connect(IPAddress.Parse("10.101.150.27"), 8081);
+            Console.WriteLine(dd.ToString());
+
+            Console.ReadLine();
+            
+            //Client.Client c = new Client.Client();
+
+            //c.Connect(IPAddress.Parse("10.101.150.27"), 8081);
 
 
         }
