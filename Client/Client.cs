@@ -66,20 +66,15 @@ namespace Client
 
                     if (ma is ComponentMessage)
                     {
+                        Thread thread = new Thread(new ParameterizedThreadStart(HandleComponent));
+
                         ComponentMessage compmsg = (ComponentMessage)ma;
 
-                        List<object> ho = compmsg.Component.Evaluate(compmsg.Values).ToList();
-
-                        for (int i = 0; i < ho.Count; i++)
-                        {
-                            Console.WriteLine(compmsg.Component.ComponentGuid.ToString());
-                        }
-
-                        ResultMessage rsm = new ResultMessage(ResultStatusCode.Successful, compmsg.ID);
-
-                        rsm.Result = compmsg.Component.Evaluate(compmsg.Values);
-
-                        byte[] response = Protocol.GetByteArrayFromMessage(rsm);
+                        thread.Start(compmsg);                      
+                    }
+                    else if (ma is AliveMessage)
+                    {
+                        byte[] response = Protocol.GetByteArrayFromMessage(ma);
 
                         networkStream.Write(response, 0, response.Length);
                     }
@@ -90,6 +85,26 @@ namespace Client
                     Console.WriteLine("waiting...");
                 }
             }
+        }
+
+        private void HandleComponent(object obj)
+        {
+            ComponentMessage compmsg = (ComponentMessage)obj;
+
+            List<object> ho = compmsg.Component.Evaluate(compmsg.Values).ToList();
+
+            for (int i = 0; i < ho.Count; i++)
+            {
+                Console.WriteLine(compmsg.Component.ComponentGuid.ToString());
+            }
+
+            ResultMessage rsm = new ResultMessage(ResultStatusCode.Successful, compmsg.ID);
+
+            rsm.Result = compmsg.Component.Evaluate(compmsg.Values);
+
+            byte[] response = Protocol.GetByteArrayFromMessage(rsm);
+
+            networkStream.Write(response, 0, response.Length);
         }
     }
 }

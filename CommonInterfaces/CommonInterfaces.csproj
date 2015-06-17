@@ -44,6 +44,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AliveMessage.cs" />
     <Compile Include="Component.cs" />
     <Compile Include="ComponentMessage.cs" />
     <Compile Include="INetwork.cs" />
