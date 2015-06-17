@@ -49,11 +49,39 @@ namespace Server
 
             this.SendComponents(clientStream);
 
-            if (clientStream.DataAvailable)
+            while (true)
             {
-                StreamReader str = new StreamReader(clientStream);
-                string packet = str.ReadToEnd();
-                Console.WriteLine(packet);
+                if (clientStream.DataAvailable)
+                {
+                    /*StreamReader str = new StreamReader(clientStream);
+                    string packet = str.ReadToEnd();
+                    Console.WriteLine(packet);*/
+
+                    byte[] length = new byte[4];
+
+                    clientStream.Read(length, 0, length.Length);
+
+                    byte[] response = new byte[BitConverter.ToInt32(length, 0)];
+
+                    clientStream.Read(response, 0, response.Length);
+
+                    Message msg = Protocol.GetComponentMessageFromByteArray(response);
+
+                    if (msg is ResultMessage)
+                    {
+                        List<object> dd = ((ResultMessage)msg).Result.ToList();
+
+                        for (int i = 0; i< dd.Count; i++)
+                        {
+                            Console.WriteLine(dd[i].ToString());
+                        }
+                    }
+                }
+                else
+                {
+                    Console.WriteLine("waiting...");
+                    Thread.Sleep(1000);
+                }
             }
 
             clientStream.Close();
@@ -62,7 +90,7 @@ namespace Server
 
         public void SendComponents(NetworkStream clientStream)
         {
-            ComponentMessage msg = new ComponentMessage();
+            ComponentMessage msg = new ComponentMessage(Guid.NewGuid());
             msg.Component = new Component(Guid.NewGuid(), "test", null, null);
 
             byte[] test = Protocol.GetByteArrayFromMessage(msg);
