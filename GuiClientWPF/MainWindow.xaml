@@ -48,33 +48,11 @@
         </Menu>
 
         <!--Content of the Main View -->
-        <ScrollViewer Grid.Row="1" Grid.Column="0" Margin="5">
-            <collections:ComponentTreeView x:Name="TreeViewCollection"  />
-
-            <!--<TreeView Name="ComponentSelection" Style="{StaticResource TreeViewStyle}">
-                --><!--<TreeViewItem Header="Simple Components"  Style="{StaticResource TreeViewCathegoriesStyle}">--><!--
-                    <TreeViewItem  Header="Addition" Name="Component" Style="{StaticResource Components}" />
-                    <TreeViewItem  Header="Substraction" Style="{StaticResource Components}"/>
-                    <TreeViewItem  Header="Multiplication" Style="{StaticResource Components}"/>
-                    <TreeViewItem  Header="Division" Style="{StaticResource Components}"/>
-                </TreeViewItem>
-                <TreeViewItem Header="Complex Components"  Style="{StaticResource TreeViewCathegoriesStyle}">
-                    <TreeViewItem  Header="Builder"  Style="{StaticResource Components}"/>
-                    <TreeViewItem  Header="Linq" Style="{StaticResource Components}"/>
-                    <TreeViewItem  Header="Entity Framework" Style="{StaticResource Components}"/>
-                </TreeViewItem>
-                <TreeViewItem Header="Other Components"  Style="{StaticResource TreeViewCathegoriesStyle}">
-                    <TreeViewItem  Header="Network Client" Style="{StaticResource Components}"/>
-                    <TreeViewItem  Header="Xor" Style="{StaticResource Components}"/>
-                    <TreeViewItem  Header="Nor" Style="{StaticResource Components}"/>
-                </TreeViewItem>
-            </TreeView>-->
-        </ScrollViewer>
+        <collections:ComponentTreeView x:Name="TreeViewCollection" Grid.Row="1" Grid.Column="0" Margin="5"  />
 
         <!--TODO: Refactor hard coded canvas to canvas itemcontrol-->
-        <ScrollViewer Grid.Row="1" Grid.Column="2" Margin="5">
-            <Canvas Style="{StaticResource CanvasStyle}" Name="Workstation" />
-        </ScrollViewer>
+
+        <collections:WorkStation Grid.Row="1" Grid.Column="2"  Margin="5"/>
 
     </Grid>
 </Window>
