@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using System.Net;
 using System.Net.Sockets;
 using System.IO;
+using CommonInterfaces;
 
 namespace Server
 {
@@ -61,7 +62,11 @@ namespace Server
 
         public void SendComponents(NetworkStream clientStream)
         {
-            byte[] test = Encoding.UTF8.GetBytes("test");
+            ComponentMessage msg = new ComponentMessage();
+            msg.Component = new Component(Guid.NewGuid(), "test", null, null);
+
+            byte[] test = Protocol.GetMessageForComponentExecution(msg);
+            
             clientStream.Write(test, 0, test.Length);
         }
 
