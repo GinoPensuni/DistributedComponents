@@ -65,7 +65,7 @@ namespace Server
             ComponentMessage msg = new ComponentMessage();
             msg.Component = new Component(Guid.NewGuid(), "test", null, null);
 
-            byte[] test = Protocol.GetMessageForComponentExecution(msg);
+            byte[] test = Protocol.GetByteArrayFromMessage(msg);
             
             clientStream.Write(test, 0, test.Length);
         }
