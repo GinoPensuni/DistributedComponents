@@ -8,14 +8,14 @@ namespace CommonInterfaces
 {
     public interface IComponent
     {
-        string friendlyName { get; }
+        string FriendlyName { get; }
 
-        Guid uniqueID { get; }
+        Guid UniqueID { get; }
 
-        IEnumerable<string> inputHints { get; set; }
+        IEnumerable<string> InputHints { get; set; }
 
-        IEnumerable<string> outputHints { get; set; }
+        IEnumerable<string> OutputHints { get; set; }
 
-        IEnumerable<object> evaluate();
+        IEnumerable<object> Evaluate(IEnumerable<object> values);
     }
 }
