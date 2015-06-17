@@ -11,6 +11,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CommonInterfaces", "CommonI
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Server", "Server\Server.csproj", "{86AD65B2-2B9C-4E3E-B5B2-85377FFA6BA2}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GuiClientWPF", "GuiClientWPF\GuiClientWPF.csproj", "{7AAD5B66-2C09-4F1E-9042-BBFFF989ADAD}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -33,6 +35,10 @@ Global
 		{86AD65B2-2B9C-4E3E-B5B2-85377FFA6BA2}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{86AD65B2-2B9C-4E3E-B5B2-85377FFA6BA2}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{86AD65B2-2B9C-4E3E-B5B2-85377FFA6BA2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7AAD5B66-2C09-4F1E-9042-BBFFF989ADAD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7AAD5B66-2C09-4F1E-9042-BBFFF989ADAD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7AAD5B66-2C09-4F1E-9042-BBFFF989ADAD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7AAD5B66-2C09-4F1E-9042-BBFFF989ADAD}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -1,0 +1,57 @@
+﻿<UserControl x:Class="GuiClientWPF.ComponentTreeView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             mc:Ignorable="d" 
+             xmlns:collections="clr-namespace:GuiClientWPF"
+             d:DesignHeight="300" d:DesignWidth="300">
+    
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="Assets/Style/MainWindowStyle.xaml"/>
+                <ResourceDictionary Source="Assets/Style/ComponentsStyle.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+            <DataTemplate x:Key="ComponetTreeViewTemplate" DataType="TreeViewItem">
+                <TreeViewItem  Header="{Binding FriendlyName}"
+                               Style="{StaticResource Components}" 
+                               />
+                <!--<TreeViewItem  Header="{Binding FriendlyName}"
+                               Style="{StaticResource Components}" 
+                               DragEnter="Component_DragEnter" DragOver="Component_DragOver" Drop="Component_Drop"/>-->
+            </DataTemplate>
+        </ResourceDictionary>
+    </UserControl.Resources>
+    <!--TODO : Fix the style issue -->
+
+    <Grid>
+        <Grid.DataContext>
+            <collections:ClientManager/>
+        </Grid.DataContext>
+        <TreeView Style="{StaticResource TreeViewStyle}">
+            <TreeView.DataContext>
+                <collections:Components x:Uid="TeeViewItemCategoryContext"/>
+            </TreeView.DataContext>
+            
+            <TreeViewItem Header="Simple Components"
+                          Style="{StaticResource TreeViewCathegoriesStyle}"
+                          Name="SimpleComponents" 
+                          ItemTemplate="{StaticResource ComponetTreeViewTemplate}"
+                          />
+            
+            <TreeViewItem Header="Complex Components" 
+                          Style="{StaticResource TreeViewCathegoriesStyle}"
+                          Name="ComplexComponents"
+                          ItemTemplate="{StaticResource ComponetTreeViewTemplate}"
+                          />
+            
+            <TreeViewItem Header="Other Components"
+                          Style="{StaticResource TreeViewCathegoriesStyle}"
+                          Name="OtherComponents" 
+                          ItemTemplate="{StaticResource ComponetTreeViewTemplate}" 
+                          />
+
+        </TreeView>
+    </Grid>
+</UserControl>

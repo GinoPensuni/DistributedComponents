@@ -1,0 +1,82 @@
+﻿<Window x:Class="GuiClientWPF.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:collections="clr-namespace:GuiClientWPF"
+        Title="MainWindow" Height="350" Width="525" ResizeMode="CanResizeWithGrip" WindowStyle="ThreeDBorderWindow">
+    <Grid>
+        
+        <!--Ressources of the Main View -->
+        <Grid.Resources>
+            <ResourceDictionary>
+                <ResourceDictionary.MergedDictionaries>
+                    <ResourceDictionary  Source="Assets/Style/MainWindowStyle.xaml"/>
+                    <ResourceDictionary  Source="Assets/Style/ComponentsStyle.xaml"/>
+                </ResourceDictionary.MergedDictionaries>
+            </ResourceDictionary>
+        </Grid.Resources>
+
+        <!--Grid Layout of the View -->
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="4*"/>
+            <ColumnDefinition Width="6*"/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="1*"/>
+            <RowDefinition Height="14*"/>
+        </Grid.RowDefinitions>
+
+        <!--Menu for the user interaction -->
+        <Menu Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2">
+            <MenuItem Header="Actions">
+                <MenuItem Header="Run" Name="RunAction" Click="RunAction_Click"/>
+                <MenuItem Header="Save" Name="SaveAction" Click="SaveAction_Click"/>
+                <MenuItem Header="Connect" Name="ConnectAction" Click="ConnectAction_Click"/>
+                <MenuItem Header="Disconnect" Name="DisconnectAction" Click="DisconnectAction_Click"/>
+                <MenuItem Header="Exit" Name="ExitAction" Click="ExitAction_Click"/>
+            </MenuItem>
+            <MenuItem Header="Options">
+                <MenuItem Header="Connection" Name="ConnectionOptions" Click="ConnectionOptions_Click"/>
+                <MenuItem Header="Preferences" Name="PreferencesOptions" Click="PreferencesOptions_Click"/>
+            </MenuItem>
+            <MenuItem Header="Help">
+                <MenuItem Header="Controls" Name="HelpControls" Click="HelpControls_Click"/>
+                <MenuItem Header="UI" Name="HelpUI" Click="HelpUI_Click"/>
+            </MenuItem>
+            <MenuItem Header="Debugger">
+                <MenuItem Header="Inser Data" Name="InsertDebug" Click="InsertDebug_Click"/>
+                <MenuItem Header="Delete Data" Name="DeleteDebug" Click="DeleteDebug_Click"/>
+            </MenuItem>
+        </Menu>
+
+        <!--Content of the Main View -->
+        <ScrollViewer Grid.Row="1" Grid.Column="0" Margin="5">
+            <collections:ComponentTreeView x:Name="TreeViewCollection"  />
+
+            <!--<TreeView Name="ComponentSelection" Style="{StaticResource TreeViewStyle}">
+                --><!--<TreeViewItem Header="Simple Components"  Style="{StaticResource TreeViewCathegoriesStyle}">--><!--
+                    <TreeViewItem  Header="Addition" Name="Component" Style="{StaticResource Components}" />
+                    <TreeViewItem  Header="Substraction" Style="{StaticResource Components}"/>
+                    <TreeViewItem  Header="Multiplication" Style="{StaticResource Components}"/>
+                    <TreeViewItem  Header="Division" Style="{StaticResource Components}"/>
+                </TreeViewItem>
+                <TreeViewItem Header="Complex Components"  Style="{StaticResource TreeViewCathegoriesStyle}">
+                    <TreeViewItem  Header="Builder"  Style="{StaticResource Components}"/>
+                    <TreeViewItem  Header="Linq" Style="{StaticResource Components}"/>
+                    <TreeViewItem  Header="Entity Framework" Style="{StaticResource Components}"/>
+                </TreeViewItem>
+                <TreeViewItem Header="Other Components"  Style="{StaticResource TreeViewCathegoriesStyle}">
+                    <TreeViewItem  Header="Network Client" Style="{StaticResource Components}"/>
+                    <TreeViewItem  Header="Xor" Style="{StaticResource Components}"/>
+                    <TreeViewItem  Header="Nor" Style="{StaticResource Components}"/>
+                </TreeViewItem>
+            </TreeView>-->
+        </ScrollViewer>
+
+        <!--TODO: Refactor hard coded canvas to canvas itemcontrol-->
+        <ScrollViewer Grid.Row="1" Grid.Column="2" Margin="5">
+            <Canvas Style="{StaticResource CanvasStyle}" Name="Workstation" />
+        </ScrollViewer>
+
+    </Grid>
+</Window>
+
