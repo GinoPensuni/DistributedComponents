@@ -62,13 +62,25 @@ namespace Client
 
                     networkStream.Read(message, 0, message.Length);
 
-                    ComponentMessage ma = Protocol.GetComponentMessageFromByteArra(message);
+                    Message ma = Protocol.GetComponentMessageFromByteArray(message);
 
-                    List<object> ho = ma.Component.Evaluate(ma.Values).ToList();
-
-                    for (int i = 0; i < ho.Count; i++)
+                    if (ma is ComponentMessage)
                     {
-                        Console.WriteLine(ho.ToString());
+                        ComponentMessage compmsg = (ComponentMessage)ma;
+
+                        List<object> ho = compmsg.Component.Evaluate(compmsg.Values).ToList();
+
+                        for (int i = 0; i < ho.Count; i++)
+                        {
+                            Console.WriteLine(compmsg.Component.ComponentGuid.ToString());
+                        }
+
+                        ResultMessage rsm = new ResultMessage(ResultStatusCode.Successful);
+                        rsm.Result = compmsg.Component.Evaluate(compmsg.Values);
+
+                        byte[] response = Protocol.GetByteArrayFromMessage(rsm);
+
+                        networkStream.Write(response, 0, response.Length);
                     }
                 }
                 else

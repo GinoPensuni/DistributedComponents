@@ -24,7 +24,7 @@ namespace Client
             return message.Component;
         }*/
 
-        public static ComponentMessage GetComponentMessageFromByteArra(byte[] arr)
+        public static Message GetComponentMessageFromByteArray(byte[] arr)
         {
             MemoryStream memoryStream = new MemoryStream();
             BinaryFormatter binForm = new BinaryFormatter();
@@ -32,9 +32,26 @@ namespace Client
             memoryStream.Write(arr, 0, arr.Length);
             memoryStream.Seek(0, SeekOrigin.Begin);
 
-            ComponentMessage message = (ComponentMessage)binForm.Deserialize(memoryStream);
+            
+            Message message = (Message)binForm.Deserialize(memoryStream);
 
             return message;
+        }
+
+        public static byte[] GetByteArrayFromMessage(Message msg)
+        {
+            List<byte> message = new List<byte>();
+            BinaryFormatter bf = new BinaryFormatter();
+
+            using (MemoryStream ms = new MemoryStream())
+            {
+                bf.Serialize(ms, msg);
+                byte[] bytes = ms.ToArray();
+                message.AddRange(BitConverter.GetBytes(bytes.Length));
+                message.AddRange(bytes);
+
+                return message.ToArray();
+            }
         }
     }
 }

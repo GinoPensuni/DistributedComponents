@@ -54,6 +54,8 @@
     <Compile Include="Message.cs" />
     <Compile Include="MessageType.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ResultMessage.cs" />
+    <Compile Include="ResultStatusCode.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

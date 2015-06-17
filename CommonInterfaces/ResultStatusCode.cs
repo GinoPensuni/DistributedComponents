@@ -6,9 +6,9 @@ using System.Threading.Tasks;
 
 namespace CommonInterfaces
 {
-    public enum MessageType
+    public enum ResultStatusCode
     {
-        RequestForComponentExecution = 1,
-        Unknown = 9999
+        Successful = 1,
+        Failed = 2
     }
 }
