@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 
 namespace CommonInterfaces
 {
+    [Serializable]
     public class ComponentMessage : Message
     {
         public Component Component

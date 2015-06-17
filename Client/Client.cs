@@ -57,6 +57,9 @@ namespace Client
 
                     networkStream.Read(received, 0, 4);
 
+                    byte[] message = new byte[BitConverter.ToUInt32(received, 0)];
+
+                    networkStream.Read(message, 0, message.Length);
                 }
                 else
                 {
