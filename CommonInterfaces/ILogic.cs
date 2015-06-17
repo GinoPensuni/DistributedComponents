@@ -8,11 +8,13 @@ namespace CommonInterfaces
 {
     public interface ILogic
     {
-        bool DisconnectFromServer();
+        Task<bool> DisconnectFromServer();
 
-        void SaveComponent(IComponent component);
+        Task SaveComponent(IComponent component);
 
         void ConnenctToServer();
+
+        Task<List<Tuple<Type, IComponent>>> LoadComponents();
     }
     
 }
