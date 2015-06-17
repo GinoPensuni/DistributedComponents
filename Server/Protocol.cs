@@ -11,7 +11,7 @@ namespace Server
 {
     public static class Protocol
     {
-        public static byte[] GetMessageForComponentExecution(ComponentMessage msg)
+        public static byte[] GetByteArrayFromMessage(Message msg)
         {
             List<byte> message = new List<byte>();
             BinaryFormatter bf = new BinaryFormatter();
