@@ -14,7 +14,7 @@ namespace Server
     {
         private Thread listenThread;
         private TcpListener tcpListener;
-        private bool isRunning;
+        public bool isRunning { get; private set; }
 
         public List<TcpClient> ClientList { get; private set; }
 
@@ -54,6 +54,9 @@ namespace Server
                 string packet = str.ReadToEnd();
                 Console.WriteLine(packet);
             }
+
+            clientStream.Close();
+            client.Close();
         }
 
         public void SendComponents(NetworkStream clientStream)
