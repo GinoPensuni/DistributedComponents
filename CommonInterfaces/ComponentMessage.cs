@@ -8,5 +8,10 @@ namespace CommonInterfaces
 {
     class ComponentMessage : Message
     {
+        public Component Component
+        {
+            get;
+            set;
+        }
     }
 }
