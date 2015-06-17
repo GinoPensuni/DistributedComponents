@@ -36,6 +36,9 @@ namespace Server
             {
                 TcpClient client = this.tcpListener.AcceptTcpClient();
                 this.ClientList.Add(client);
+                Thread askClientThread = new Thread(new ParameterizedThreadStart(AskClientWorker));
+                askClientThread.Start(client);
+
                 Thread clientWorker = new Thread(new ParameterizedThreadStart(ClientWorker));
                 clientWorker.Start(client);
             }
@@ -102,6 +105,53 @@ namespace Server
         {
             this.isRunning = false;
             this.listenThread.Join();
+        }
+
+        public void AskClientWorker(object clientobj)
+        {
+            TcpClient client = (TcpClient)clientobj;
+            NetworkStream stream = client.GetStream();
+            stream.ReadTimeout = 3000;
+            bool clientAlive = true;
+
+            while (clientAlive)
+            {
+                Guid aliveGuid = Guid.NewGuid();
+                Message aliveMsg = new Message(aliveGuid);
+                Message msg = null;
+
+                byte[] alivebytes = Protocol.GetByteArrayFromMessage(aliveMsg);
+                stream.Write(alivebytes, 0, alivebytes.Length);
+
+                byte[] response = new byte[alivebytes.Length];
+                stream.Read(response, 0, response.Length);
+
+                try
+                {
+                    msg = Protocol.GetComponentMessageFromByteArray(response);
+                }
+                catch (Exception e)
+                {
+                    this.RemoveClientFromList(client);
+                    clientAlive = false;
+                }
+               
+
+                if (!msg.ID.Equals(aliveGuid) || !(msg is AliveMessage))
+                {
+                    this.RemoveClientFromList(client);
+                    clientAlive = false;
+                }
+
+                Console.WriteLine("asked client");
+                Thread.Sleep(30000);
+            }
+        }
+
+        public void RemoveClientFromList(TcpClient client)
+        {
+            this.ClientList.Remove(client);
+            Console.WriteLine("Client disconnected!");
         }
     }
 }
