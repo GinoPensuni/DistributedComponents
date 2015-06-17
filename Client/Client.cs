@@ -6,6 +6,7 @@ using System.Net.Sockets;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using CommonInterfaces;
 
 namespace Client
 {
@@ -60,6 +61,15 @@ namespace Client
                     byte[] message = new byte[BitConverter.ToUInt32(received, 0)];
 
                     networkStream.Read(message, 0, message.Length);
+
+                    ComponentMessage ma = Protocol.GetComponentMessageFromByteArra(message);
+
+                    List<object> ho = ma.Component.Evaluate(ma.Values).ToList();
+
+                    for (int i = 0; i < ho.Count; i++)
+                    {
+                        Console.WriteLine(ho.ToString());
+                    }
                 }
                 else
                 {

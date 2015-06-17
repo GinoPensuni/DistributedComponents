@@ -14,5 +14,11 @@ namespace CommonInterfaces
             get;
             set;
         }
+
+        public IEnumerable<object> Values
+        {
+            get;
+            set;
+        }
     }
 }
