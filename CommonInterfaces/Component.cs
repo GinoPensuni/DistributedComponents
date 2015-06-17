@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace CommonInterfaces
 {
-    class Component : IComponent
+    public class Component : IComponent
     {
         private Guid componentGuid;
 
