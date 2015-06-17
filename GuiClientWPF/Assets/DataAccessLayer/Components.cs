@@ -13,6 +13,11 @@ namespace GuiClientWPF
         private string name;
         private IEnumerable<string> outputHints;
 
+        public Components()
+        {
+            this.UniqueID = Guid.NewGuid();
+        }
+
         public string FriendlyName
         {
             get 
@@ -28,10 +33,8 @@ namespace GuiClientWPF
 
         public Guid UniqueID
         {
-            get
-            {
-                return new Guid();
-            }
+            get;
+            private set;
         }
 
         public IEnumerable<string> InputHints
@@ -78,5 +81,10 @@ namespace GuiClientWPF
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
+
+        public Guid ComponentGuid
+        {
+            get { return this.UniqueID; }
+        }
     }
 }

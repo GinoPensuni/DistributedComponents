@@ -42,6 +42,7 @@ namespace GuiClientWPF
         {
             logic = default(ILogic);
             CathegoryCollection = new ObservableCollection<Category>();
+            CanvasComponents = new ObservableCollection<Components>();
             CathegoryCollection.Add(new Category() { Name = "Simple" });
             CathegoryCollection.Add(new Category() { Name = "Complex" });
             CathegoryCollection.Add(new Category() { Name = "Other" });
@@ -131,6 +132,10 @@ namespace GuiClientWPF
             {
                 return;
             }
+
+            var queryRes = CathegoryCollection.SelectMany(category => category.Components).SingleOrDefault(component => component.UniqueID == id);
+            if (queryRes != null) 
+                this.CanvasComponents.Add(queryRes);
         }
     }
 }
