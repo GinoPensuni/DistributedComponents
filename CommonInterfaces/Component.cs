@@ -52,7 +52,11 @@ namespace CommonInterfaces
         }
         public IEnumerable<object> Evaluate(IEnumerable<object> values)
         {
-            throw new NotImplementedException();
+            List<object> d = new List<object>();
+
+            d.Add(329023);
+
+            return d.AsEnumerable();
         }
     }
 }
