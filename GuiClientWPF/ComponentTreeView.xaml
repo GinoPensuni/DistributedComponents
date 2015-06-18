@@ -16,19 +16,17 @@
     </UserControl.Resources>
 
     <Grid Name="DataContextSet">
-        <ScrollViewer>
-            <TreeView Style="{StaticResource TreeViewStyle}" ItemsSource="{Binding CathegoryCollection}" Name="ComponentsTee">
-                <TreeView.ItemTemplate>
-                    <HierarchicalDataTemplate x:Name="test" ItemsSource="{Binding Components}">
-                        <TextBlock Text="{Binding Name}" />
-                        <HierarchicalDataTemplate.ItemTemplate>
-                            <DataTemplate DataType="TreeViewItem">
-                                <TextBlock Text="{Binding FriendlyName}" Name="Component" MouseDown="Component_MouseDown" Tag="{Binding  UniqueID}"/>
-                            </DataTemplate>
-                        </HierarchicalDataTemplate.ItemTemplate>
-                    </HierarchicalDataTemplate>
-                </TreeView.ItemTemplate>
-            </TreeView>
-        </ScrollViewer>
+        <TreeView Style="{StaticResource TreeViewStyle}" ItemsSource="{Binding CathegoryCollection}" Name="ComponentsTee" ScrollViewer.CanContentScroll="True" ScrollViewer.HorizontalScrollBarVisibility="Auto" ScrollViewer.VerticalScrollBarVisibility="Auto" ScrollViewer.IsDeferredScrollingEnabled="True">
+            <TreeView.ItemTemplate>
+                <HierarchicalDataTemplate x:Name="test" ItemsSource="{Binding Components}">
+                    <TextBlock Text="{Binding Name}" />
+                    <HierarchicalDataTemplate.ItemTemplate>
+                        <DataTemplate DataType="TreeViewItem">
+                            <TextBlock Text="{Binding FriendlyName}" Name="Component" MouseDown="Component_MouseDown" Tag="{Binding  UniqueID}"/>
+                        </DataTemplate>
+                    </HierarchicalDataTemplate.ItemTemplate>
+                </HierarchicalDataTemplate>
+            </TreeView.ItemTemplate>
+        </TreeView>
     </Grid>
 </UserControl>

@@ -1,0 +1,22 @@
+﻿<UserControl x:Class="GuiClientWPF.GuiComponent"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             mc:Ignorable="d" 
+            d:DesignHeight="100" d:DesignWidth="85"  Height="85" Width="75" Name="Component">
+    
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="Assets/Style/ImageDictionary.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </UserControl.Resources>
+    <Grid>
+        <Canvas Height="80" Width="70" Name="ComponentCanvas" Background="Black" >
+            <Image Source="{DynamicResource LogicalAdd}" Opacity="1" Margin="5" Height="40" Width="60" />
+        </Canvas>
+        <TextBox Name="FriendlyName" Background="Gray" Margin="5" VerticalAlignment="Bottom" HorizontalAlignment="Center" IsEnabled="False"  Text="View Text" TextWrapping="WrapWithOverflow" MaxLength="40" MaxHeight="25" BorderBrush="Beige" BorderThickness="2"/>
+    </Grid>
+</UserControl>

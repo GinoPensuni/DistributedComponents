@@ -21,9 +21,10 @@ namespace GuiClientWPF
     public partial class WorkStation : UserControl
     {
         private UIElement draggedObject = null;
-        private Canvas selectedComponent = null;
+        private GuiComponent selectedComponent = null;
         private Point? mouseOffset = null;
-        private List<Tuple<Canvas, Canvas, Line>> connections = new List<Tuple<Canvas, Canvas, Line>>();
+        private List<Tuple<GuiComponent, GuiComponent, Line>> connections = new List<Tuple<GuiComponent, GuiComponent, Line>>();
+
 
         private ClientManager Manager
         {
@@ -54,28 +55,7 @@ namespace GuiClientWPF
         {
             foreach (var entry in list)
             {
-                var comp = new Canvas();
-                var rect = new Rectangle();
-                comp.Height = 50;
-                comp.Width = 70;
-                comp.Opacity = 1;
-                comp.Visibility = Visibility.Visible;
-                comp.Background  = new SolidColorBrush(Colors.White);
-                rect.Height = 40;
-                rect.Width = 60;
-                rect.Fill = new SolidColorBrush(Colors.Black);
-                rect.Opacity = 1;
-                rect.Tag = entry.UniqueID;
-                rect.Visibility = Visibility.Visible;
-                rect.HorizontalAlignment = HorizontalAlignment.Center;
-                rect.VerticalAlignment = VerticalAlignment.Center;
-                comp.ToolTip = " test";
-                rect.Margin = new Thickness(5);
-                comp.ClipToBounds = true;
-                rect.ClipToBounds = true;
-                comp.Children.Add(rect);
-                comp.ClipToBounds = true;
-                comp.AllowDrop = true;
+                var comp = new GuiComponent(entry);
                 this.ComponentBuilder.MouseMove += comp_MouseMove;
                 comp.MouseLeftButtonDown += comp_MouseLeftButtonDown;
                 comp.MouseLeftButtonUp += comp_MouseLeftButtonUp;
@@ -89,7 +69,7 @@ namespace GuiClientWPF
         {
             if (this.selectedComponent == null)
             {
-                this.selectedComponent = sender as Canvas;
+                this.selectedComponent = sender as GuiComponent;
                 this.selectedComponent.Background = Brushes.Red;
             }
             else if (this.selectedComponent == sender)
@@ -99,10 +79,10 @@ namespace GuiClientWPF
             }
             else
             {
-                var secondSelectedComponent = sender as Canvas;
+                var secondSelectedComponent = sender as GuiComponent;
                 if(sender == null) return;
                 var line = new Line();
-                this.connections.Add(new Tuple<Canvas, Canvas, Line>(this.selectedComponent, secondSelectedComponent, line));
+                this.connections.Add(new Tuple<GuiComponent, GuiComponent, Line>(this.selectedComponent, secondSelectedComponent, line));
                 line.Stroke = Brushes.Violet;
                 line.StrokeThickness = 3;
                 line.StrokeDashArray = new DoubleCollection() { 1.0, 2.0 };
@@ -143,7 +123,7 @@ namespace GuiClientWPF
                 return;
             }
 
-            Canvas canvas = this.draggedObject as Canvas;
+            var canvas = this.draggedObject as GuiComponent;
             if (e.LeftButton == MouseButtonState.Pressed)
             {
                 var position = e.GetPosition(this.ComponentBuilder);
@@ -151,8 +131,6 @@ namespace GuiClientWPF
                 Canvas.SetTop(canvas, position.Y - this.mouseOffset.Value.Y);
                 foreach (var entry in this.connections.Where(tuple => tuple.Item1.Equals(canvas) || tuple.Item2.Equals(canvas)))
                 {
-                    //ComponentBuilder.Children.Remove(entry.Item3);
-
                     if (canvas == entry.Item1)
                     {
                         entry.Item3.X1 = Canvas.GetLeft(canvas);
@@ -163,12 +141,8 @@ namespace GuiClientWPF
                         entry.Item3.X2 = Canvas.GetLeft(canvas);
                         entry.Item3.Y2 = Canvas.GetTop(canvas);
                     }
-
-                    //ComponentBuilder.Children.Add(entry.Item3);
                 }
             }
         }
-
-
     }
 }

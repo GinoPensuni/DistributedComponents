@@ -14,7 +14,7 @@
         </ResourceDictionary>
     </UserControl.Resources>
     <Grid>
-        <ScrollViewer Height="{Binding ElementName=Id, Path=ActualHeight}"  Width="{Binding ElementName=Id, Path=ActualWidth}">
+        <ScrollViewer Height="{Binding ElementName=Id, Path=ActualHeight}"  Width="{Binding ElementName=Id, Path=ActualWidth}" CanContentScroll="True" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto">
             <Canvas Name="ComponentBuilder" Height="2000" Width="2000" Style="{StaticResource CanvasStyle}" ClipToBounds="True"/>
         </ScrollViewer>
     </Grid>
