@@ -6,7 +6,18 @@ using System.Threading.Tasks;
 
 namespace CommonInterfaces
 {
-    public interface INetwork
+    public interface INetworkClient
     {
+        NetworkState NetworkClient
+        {
+            get;
+            set;
+        }
+
+        bool SendResult(List<object> Result, Guid id);
+
+        bool SendJobRequest(IComponent component);
+
+        event EventHandler<ComponentRecievedEventArgs> RequestEvent;
     }
 }
