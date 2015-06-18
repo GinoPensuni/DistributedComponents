@@ -58,12 +58,15 @@ namespace Server
                 TcpClient client = this.tcpListener.AcceptTcpClient();
                 Slave slave = new Slave(client);
                 slave.OnMessageReceived += slave_OnMessageReceived;
-                this.Slaves.Add(slave);
+                slave.AssignGuid(Guid.NewGuid());
+                this.Slaves.Add(slave);  
             }
         }
 
         void slave_OnMessageReceived(object sender, MessageReceivedEventArgs e)
         {
+            Slave slave = (Slave)sender;
+            Console.WriteLine(slave.ClientGuid);
             Console.WriteLine(e.Msg.ToString());
         }
 

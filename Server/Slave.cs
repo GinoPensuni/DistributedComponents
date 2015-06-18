@@ -14,9 +14,9 @@ namespace Server
     {
         public Slave(TcpClient client)
         {
+            this.UnconfirmedMessages = new List<Message>();
             this.Client = client;
             this.ClientStream = this.Client.GetStream();
-            this.AssignGuid(Guid.NewGuid());
             this.StartListening();
         }
 
@@ -28,20 +28,45 @@ namespace Server
 
         public bool IsListening { get; private set; }
 
+        public List<Message> UnconfirmedMessages { get; private set; }
+
         public void SendMessage(Message msg)
         {
             byte[] message = Protocol.GetByteArrayFromMessage(msg);
-
+            this.UnconfirmedMessages.Add(msg);
             this.ClientStream.Write(message, 0, message.Length);
             Console.WriteLine("Message sent");
         }
 
-        public void AssignGuid(Guid guid)
+        public bool AssignGuid(Guid guid)
         {
             this.clientGuid = guid;
             AssignMessage assignmsg = new AssignMessage(Guid.NewGuid());
             assignmsg.ClientGuid = this.clientGuid;
             this.SendMessage(assignmsg);
+            Thread.Sleep(3000);
+
+            if (this.SearchForMessage(assignmsg.ID) == null)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+
+        public Message SearchForMessage(Guid id)
+        {
+            foreach (Message msg in this.UnconfirmedMessages)
+            {
+                if (msg.ID.Equals(id))
+                {
+                    return msg;
+                }
+            }
+
+            return null;
         }
 
         public void StartListening()
