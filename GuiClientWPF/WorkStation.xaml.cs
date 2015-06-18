@@ -144,5 +144,76 @@ namespace GuiClientWPF
                 }
             }
         }
+
+
+        Polyline DrawPolyLine(Point input, Point output)
+        {
+            var complex = true;
+            var deltaX = input.X - output.X;
+            var deltaY = input.Y - output.Y;
+            var p1 = new Point();
+            var p2 = new Point();
+            var p3 = new Point();
+            var p4 = new Point();
+
+            if (deltaX > 0 && deltaY > 0 || deltaX > 0 && deltaY < 0)
+            {
+                p1.X = output.X + deltaX / 4;
+                p1.Y = output.Y;
+                p2.X = input.X - deltaX /4;
+                p2.Y = input.Y;
+                complex = false;
+            }
+
+            else if (deltaX < 0 && deltaY > 0)
+            {
+                p1.X = output.X + deltaX / 4;
+                p1.Y = output.Y;
+                p2.X = output.X + deltaX / 4;
+                p2.Y = output.Y + deltaY / 4;
+                p3.X = input.X - deltaX / 4;
+                p3.Y = input.Y - deltaX / 4;
+                p4.X = input.X - deltaX / 4;
+                p4.Y = input.Y;
+
+            }
+
+            else if (deltaX < 0 && deltaY < 0)
+            {
+                p1.X = output.X + deltaX / 4;
+                p1.Y = output.Y;
+                p2.X = output.X + deltaX / 4;
+                p2.X = output.Y - deltaY / 4;
+                p3.Y = input.Y + deltaY / 4;
+                p3.X = input.X - deltaX / 4;
+                p4.X = input.X - deltaX / 4;
+                p4.Y = input.Y;
+            }
+
+            var polyline = new Polyline();
+
+            if (!complex)
+            {
+                polyline.Points.Add(output);
+                polyline.Points.Add(p1);
+                polyline.Points.Add(p2);
+                polyline.Points.Add(input);
+            }
+
+            else
+            {
+                polyline.Points.Add(output);
+                polyline.Points.Add(p1);
+                polyline.Points.Add(p2);
+                polyline.Points.Add(p3);
+                polyline.Points.Add(p4);
+                polyline.Points.Add(input);
+            }
+
+            polyline.Stroke = Brushes.Black;
+            polyline.StrokeThickness = 1;
+            polyline.Visibility = Visibility.Visible;
+            return polyline;
+        }
     }
 }

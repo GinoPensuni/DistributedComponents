@@ -18,7 +18,7 @@ namespace Client
 
         private bool running;
 
-        private NetworkState networkClient;
+        private NetworkState state;
 
         public Client()
         {
@@ -39,6 +39,8 @@ namespace Client
                 this.networkStream = this.client.GetStream();
 
                 this.running = true;
+
+                // this.NetworkClient = NetworkState.Running; // no guid :-(
 
                 Thread thread = new Thread(new ThreadStart(this.Listen));
                 thread.Start();
@@ -81,6 +83,17 @@ namespace Client
 
                         networkStream.Write(response, 0, response.Length);
                     }
+                    else if (ma is AssignMessage)
+                    {
+                        this.clientGuid = ((AssignMessage)ma).ClientGuid;
+                        this.state = NetworkState.Running; // we have a guid, so we are running ^_^
+
+                        Console.WriteLine("guid: " + this.clientGuid);
+
+                        byte[] response = Protocol.GetByteArrayFromMessage((AssignMessage)ma);
+
+                        networkStream.Write(response, 0, response.Length);
+                    }
                 }
                 else
                 {
@@ -114,17 +127,22 @@ namespace Client
         {
             get
             {
-                throw new NotImplementedException();
+                return this.state;
             }
             set
             {
-                throw new NotImplementedException();
+                this.state = value;
             }
         }
 
         public bool SendResult(List<object> Result, Guid id)
         {
-            throw new NotImplementedException();
+            foreach (object resultmessage in Result)
+            {
+                return false;
+            }
+
+            return true;
         }
 
         public bool SendJobRequest(IComponent component)
