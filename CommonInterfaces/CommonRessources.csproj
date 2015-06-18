@@ -44,6 +44,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Enums\ComponentType.cs" />
     <Compile Include="Classes\Messages\AssignMessage.cs" />
     <Compile Include="Classes\Messages\AliveMessage.cs" />
     <Compile Include="Classes\Component.cs" />

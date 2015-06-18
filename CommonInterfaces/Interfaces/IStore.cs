@@ -8,6 +8,17 @@ namespace CommonInterfaces
 {
     public interface IStore
     {
+        byte[] this[Guid AssemblyID]
+        {
+            get;
+        }
+
+        byte[] this[int hash]
+        {
+            get;
+        }
+        
         bool Store(byte[] assemblyCode);
+
     }
 }
