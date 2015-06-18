@@ -44,6 +44,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="SlaveDiedEventArgs.cs" />
     <Compile Include="MessageReceivedEventArgs.cs" />
     <Compile Include="Protocol.cs" />
     <Compile Include="Server.cs" />

@@ -11,13 +11,11 @@ using CommonInterfaces;
 
 namespace Server
 {
-    public class Server : INetworkServer      
+    public class Server : INetworkServer
     {
         private Thread listenThread;
         private TcpListener tcpListener;
         public bool isRunning { get; private set; }
-
-        public List<TcpClient> ClientList { get; private set; }
 
         public List<Slave> Slaves { get; private set; }
         public NetworkState ServerState
@@ -37,7 +35,6 @@ namespace Server
         public void Run()
         {
             this.Slaves = new List<Slave>();
-            this.ClientList = new List<TcpClient>();
             this.tcpListener = new TcpListener(IPAddress.Any, 8081);
             this.isRunning = true;
             this.listenThread = new Thread(new ThreadStart(SlaveListening));
@@ -66,8 +63,15 @@ namespace Server
             TcpClient client = (TcpClient)clientobj;
             Slave slave = new Slave(client);
             slave.OnMessageReceived += Slave_OnMessageReceived;
+            slave.OnSlaveDied += Slave_OnSlaveDied;
             slave.AssignGuid(Guid.NewGuid());
-            this.Slaves.Add(slave);  
+            this.Slaves.Add(slave);
+        }
+
+        void Slave_OnSlaveDied(object sender, SlaveDiedEventArgs e)
+        {
+            this.Slaves.Remove((Slave)sender);
+            Console.WriteLine("Slave died.. do you want to buy a new slave?");
         }
 
         public void Slave_OnMessageReceived(object sender, MessageReceivedEventArgs e)
@@ -75,49 +79,6 @@ namespace Server
             Slave slave = (Slave)sender;
             Console.WriteLine(slave.ClientGuid);
             Console.WriteLine(e.Msg.ToString());
-        }
-
-        public void ClientWorker(object clientobj)
-        {
-            //TODO: connection trennen
-            TcpClient client = (TcpClient)clientobj;
-            NetworkStream clientStream = client.GetStream();
-
-            this.SendComponents(clientStream);          
-
-            while (this.ClientList.Contains(client))
-            {
-                if (clientStream.DataAvailable)
-                {
-                    byte[] length = new byte[4];
-
-                    clientStream.Read(length, 0, length.Length);
-
-                    byte[] response = new byte[BitConverter.ToInt32(length, 0)];
-
-                    clientStream.Read(response, 0, response.Length);
-
-                    Message msg = Protocol.GetComponentMessageFromByteArray(response);
-                    Console.WriteLine("Result: ");
-                    if (msg is ResultMessage)
-                    {
-                        List<object> dd = ((ResultMessage)msg).Result.ToList();
-
-                        for (int i = 0; i < dd.Count; i++)
-                        {
-                            Console.WriteLine(dd[i].ToString());
-                        }
-                    }
-                }
-                else
-                {
-                    Console.WriteLine("waiting...");
-                    Thread.Sleep(1000);
-                }
-            }
-
-            clientStream.Close();
-            client.Close();
         }
 
         public void SendComponents(NetworkStream clientStream)
@@ -177,17 +138,7 @@ namespace Server
                 {
                     clientAlive = false;
                 }
-
-
             }
-
-            this.RemoveClientFromList(client);
-        }
-
-        public void RemoveClientFromList(TcpClient client)
-        {
-            this.ClientList.Remove(client);
-            Console.WriteLine("Client disconnected!");
         }
     }
 }

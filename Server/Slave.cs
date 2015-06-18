@@ -18,17 +18,24 @@ namespace Server
             this.Client = client;
             this.ClientStream = this.Client.GetStream();
             this.IsAssigned = false;
+            this.IsAlive = true;
 
             this.StartListening();
+            Thread aliveStatusThread = new Thread(new ThreadStart(this.CheckAliveStatus));
+            aliveStatusThread.Start();
         }
 
         public bool IsAssigned { get; private set; }
+
+        public bool IsAlive { get; private set; }
 
         public TcpClient Client { get; private set; }
 
         public NetworkStream ClientStream { get; private set; }
 
         public event EventHandler<MessageReceivedEventArgs> OnMessageReceived;
+
+        public event EventHandler<SlaveDiedEventArgs> OnSlaveDied;
 
         public bool IsListening { get; private set; }
 
@@ -38,6 +45,7 @@ namespace Server
         {
             byte[] message = Protocol.GetByteArrayFromMessage(msg);
             this.UnconfirmedMessages.Add(msg);
+
             this.ClientStream.Write(message, 0, message.Length);
             Console.WriteLine("Message sent");
         }
@@ -48,6 +56,30 @@ namespace Server
             AssignMessage assignmsg = new AssignMessage(Guid.NewGuid());
             assignmsg.ClientGuid = this.clientGuid;
             this.SendMessage(assignmsg);
+        }
+
+        private void CheckAliveStatus()
+        {
+            Thread.Sleep(30000);
+            AliveMessage alivemsg = new AliveMessage(Guid.NewGuid());
+            this.SendMessage(alivemsg);
+            Thread.Sleep(3000);
+
+            if (this.ConfirmMessage(alivemsg.ID))
+            {
+                this.IsAlive = false;
+                if (this.OnSlaveDied != null)
+                {
+                    this.OnSlaveDied(this, new SlaveDiedEventArgs());
+                }
+            }
+
+            //Message msg = this.SearchForMessage(alivemsg.ID);
+            //if (msg != null)
+            //{
+            //    this.IsAlive = false;
+            //    this.UnconfirmedMessages.Remove(msg);
+            //}
         }
 
         public Message SearchForMessage(Guid id)
@@ -61,16 +93,6 @@ namespace Server
             }
 
             return null;
-        }
-        public void DeleteMessageFromUnconfirmedList(Guid id)
-        {
-            foreach (Message msg in this.UnconfirmedMessages)
-            {
-                if (msg.ID.Equals(id))
-                {
-                    this.UnconfirmedMessages.Remove(msg);
-                }
-            }
         }
 
         public void StartListening()
@@ -97,19 +119,24 @@ namespace Server
 
                     if (msg is AssignMessage)
                     {
-                        if (this.SearchForMessage(msg.ID) != null)
+                        if (this.ConfirmMessage(msg.ID))
                         {
                             this.IsAssigned = true;
-                            this.DeleteMessageFromUnconfirmedList(msg.ID);
                         }
                     }
-                    else
+                    else if (msg is AliveMessage)
                     {
-                        if (this.OnMessageReceived != null)
+                        if (this.ConfirmMessage(msg.ID))
                         {
-                            MessageReceivedEventArgs e = new MessageReceivedEventArgs(msg);
-                            this.OnMessageReceived(this, e);
+                            Thread aliveStatusThread = new Thread(new ThreadStart(this.CheckAliveStatus));
+                            aliveStatusThread.Start();
                         }
+                    }
+
+                    if (this.OnMessageReceived != null)
+                    {
+                        MessageReceivedEventArgs e = new MessageReceivedEventArgs(msg);
+                        this.OnMessageReceived(this, e);
                     }
                 }
                 else
@@ -118,6 +145,21 @@ namespace Server
                     Thread.Sleep(1000);
                 }
             }
+
+            this.ClientStream.Close();
+            this.Client.Close();
+        }
+
+        public bool ConfirmMessage(Guid guid)
+        {
+            Message found = this.SearchForMessage(guid);
+
+            if (found != null)
+            {
+                return this.UnconfirmedMessages.Remove(found);
+            }
+
+            return false;
         }
 
         public void StopListening()
