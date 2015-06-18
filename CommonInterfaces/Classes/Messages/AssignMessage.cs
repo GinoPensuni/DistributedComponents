@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace CommonInterfaces
 {
-    [Serializable]
+    [Serializable] 
     public class AssignMessage : Message
     {
         public AssignMessage(MessageType type, Guid ID) : base(ID,type)
