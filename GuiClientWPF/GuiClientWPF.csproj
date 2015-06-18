@@ -60,6 +60,9 @@
     <Compile Include="ComponentTreeView.xaml.cs">
       <DependentUpon>ComponentTreeView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="InputNodeComponent.xaml.cs">
+      <DependentUpon>InputNodeComponent.xaml</DependentUpon>
+    </Compile>
     <Compile Include="GuiComponent.xaml.cs">
       <DependentUpon>GuiComponent.xaml</DependentUpon>
     </Compile>
@@ -79,6 +82,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Assets\Windows\HelpWindowUI.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="InputNodeComponent.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

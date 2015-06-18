@@ -32,6 +32,22 @@ namespace GuiClientWPF
         {
             this.entry = entry;
             this.FriendlyName.Text = entry.FriendlyName;
+
+            double currentY = 0.0;
+            double largestExcessWidth = 10.0;
+
+            foreach (var inputNode in entry.InputHints)
+            {
+                var newInputNode = new InputNodeComponent(inputNode);
+                this.ComponentCanvas.Children.Add(newInputNode);
+                Canvas.SetTop(newInputNode, currentY);
+                Canvas.SetLeft(newInputNode, -1 * newInputNode.ActualWidth);
+                newInputNode.Margin = new Thickness(3);
+                currentY += newInputNode.ActualHeight + 3;
+                largestExcessWidth = newInputNode.ActualWidth > largestExcessWidth ? newInputNode.ActualWidth : largestExcessWidth;
+            }
+
+            this.Width += largestExcessWidth * 2;
         }
     }
 }
