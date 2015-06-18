@@ -44,11 +44,14 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Classes\Messages\AssignMessage.cs" />
     <Compile Include="Classes\Messages\AliveMessage.cs" />
     <Compile Include="Classes\Component.cs" />
     <Compile Include="Classes\Messages\ComponentMessage.cs" />
     <Compile Include="Enums\NetworkState.cs" />
-    <Compile Include="Interfaces\INetwork.cs" />
+    <Compile Include="Interfaces\ComponentRecievedEventArgs.cs" />
+    <Compile Include="Interfaces\INetworkServer.cs" />
+    <Compile Include="Interfaces\INetworkClient.cs" />
     <Compile Include="Interfaces\IComponent.cs" />
     <Compile Include="Interfaces\IGUI.cs" />
     <Compile Include="Interfaces\ILogic.cs" />
