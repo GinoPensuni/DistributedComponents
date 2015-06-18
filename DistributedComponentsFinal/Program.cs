@@ -19,11 +19,11 @@ namespace DistributedComponentsFinal
 
             Console.WriteLine(dd.ToString());
 
-            Console.ReadLine();
+            //Console.ReadLine();
             
-            //Client.Client c = new Client.Client();
+            Client.Client c = new Client.Client();
 
-            //c.Connect(IPAddress.Parse("10.101.150.27"), 8081);
+            c.Connect(IPAddress.Parse("10.101.150.27"), 8081);
 
 
         }

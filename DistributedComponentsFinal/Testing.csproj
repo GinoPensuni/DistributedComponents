@@ -52,6 +52,10 @@
       <Project>{a0ae5575-930e-40e4-9cd3-1d963adbb66f}</Project>
       <Name>Client</Name>
     </ProjectReference>
+    <ProjectReference Include="..\CommonInterfaces\CommonRessources.csproj">
+      <Project>{3467a53a-21d2-4b8a-9928-7f5cc5f6cb2e}</Project>
+      <Name>CommonRessources</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Server\Server.csproj">
       <Project>{86ad65b2-2b9c-4e3e-b5b2-85377ffa6ba2}</Project>
       <Name>Server</Name>
