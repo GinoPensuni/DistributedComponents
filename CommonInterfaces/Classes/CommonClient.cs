@@ -6,16 +6,18 @@ using System.Threading.Tasks;
 
 namespace CommonInterfaces
 {
-    public class AssignMessage : Message
+    public class CommonClient
     {
-        public AssignMessage(MessageType type, Guid ID) : base(ID,type)
-        {
-        }
-        public AssignMessage(Guid ID) : this(MessageType.Unknown, ID)
-        {
-        }
+        protected Guid clientGuid;
+
+        protected double load;
 
         public Guid ClientGuid
+        {
+            get;
+        }
+
+        public double Load
         {
             get;
             set;
