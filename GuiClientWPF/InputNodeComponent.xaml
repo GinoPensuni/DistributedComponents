@@ -1,0 +1,21 @@
+﻿<UserControl x:Class="GuiClientWPF.InputNodeComponent"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             mc:Ignorable="d" 
+             d:DesignHeight="30" d:DesignWidth="300">
+    <Grid Height="30" Width="Auto">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto" />
+            <ColumnDefinition Width="10" ></ColumnDefinition>
+        </Grid.ColumnDefinitions>
+
+        <TextBlock Name="TypeLabel" Grid.Column="0" Width="Auto" FontSize="9" Height="20" Foreground="Yellow" Text="Unbekannter Datentyp" TextAlignment="Center">
+            <TextBlock.TextDecorations>
+                <TextDecoration></TextDecoration>
+            </TextBlock.TextDecorations>
+        </TextBlock>
+        <Ellipse Name="Marker" Grid.Column="1" Height="10" Width="10" Fill="Red" HorizontalAlignment="Right" />
+    </Grid>
+</UserControl>
