@@ -36,6 +36,7 @@ namespace Server
 
         public void Run()
         {
+            this.Slaves = new List<Slave>();
             this.ClientList = new List<TcpClient>();
             this.tcpListener = new TcpListener(IPAddress.Any, 8081);
             this.isRunning = true;

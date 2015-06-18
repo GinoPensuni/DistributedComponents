@@ -39,7 +39,8 @@ namespace Server
         public void AssignGuid(Guid guid)
         {
             this.clientGuid = guid;
-            AssignMessage assignmsg = new AssignMessage(this.ClientGuid);
+            AssignMessage assignmsg = new AssignMessage(Guid.NewGuid());
+            assignmsg.ClientGuid = this.clientGuid;
             this.SendMessage(assignmsg);
         }
 
