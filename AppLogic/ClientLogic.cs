@@ -4,12 +4,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-
+using NetworkClient = Client.Client;
 namespace AppLogic
 {
     public class ClientLogic  : ILogic
     {
-        private static readonly INetworkClient client;
+        private static readonly INetworkClient client = new NetworkClient();
+
         public Task<bool> DisconnectFromServer()
         {
             throw new NotImplementedException();

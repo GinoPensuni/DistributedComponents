@@ -15,6 +15,7 @@ namespace CommonInterfaces
         public Guid ClientGuid
         {
             get;
+            set;
         }
 
         public double Load
