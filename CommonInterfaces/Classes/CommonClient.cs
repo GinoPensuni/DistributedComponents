@@ -17,7 +17,7 @@ namespace CommonInterfaces
             get;
         }
 
-        public double load
+        public double Load
         {
             get;
             set;
