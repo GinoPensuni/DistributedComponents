@@ -11,7 +11,6 @@ namespace AppLogic
     {
 
         private readonly Type componentType;
-        private readonly 
 
         public LoadedComponent(Type component)
         {
@@ -45,7 +44,7 @@ namespace AppLogic
             get { return this.InstanceOfComponent.OutputHints; }
         }
 
-        private IComponent InstanceOfComponent
+        private Core.Component.IComponent InstanceOfComponent
         {
             get
             {
