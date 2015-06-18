@@ -48,6 +48,7 @@
     <Compile Include="Classes\Messages\AliveMessage.cs" />
     <Compile Include="Classes\Component.cs" />
     <Compile Include="Classes\Messages\ComponentMessage.cs" />
+    <Compile Include="Classes\CommonClient.cs" />
     <Compile Include="Enums\NetworkState.cs" />
     <Compile Include="Interfaces\ComponentRecievedEventArgs.cs" />
     <Compile Include="Interfaces\INetworkServer.cs" />

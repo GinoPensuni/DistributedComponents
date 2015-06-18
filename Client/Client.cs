@@ -10,7 +10,7 @@ using CommonInterfaces;
 
 namespace Client
 {
-    public class Client
+    public class Client : CommonClient, INetworkClient
     {
         private TcpClient client;
 
@@ -23,6 +23,7 @@ namespace Client
             this.running = false;
         }
 
+        
         public bool Connect(IPAddress ip, int port)
         {
             IPEndPoint endPoint = new IPEndPoint(ip, port);
