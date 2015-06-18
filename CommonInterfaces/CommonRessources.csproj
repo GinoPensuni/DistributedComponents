@@ -44,19 +44,19 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AliveMessage.cs" />
-    <Compile Include="Component.cs" />
-    <Compile Include="ComponentMessage.cs" />
-    <Compile Include="INetwork.cs" />
-    <Compile Include="IComponent.cs" />
-    <Compile Include="IGUI.cs" />
-    <Compile Include="ILogic.cs" />
-    <Compile Include="IStore.cs" />
-    <Compile Include="Message.cs" />
-    <Compile Include="MessageType.cs" />
+    <Compile Include="Classes\Messages\AliveMessage.cs" />
+    <Compile Include="Classes\Component.cs" />
+    <Compile Include="Classes\Messages\ComponentMessage.cs" />
+    <Compile Include="Interfaces\INetwork.cs" />
+    <Compile Include="Interfaces\IComponent.cs" />
+    <Compile Include="Interfaces\IGUI.cs" />
+    <Compile Include="Interfaces\ILogic.cs" />
+    <Compile Include="Interfaces\IStore.cs" />
+    <Compile Include="Classes\Messages\Message.cs" />
+    <Compile Include="Enums\MessageType.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="ResultMessage.cs" />
-    <Compile Include="ResultStatusCode.cs" />
+    <Compile Include="Classes\Messages\ResultMessage.cs" />
+    <Compile Include="Enums\ResultStatusCode.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

@@ -56,9 +56,9 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\CommonInterfaces\CommonInterfaces.csproj">
+    <ProjectReference Include="..\CommonInterfaces\CommonRessources.csproj">
       <Project>{3467a53a-21d2-4b8a-9928-7f5cc5f6cb2e}</Project>
-      <Name>CommonInterfaces</Name>
+      <Name>CommonRessources</Name>
     </ProjectReference>
     <ProjectReference Include="..\Core.Component\Core.Component.csproj">
       <Project>{3cbff49b-e085-49af-8aa5-e3bab177b179}</Project>

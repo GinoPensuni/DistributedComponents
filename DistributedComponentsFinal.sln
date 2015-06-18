@@ -7,7 +7,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Testing", "DistributedCompo
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Client", "Client\Client.csproj", "{A0AE5575-930E-40E4-9CD3-1D963ADBB66F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CommonInterfaces", "CommonInterfaces\CommonInterfaces.csproj", "{3467A53A-21D2-4B8A-9928-7F5CC5F6CB2E}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CommonRessources", "CommonInterfaces\CommonRessources.csproj", "{3467A53A-21D2-4B8A-9928-7F5CC5F6CB2E}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Server", "Server\Server.csproj", "{86AD65B2-2B9C-4E3E-B5B2-85377FFA6BA2}"
 EndProject
