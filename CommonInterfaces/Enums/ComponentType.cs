@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace CommonInterfaces
 {
-    enum ComponentType
+    public enum ComponentType
     {
         Simple,
         Complex,

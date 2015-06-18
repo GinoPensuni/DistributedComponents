@@ -145,5 +145,20 @@ namespace AppLogic
             throw new NotImplementedException();
         }
 
+
+        Task<bool> ILogic.DisconnectFromServer()
+        {
+            throw new NotImplementedException();
+        }
+
+        public void ConnenctToServer()
+        {
+            throw new NotImplementedException();
+        }
+
+        Task<List<Tuple<Type, IComponent>>> ILogic.LoadComponents()
+        {
+            throw new NotImplementedException();
+        }
     }
 }
