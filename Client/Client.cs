@@ -18,6 +18,8 @@ namespace Client
 
         private bool running;
 
+        private NetworkState networkClient;
+
         public Client()
         {
             this.running = false;
@@ -107,5 +109,29 @@ namespace Client
 
             networkStream.Write(response, 0, response.Length);
         }
+
+        public NetworkState NetworkClient
+        {
+            get
+            {
+                throw new NotImplementedException();
+            }
+            set
+            {
+                throw new NotImplementedException();
+            }
+        }
+
+        public bool SendResult(List<object> Result, Guid id)
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool SendJobRequest(IComponent component)
+        {
+            throw new NotImplementedException();
+        }
+
+        public event EventHandler<ComponentRecievedEventArgs> RequestEvent;
     }
 }
