@@ -29,6 +29,14 @@ namespace DataStore
             }
         }
 
+        public byte[] this[int hash]
+        {
+            get
+            {
+                return DbContext.Components.Single(component => component.HashCode == hash).Assembly;
+            }
+        }
+
         public bool Store(byte[] assemblyCode)
         {
 
