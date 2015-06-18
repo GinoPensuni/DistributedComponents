@@ -22,6 +22,6 @@ namespace CommonInterfaces
 
         void Connect(string ip);
 
-        void DisconnectConnect();
+        void Disconnect();
     }
 }

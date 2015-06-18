@@ -1,4 +1,5 @@
-﻿using System;
+﻿using CommonInterfaces;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
@@ -10,6 +11,7 @@ namespace AppLogic
     {
 
         private readonly Type componentType;
+        private readonly 
 
         public LoadedComponent(Type component)
         {
@@ -43,13 +45,14 @@ namespace AppLogic
             get { return this.InstanceOfComponent.OutputHints; }
         }
 
-        private Core.Component.IComponent InstanceOfComponent
+        private IComponent InstanceOfComponent
         {
             get
             {
                 return Activator.CreateInstance<Core.Component.IComponent>();
             }
         }
+
 
         public IEnumerable<object> Evaluate(IEnumerable<object> values)
         {

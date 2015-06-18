@@ -72,7 +72,7 @@ namespace AppLogic
             {
                 try
                 {
-                    this.NetworkClient.DisconnectConnect();
+                    this.NetworkClient.Disconnect();
                 }
                 catch
                 {
@@ -128,7 +128,15 @@ namespace AppLogic
 
         public Task<List<Tuple<ComponentType, IComponent>>> LoadComponents()
         {
-            throw new NotImplementedException();
+            var loadingTask = new Task(() =>
+            {
+                var assemblyData = this.ComponentStore.LoadAssemblies();
+                foreach(var entry in assemblyData)
+                {
+                    this.ComponentManager.LoadAssemblyContents(entry);
+                }
+            });
+
         }
 
     }

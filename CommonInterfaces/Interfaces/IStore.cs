@@ -20,5 +20,7 @@ namespace CommonInterfaces
         
         bool Store(byte[] assemblyCode);
 
+        List<byte[]> LoadAssemblies();
+
     }
 }

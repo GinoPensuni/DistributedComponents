@@ -14,6 +14,8 @@ namespace AppLogic
         private readonly HashSet<LoadedComponent> loadedComponents;
         private readonly HashSet<Assembly> loadedAssemblies;
 
+        public HashSet<LoadedComponent>
+
         static ComponentManager()
         {
             Instance = new ComponentManager();
