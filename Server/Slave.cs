@@ -19,7 +19,6 @@ namespace Server
             this.ClientStream = this.Client.GetStream();
             this.IsAssigned = false;
             this.IsAlive = true;
-
             this.StartListening();
             Thread aliveStatusThread = new Thread(new ThreadStart(this.CheckAliveStatus));
             aliveStatusThread.Start();
@@ -41,13 +40,31 @@ namespace Server
 
         public List<Message> UnconfirmedMessages { get; private set; }
 
-        public void SendMessage(Message msg)
+        public bool SendMessage(Message msg)
         {
             byte[] message = Protocol.GetByteArrayFromMessage(msg);
             this.UnconfirmedMessages.Add(msg);
 
-            this.ClientStream.Write(message, 0, message.Length);
-            Console.WriteLine("Message sent");
+            try
+            {
+                this.ClientStream.Write(message, 0, message.Length);
+                Console.WriteLine("Message sent");
+                return true;
+            }
+            catch (Exception e)
+            {
+                return false;
+            }
+        }
+
+        public bool SendComponent(Component comp, IEnumerable<object> values)
+        {
+            ComponentMessage compmsg = new ComponentMessage(Guid.NewGuid());
+            compmsg.Component = comp;
+            compmsg.Values = values;
+            Console.Write("Requst Komponent id: ");
+            Console.WriteLine(compmsg.ID);
+            return this.SendMessage(compmsg);
         }
 
         public void AssignGuid(Guid guid)
@@ -60,7 +77,8 @@ namespace Server
 
         private void CheckAliveStatus()
         {
-            Thread.Sleep(30000);
+            Console.WriteLine("checking alive...");
+            Thread.Sleep(2000); //30000
             AliveMessage alivemsg = new AliveMessage(Guid.NewGuid());
             this.SendMessage(alivemsg);
             Thread.Sleep(3000);
@@ -68,6 +86,7 @@ namespace Server
             if (this.ConfirmMessage(alivemsg.ID))
             {
                 this.IsAlive = false;
+                this.StopListening();
                 if (this.OnSlaveDied != null)
                 {
                     this.OnSlaveDied(this, new SlaveDiedEventArgs());
@@ -131,6 +150,10 @@ namespace Server
                             Thread aliveStatusThread = new Thread(new ThreadStart(this.CheckAliveStatus));
                             aliveStatusThread.Start();
                         }
+                    }
+                    else if (msg is ResultMessage)
+                    {
+                        this.ConfirmMessage(msg.ID);
                     }
 
                     if (this.OnMessageReceived != null)

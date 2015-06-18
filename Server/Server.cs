@@ -15,9 +15,9 @@ namespace Server
     {
         private Thread listenThread;
         private TcpListener tcpListener;
-        public bool isRunning { get; private set; }
 
         public List<Slave> Slaves { get; private set; }
+
         public NetworkState ServerState
         {
             get
@@ -26,31 +26,30 @@ namespace Server
             }
             set
             {
-                throw new NotImplementedException();
             }
         }
 
         public event EventHandler<ComponentRecievedEventArgs> RequestEvent;
-
-        public void Run()
-        {
-            this.Slaves = new List<Slave>();
-            this.tcpListener = new TcpListener(IPAddress.Any, 8081);
-            this.isRunning = true;
-            this.listenThread = new Thread(new ThreadStart(SlaveListening));
-            this.listenThread.Start();
-        }
 
         public bool SendResult(List<object> Result, Guid id)
         {
             return false;
         }
 
+        public void Run()
+        {
+            this.Slaves = new List<Slave>();
+            this.tcpListener = new TcpListener(IPAddress.Any, 8081);
+            this.ServerState = NetworkState.Running;
+            this.listenThread = new Thread(new ThreadStart(SlaveListening));
+            this.listenThread.Start();
+        }
+
         private void SlaveListening()
         {
             this.tcpListener.Start();
 
-            while (this.isRunning)
+            while (this.ServerState == NetworkState.Running)
             {
                 TcpClient client = this.tcpListener.AcceptTcpClient();
                 Thread slavehandlerthread = new Thread(new ParameterizedThreadStart(SlaveHandler));
@@ -62,10 +61,13 @@ namespace Server
         {
             TcpClient client = (TcpClient)clientobj;
             Slave slave = new Slave(client);
+            Component comp = new Component(Guid.NewGuid(), "test", null, null);
             slave.OnMessageReceived += Slave_OnMessageReceived;
             slave.OnSlaveDied += Slave_OnSlaveDied;
             slave.AssignGuid(Guid.NewGuid());
             this.Slaves.Add(slave);
+            Thread.Sleep(1000);
+            slave.SendComponent(comp, null);
         }
 
         void Slave_OnSlaveDied(object sender, SlaveDiedEventArgs e)
@@ -79,6 +81,16 @@ namespace Server
             Slave slave = (Slave)sender;
             Console.WriteLine(slave.ClientGuid);
             Console.WriteLine(e.Msg.ToString());
+
+            if (e.Msg is ResultMessage)
+            {
+                Console.Write("Result id vom Komponent:");
+                Console.WriteLine(((ResultMessage)e.Msg).ID);
+                foreach (object msg in ((ResultMessage)e.Msg).Result)
+                {
+                    Console.WriteLine(msg.ToString());
+                }
+            }
         }
 
         public void SendComponents(NetworkStream clientStream)
@@ -94,51 +106,8 @@ namespace Server
 
         public void Stop()
         {
-            this.isRunning = false;
+            this.ServerState = NetworkState.Stopped;
             this.listenThread.Join();
-        }
-
-        public void AskClientWorker(object clientobj)
-        {
-            TcpClient client = (TcpClient)clientobj;
-            NetworkStream stream = client.GetStream();
-            bool clientAlive = true;
-            stream.ReadTimeout = 3000;
-
-            while (clientAlive)
-            {
-                Thread.Sleep(30000);
-                Guid aliveGuid = Guid.NewGuid();
-                AliveMessage aliveMsg = new AliveMessage(aliveGuid);
-                Message msg = null;
-
-                try
-                {
-
-                    byte[] alivebytes = Protocol.GetByteArrayFromMessage(aliveMsg);
-                    stream.Write(alivebytes, 0, alivebytes.Length);
-
-                    Console.WriteLine("asked client");
-                    byte[] response = new byte[alivebytes.Length - 4];
-                    byte[] lengthBytes = new byte[4];
-                    stream.Read(lengthBytes, 0, lengthBytes.Length);
-
-                    if (BitConverter.ToInt32(lengthBytes, 0) == alivebytes.Length - 4)
-                    {
-                        stream.Read(response, 0, response.Length);
-                    }
-
-                    msg = Protocol.GetComponentMessageFromByteArray(response);
-                    if (!msg.ID.Equals(aliveGuid) || !(msg is AliveMessage))
-                    {
-                        clientAlive = false;
-                    }
-                }
-                catch (Exception e)
-                {
-                    clientAlive = false;
-                }
-            }
         }
     }
 }
