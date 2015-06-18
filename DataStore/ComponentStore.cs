@@ -52,5 +52,11 @@ namespace DataStore
              this.DbContext.SaveChanges();
              return true;
         }
+
+
+        public List<byte[]> LoadAssemblies()
+        {
+            throw new NotImplementedException();
+        }
     }
 }
