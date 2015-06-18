@@ -4,16 +4,15 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{3467A53A-21D2-4B8A-9928-7F5CC5F6CB2E}</ProjectGuid>
+    <ProjectGuid>{47831B78-823F-431D-AC24-A76953EB1A85}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>CommonInterfaces</RootNamespace>
-    <AssemblyName>CommonInterfaces</AssemblyName>
+    <RootNamespace>ToInt32</RootNamespace>
+    <AssemblyName>ToInt32</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
@@ -23,16 +22,12 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>bin\Release\</OutputPath>
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-  </PropertyGroup>
-  <PropertyGroup>
-    <StartupObject />
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
@@ -44,30 +39,14 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Enums\ComponentType.cs" />
-    <Compile Include="Classes\Messages\AssignMessage.cs" />
-    <Compile Include="Classes\Messages\AliveMessage.cs" />
-    <Compile Include="Classes\Component.cs" />
-    <Compile Include="Classes\Messages\ComponentMessage.cs" />
-    <Compile Include="Classes\CommonClient.cs" />
-    <Compile Include="Enums\NetworkState.cs" />
-    <Compile Include="Interfaces\ComponentRecievedEventArgs.cs" />
-    <Compile Include="Interfaces\INetworkServer.cs" />
-    <Compile Include="Interfaces\INetworkClient.cs" />
-    <Compile Include="Interfaces\IComponent.cs" />
-    <Compile Include="Interfaces\IGUI.cs" />
-    <Compile Include="Interfaces\ILogic.cs" />
-    <Compile Include="Interfaces\IStore.cs" />
-    <Compile Include="Classes\Messages\Message.cs" />
-    <Compile Include="Enums\MessageType.cs" />
+    <Compile Include="ToInt32.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Classes\Messages\ResultMessage.cs" />
-    <Compile Include="Enums\ResultStatusCode.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="App.config" />
-  </ItemGroup>
-  <ItemGroup>
+    <ProjectReference Include="..\CommonInterfaces\CommonRessources.csproj">
+      <Project>{3467a53a-21d2-4b8a-9928-7f5cc5f6cb2e}</Project>
+      <Name>CommonRessources</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Core.Component\Core.Component.csproj">
       <Project>{3cbff49b-e085-49af-8aa5-e3bab177b179}</Project>
       <Name>Core.Component</Name>

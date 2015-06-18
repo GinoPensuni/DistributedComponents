@@ -19,5 +19,9 @@ namespace CommonInterfaces
         bool SendJobRequest(IComponent component);
 
         event EventHandler<ComponentRecievedEventArgs> RequestEvent;
+
+        void Connect(string ip);
+
+        void Disconnect();
     }
 }

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using CommonInterfaces;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
@@ -50,6 +51,7 @@ namespace AppLogic
                 return Activator.CreateInstance<Core.Component.IComponent>();
             }
         }
+
 
         public IEnumerable<object> Evaluate(IEnumerable<object> values)
         {

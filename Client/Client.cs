@@ -151,5 +151,17 @@ namespace Client
         }
 
         public event EventHandler<ComponentRecievedEventArgs> RequestEvent;
+
+
+        public void Connect(string ip)
+        {
+            throw new NotImplementedException();
+        }
+
+
+        public void Disconnect()
+        {
+            throw new NotImplementedException();
+        }
     }
 }

@@ -12,7 +12,6 @@ namespace DataStore
     public class DataComponent
     {
         [Key]
-        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public Guid Id
         {
             get;
@@ -36,5 +35,6 @@ namespace DataStore
             get;
             set;
         }
+
     }
 }

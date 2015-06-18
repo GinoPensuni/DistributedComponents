@@ -4,9 +4,13 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace MultiplyComponent
+namespace Server
 {
-    public class Multiply
+    public class SlaveDiedEventArgs : EventArgs
     {
+        public SlaveDiedEventArgs()
+        {
+
+        }
     }
 }

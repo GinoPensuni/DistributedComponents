@@ -17,14 +17,25 @@ namespace Server
             this.UnconfirmedMessages = new List<Message>();
             this.Client = client;
             this.ClientStream = this.Client.GetStream();
+            this.IsAssigned = false;
+            this.IsAlive = true;
+
             this.StartListening();
+            Thread aliveStatusThread = new Thread(new ThreadStart(this.CheckAliveStatus));
+            aliveStatusThread.Start();
         }
+
+        public bool IsAssigned { get; private set; }
+
+        public bool IsAlive { get; private set; }
 
         public TcpClient Client { get; private set; }
 
         public NetworkStream ClientStream { get; private set; }
 
         public event EventHandler<MessageReceivedEventArgs> OnMessageReceived;
+
+        public event EventHandler<SlaveDiedEventArgs> OnSlaveDied;
 
         public bool IsListening { get; private set; }
 
@@ -34,26 +45,41 @@ namespace Server
         {
             byte[] message = Protocol.GetByteArrayFromMessage(msg);
             this.UnconfirmedMessages.Add(msg);
+
             this.ClientStream.Write(message, 0, message.Length);
             Console.WriteLine("Message sent");
         }
 
-        public bool AssignGuid(Guid guid)
+        public void AssignGuid(Guid guid)
         {
             this.clientGuid = guid;
             AssignMessage assignmsg = new AssignMessage(Guid.NewGuid());
             assignmsg.ClientGuid = this.clientGuid;
             this.SendMessage(assignmsg);
+        }
+
+        private void CheckAliveStatus()
+        {
+            Thread.Sleep(30000);
+            AliveMessage alivemsg = new AliveMessage(Guid.NewGuid());
+            this.SendMessage(alivemsg);
             Thread.Sleep(3000);
 
-            if (this.SearchForMessage(assignmsg.ID) == null)
+            if (this.ConfirmMessage(alivemsg.ID))
             {
-                return true;
+                this.IsAlive = false;
+                if (this.OnSlaveDied != null)
+                {
+                    this.OnSlaveDied(this, new SlaveDiedEventArgs());
+                }
             }
-            else
-            {
-                return false;
-            }
+
+            //Message msg = this.SearchForMessage(alivemsg.ID);
+            //if (msg != null)
+            //{
+            //    this.IsAlive = false;
+            //    this.UnconfirmedMessages.Remove(msg);
+            //}
         }
 
         public Message SearchForMessage(Guid id)
@@ -90,6 +116,23 @@ namespace Server
 
                     Message msg = Protocol.GetComponentMessageFromByteArray(messageBytes);
                     Console.WriteLine("Message received");
+
+                    if (msg is AssignMessage)
+                    {
+                        if (this.ConfirmMessage(msg.ID))
+                        {
+                            this.IsAssigned = true;
+                        }
+                    }
+                    else if (msg is AliveMessage)
+                    {
+                        if (this.ConfirmMessage(msg.ID))
+                        {
+                            Thread aliveStatusThread = new Thread(new ThreadStart(this.CheckAliveStatus));
+                            aliveStatusThread.Start();
+                        }
+                    }
+
                     if (this.OnMessageReceived != null)
                     {
                         MessageReceivedEventArgs e = new MessageReceivedEventArgs(msg);
@@ -102,6 +145,21 @@ namespace Server
                     Thread.Sleep(1000);
                 }
             }
+
+            this.ClientStream.Close();
+            this.Client.Close();
+        }
+
+        public bool ConfirmMessage(Guid guid)
+        {
+            Message found = this.SearchForMessage(guid);
+
+            if (found != null)
+            {
+                return this.UnconfirmedMessages.Remove(found);
+            }
+
+            return false;
         }
 
         public void StopListening()
