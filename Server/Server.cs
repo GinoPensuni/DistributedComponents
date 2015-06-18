@@ -56,14 +56,21 @@ namespace Server
             while (this.isRunning)
             {
                 TcpClient client = this.tcpListener.AcceptTcpClient();
-                Slave slave = new Slave(client);
-                slave.OnMessageReceived += slave_OnMessageReceived;
-                slave.AssignGuid(Guid.NewGuid());
-                this.Slaves.Add(slave);  
+                Thread slavehandlerthread = new Thread(new ParameterizedThreadStart(SlaveHandler));
+                slavehandlerthread.Start(client);
             }
         }
 
-        void slave_OnMessageReceived(object sender, MessageReceivedEventArgs e)
+        private void SlaveHandler(object clientobj)
+        {
+            TcpClient client = (TcpClient)clientobj;
+            Slave slave = new Slave(client);
+            slave.OnMessageReceived += Slave_OnMessageReceived;
+            slave.AssignGuid(Guid.NewGuid());
+            this.Slaves.Add(slave);  
+        }
+
+        public void Slave_OnMessageReceived(object sender, MessageReceivedEventArgs e)
         {
             Slave slave = (Slave)sender;
             Console.WriteLine(slave.ClientGuid);

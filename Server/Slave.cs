@@ -17,8 +17,12 @@ namespace Server
             this.UnconfirmedMessages = new List<Message>();
             this.Client = client;
             this.ClientStream = this.Client.GetStream();
+            this.IsAssigned = false;
+
             this.StartListening();
         }
+
+        public bool IsAssigned { get; private set; }
 
         public TcpClient Client { get; private set; }
 
@@ -38,22 +42,12 @@ namespace Server
             Console.WriteLine("Message sent");
         }
 
-        public bool AssignGuid(Guid guid)
+        public void AssignGuid(Guid guid)
         {
             this.clientGuid = guid;
             AssignMessage assignmsg = new AssignMessage(Guid.NewGuid());
             assignmsg.ClientGuid = this.clientGuid;
             this.SendMessage(assignmsg);
-            Thread.Sleep(3000);
-
-            if (this.SearchForMessage(assignmsg.ID) == null)
-            {
-                return true;
-            }
-            else
-            {
-                return false;
-            }
         }
 
         public Message SearchForMessage(Guid id)
@@ -67,6 +61,16 @@ namespace Server
             }
 
             return null;
+        }
+        public void DeleteMessageFromUnconfirmedList(Guid id)
+        {
+            foreach (Message msg in this.UnconfirmedMessages)
+            {
+                if (msg.ID.Equals(id))
+                {
+                    this.UnconfirmedMessages.Remove(msg);
+                }
+            }
         }
 
         public void StartListening()
@@ -90,10 +94,22 @@ namespace Server
 
                     Message msg = Protocol.GetComponentMessageFromByteArray(messageBytes);
                     Console.WriteLine("Message received");
-                    if (this.OnMessageReceived != null)
+
+                    if (msg is AssignMessage)
                     {
-                        MessageReceivedEventArgs e = new MessageReceivedEventArgs(msg);
-                        this.OnMessageReceived(this, e);
+                        if (this.SearchForMessage(msg.ID) != null)
+                        {
+                            this.IsAssigned = true;
+                            this.DeleteMessageFromUnconfirmedList(msg.ID);
+                        }
+                    }
+                    else
+                    {
+                        if (this.OnMessageReceived != null)
+                        {
+                            MessageReceivedEventArgs e = new MessageReceivedEventArgs(msg);
+                            this.OnMessageReceived(this, e);
+                        }
                     }
                 }
                 else
