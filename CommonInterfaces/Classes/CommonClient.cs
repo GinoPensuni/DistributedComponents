@@ -14,18 +14,13 @@ namespace CommonInterfaces
 
         public Guid ClientGuid
         {
-            get
-            {
-                return this.clientGuid;
-            }
+            get;
         }
 
         public double Load
         {
-            get
-            {
-                return this.load;
-            }
+            get;
+            set;
         }
     }
 }
