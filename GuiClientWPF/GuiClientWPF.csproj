@@ -56,16 +56,19 @@
     <Compile Include="Assets\DataAccessLayer\Category.cs" />
     <Compile Include="Assets\DataAccessLayer\ComplexComponent.cs" />
     <Compile Include="Assets\DataAccessLayer\Components.cs" />
+    <Compile Include="Assets\DataAccessLayer\Direction.cs" />
     <Compile Include="Assets\DataAccessLayer\SimpleComponent.cs" />
     <Compile Include="ComponentTreeView.xaml.cs">
       <DependentUpon>ComponentTreeView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="InputNodeComponent.xaml.cs">
-      <DependentUpon>InputNodeComponent.xaml</DependentUpon>
+    <Compile Include="ConnectionNodeClickedEventArgs.cs" />
+    <Compile Include="InputOutputComponentNode.xaml.cs">
+      <DependentUpon>InputOutputComponentNode.xaml</DependentUpon>
     </Compile>
     <Compile Include="GuiComponent.xaml.cs">
       <DependentUpon>GuiComponent.xaml</DependentUpon>
     </Compile>
+    <Compile Include="LineContainer.cs" />
     <Compile Include="WorkStation.xaml.cs">
       <DependentUpon>WorkStation.xaml</DependentUpon>
     </Compile>
@@ -85,7 +88,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="InputNodeComponent.xaml">
+    <Page Include="InputOutputComponentNode.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
