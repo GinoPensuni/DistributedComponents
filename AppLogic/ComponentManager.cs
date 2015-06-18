@@ -14,7 +14,7 @@ namespace AppLogic
         private readonly HashSet<LoadedComponent> loadedComponents;
         private readonly HashSet<Assembly> loadedAssemblies;
 
-        public static ComponentManager()
+        static ComponentManager()
         {
             Instance = new ComponentManager();
         }
@@ -50,6 +50,18 @@ namespace AppLogic
                 {
                     throw;
                 }
+            }
+        }
+
+        public IEnumerable<object> EvaluateComponent(Guid componentId, IEnumerable<object> values)
+        {
+            try
+            {
+                return this.loadedComponents.First(loadedComponent => loadedComponent.ComponentGuid == componentId).Evaluate(values ?? Enumerable.Empty<object>());
+            }
+            catch (InvalidOperationException)
+            {
+                throw new ArgumentException("This guid is not a valid guid for a component!");
             }
         }
     }
