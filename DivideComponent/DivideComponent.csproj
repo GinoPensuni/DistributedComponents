@@ -4,11 +4,11 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{BB9FCAA9-AF39-49DD-8A51-E8D9C7CED3A0}</ProjectGuid>
+    <ProjectGuid>{C0763F24-33B3-47B8-BF36-A7878C1A5227}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>MultiplyComponent</RootNamespace>
-    <AssemblyName>MultiplyComponent</AssemblyName>
+    <RootNamespace>DivideComponent</RootNamespace>
+    <AssemblyName>DivideComponent</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
@@ -39,7 +39,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Multiply.cs" />
+    <Compile Include="Divide.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

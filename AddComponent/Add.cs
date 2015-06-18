@@ -55,16 +55,46 @@ namespace AddComponent
 
         public IEnumerable<object> Evaluate(IEnumerable<object> values)
         {
-            int sum = 0;
+            bool checkValues = this.CheckIfAllowedValues(values);
 
-            foreach (object value in values)
+            if (checkValues)
             {
-                sum = sum + (int)value;
+                int sum = 0;
+
+                foreach (object value in values)
+                {
+                    sum = sum + (int)value;
+                }
+
+                List<object> result = new List<object>() { sum };
+
+                return result;
+            }
+            else
+            { throw new ArgumentException("The inputs must be the same as described in the input hints."); }
+        }
+        private bool CheckIfAllowedValues(IEnumerable<object> values)
+        {
+            var array = values.ToArray();
+            var inputHintsArray = this.InputHints.ToArray();
+
+            if (array.Length != this.InputHints.Count())
+            {
+                return false;
+            }
+            else
+            {
+                for (int i = 0; i < array.Length; i++)
+                {
+                    if (array[i].GetType().ToString() != inputHintsArray[i])
+                    {
+                        return false;
+                    }
+                }
             }
 
-            List<object> result = new List<object>() { sum };
-
-            return result;
+            return true;
         }
+
     }
 }
