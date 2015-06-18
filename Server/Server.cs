@@ -11,7 +11,7 @@ using CommonInterfaces;
 
 namespace Server
 {
-    public class Server
+    public class Server : INetworkServer      
     {
         private Thread listenThread;
         private TcpListener tcpListener;
@@ -19,29 +19,55 @@ namespace Server
 
         public List<TcpClient> ClientList { get; private set; }
 
+        public List<Slave> Slaves { get; private set; }
+        public NetworkState ServerState
+        {
+            get
+            {
+                throw new NotImplementedException();
+            }
+            set
+            {
+                throw new NotImplementedException();
+            }
+        }
+
+        public event EventHandler<ComponentRecievedEventArgs> RequestEvent;
+
         public void Run()
         {
+            this.Slaves = new List<Slave>();
             this.ClientList = new List<TcpClient>();
             this.tcpListener = new TcpListener(IPAddress.Any, 8081);
             this.isRunning = true;
-            this.listenThread = new Thread(new ThreadStart(ClientListening));
+            this.listenThread = new Thread(new ThreadStart(SlaveListening));
             this.listenThread.Start();
         }
 
-        public void ClientListening()
+        public bool SendResult(List<object> Result, Guid id)
+        {
+            return false;
+        }
+
+        private void SlaveListening()
         {
             this.tcpListener.Start();
 
             while (this.isRunning)
             {
                 TcpClient client = this.tcpListener.AcceptTcpClient();
-                this.ClientList.Add(client);
-                Thread askClientThread = new Thread(new ParameterizedThreadStart(AskClientWorker));
-                askClientThread.Start(client);
-
-                Thread clientWorker = new Thread(new ParameterizedThreadStart(ClientWorker));
-                clientWorker.Start(client);
+                Slave slave = new Slave(client);
+                slave.OnMessageReceived += slave_OnMessageReceived;
+                slave.AssignGuid(Guid.NewGuid());
+                this.Slaves.Add(slave);  
             }
+        }
+
+        void slave_OnMessageReceived(object sender, MessageReceivedEventArgs e)
+        {
+            Slave slave = (Slave)sender;
+            Console.WriteLine(slave.ClientGuid);
+            Console.WriteLine(e.Msg.ToString());
         }
 
         public void ClientWorker(object clientobj)
@@ -50,9 +76,9 @@ namespace Server
             TcpClient client = (TcpClient)clientobj;
             NetworkStream clientStream = client.GetStream();
 
-            this.SendComponents(clientStream);
+            this.SendComponents(clientStream);          
 
-            while (true)
+            while (this.ClientList.Contains(client))
             {
                 if (clientStream.DataAvailable)
                 {
@@ -65,7 +91,7 @@ namespace Server
                     clientStream.Read(response, 0, response.Length);
 
                     Message msg = Protocol.GetComponentMessageFromByteArray(response);
-
+                    Console.WriteLine("Result: ");
                     if (msg is ResultMessage)
                     {
                         List<object> dd = ((ResultMessage)msg).Result.ToList();
@@ -95,6 +121,7 @@ namespace Server
             byte[] test = Protocol.GetByteArrayFromMessage(msg);
 
             clientStream.Write(test, 0, test.Length);
+            Console.WriteLine("Component sent");
         }
 
         public void Stop()
