@@ -26,6 +26,14 @@ namespace AppLogic
             this.loadedAssemblies = new HashSet<Assembly>();
         }
 
+        public List<Tuple<ComponentType, IComponent>> LoadedComponents
+        {
+            get
+            {
+                return this.loadedComponents.Select(component => new Tuple<ComponentType, IComponent>(ComponentType.Simple, component)).ToList();
+            }
+        }
+
         public void LoadAssemblyContents(byte[] assemblyBytes) 
         {
             if (assemblyBytes == null)
