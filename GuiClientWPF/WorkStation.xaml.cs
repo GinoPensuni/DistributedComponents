@@ -213,7 +213,7 @@ namespace GuiClientWPF
         }
 
 
-        Polyline DrawPolyLine(Point input, Point output)
+        Polyline DrawPolyLine(Point input, Point output, double  yComponentSize = 70)
         {
             var complex = true;
             var deltaX = input.X - output.X;
@@ -224,38 +224,57 @@ namespace GuiClientWPF
             var p4 = new Point();
 
 
-            if (deltaX >= 0 && deltaY >= 0 || deltaX >= 0 && deltaY < 0)
+            if (deltaX >= 0 && deltaY >= 0 )
             {
-                p1.X = output.X + deltaX / 4;
+                p1.X = output.X - deltaX / 4;
                 p1.Y = output.Y;
-                p2.X = input.X - deltaX /4;
-                p2.Y = input.Y;
-                complex = false;
+                p2.X = output.X - deltaX / 4;
+                p2.Y = output.Y + yComponentSize;
+                p3.X = input.X + deltaX / 4;
+                p3.Y = input.Y - yComponentSize;
+                p4.X = input.X + deltaX / 4;
+                p4.Y = input.Y;
+            }
+
+            else if (deltaX >= 0 && deltaY < 0)
+            {
+                p1.X = output.X - deltaX / 4;
+                p1.Y = output.Y;
+                p2.X = output.X - deltaX / 4;
+                p2.Y = output.Y - yComponentSize;
+                p3.X = input.X + deltaX / 4;
+                p3.Y = input.Y + yComponentSize;
+                p4.X = input.X + deltaX / 4;
+                p4.Y = input.Y;
             }
 
             else if (deltaX < 0 && deltaY >= 0)
             {
+
                 p1.X = output.X + deltaX / 4;
                 p1.Y = output.Y;
-                p2.X = output.X + deltaX / 4;
-                p2.Y = output.Y + deltaY / 4;
-                p3.X = input.X - deltaX / 4;
-                p3.Y = input.Y - deltaY / 4;
-                p4.X = input.X - deltaX / 4;
-                p4.Y = input.Y;
-
+                p2.X = input.X - deltaX / 4;
+                p2.Y = input.Y;
+                complex = false;
             }
 
             else if (deltaX < 0 && deltaY < 0)
             {
+
                 p1.X = output.X + deltaX / 4;
                 p1.Y = output.Y;
-                p2.X = output.X + deltaX / 4;
-                p2.Y = output.Y - deltaY / 4;
-                p3.X = input.X - deltaX / 4;
-                p3.Y = input.Y + deltaY / 4;
-                p4.X = input.X - deltaX / 4;
-                p4.Y = input.Y;
+                p2.X = input.X - deltaX / 4;
+                p2.Y = input.Y;
+                complex = false;
+
+                //p1.X = output.X - deltaX / 4;
+                //p1.Y = output.Y;
+                //p2.X = output.X - deltaX / 4;
+                //p2.Y = output.Y - yComponentSize;
+                //p3.X = input.X + deltaX / 4;
+                //p3.Y = input.Y +  yComponentSize;
+                //p4.X = input.X + deltaX / 4;
+                //p4.Y = input.Y;
             }
 
             var polyline = new Polyline();

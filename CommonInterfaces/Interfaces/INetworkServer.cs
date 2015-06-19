@@ -15,7 +15,9 @@ namespace CommonInterfaces
         }
 
 
-        bool SendResult(List<object> Result, Guid id);
+        bool SendResult(Guid id, List<Tuple<Guid, IComponent, byte[]>> Assembly);
+
+        bool SendError(Guid id, Exception logicException);
 
         event EventHandler<ComponentRecievedEventArgs> RequestEvent;
     }
