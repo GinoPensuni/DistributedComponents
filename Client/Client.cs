@@ -12,6 +12,8 @@ namespace Client
 {
     public class Client : CommonClient, INetworkClient
     {
+        public const int ServerConnectionPort = 8081;
+
         private TcpClient client;
 
         private NetworkStream networkStream;
@@ -75,7 +77,22 @@ namespace Client
 
                         ComponentMessage compmsg = (ComponentMessage)ma;
 
-                        thread.Start(compmsg);                      
+                        thread.Start(compmsg); 
+
+                        if (this.RequestEvent != null)
+                        {
+                            ComponentRecievedEventArgs e = new ComponentRecievedEventArgs();
+
+                            e.Component = compmsg.Component;
+                            e.Input = compmsg.Values.ToList();
+                            e.External = compmsg.External;
+                            e.ToBeExceuted = compmsg.ToBeExecuted;
+
+                            this.RequestEvent(this, e);
+                        }
+
+
+
                     }
                     else if (ma is AliveMessage)
                     {
@@ -123,6 +140,30 @@ namespace Client
             networkStream.Write(response, 0, response.Length);
         }
 
+        public bool SendMessage(Message message)
+        {
+            if (this.state != NetworkState.Running)
+            {
+                return false;
+            }
+
+            byte[] arr = Protocol.GetByteArrayFromMessage(message);
+
+            try
+            {
+                this.networkStream.Write(arr, 0, arr.Length);
+
+                return true;
+            }
+            catch(SocketException)
+            {
+                return false;
+            }
+        }
+
+        //
+        // Interface implementation
+
         public NetworkState NetworkClient
         {
             get
@@ -131,23 +172,26 @@ namespace Client
             }
             set
             {
-                this.state = value;
+                // why?
+                //this.state = value;
             }
         }
 
         public bool SendResult(List<object> Result, Guid id)
         {
-            foreach (object resultmessage in Result)
-            {
-                return false;
-            }
+            ResultMessage resMessage = new ResultMessage(ResultStatusCode.Successful, id);
+            resMessage.Result = Result;
 
-            return true;
+            return this.SendMessage(resMessage);
         }
 
         public bool SendJobRequest(IComponent component)
         {
-            throw new NotImplementedException();
+            ComponentMessage compMessage = new ComponentMessage(MessageType.RequestForJob, Guid.NewGuid());
+            compMessage.Component = component;
+            compMessage.Values = new List<object>();
+
+            return this.SendMessage(compMessage);
         }
 
         public event EventHandler<ComponentRecievedEventArgs> RequestEvent;
@@ -155,13 +199,21 @@ namespace Client
 
         public void Connect(string ip)
         {
-            throw new NotImplementedException();
+            IPAddress outIP;
+
+            if (IPAddress.TryParse(ip, out outIP))
+            {
+                this.Connect(outIP, Client.ServerConnectionPort);
+            }
         }
 
 
         public void Disconnect()
         {
-            throw new NotImplementedException();
+            this.running = false;
+            this.networkStream.Close();
+            this.client.Close();
+            this.state = NetworkState.Stopped;
         }
     }
 }

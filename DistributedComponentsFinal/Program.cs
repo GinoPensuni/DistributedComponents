@@ -19,6 +19,8 @@ namespace DistributedComponentsFinal
 
             Console.WriteLine(dd.ToString());
 
+            Console.WriteLine("hello world!");
+
             //Console.ReadLine();
             
             Client.Client c = new Client.Client();
