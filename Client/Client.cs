@@ -73,26 +73,9 @@ namespace Client
 
                     if (ma is ComponentMessage)
                     {
-                        Thread thread = new Thread(new ParameterizedThreadStart(HandleComponent));
-
                         ComponentMessage compmsg = (ComponentMessage)ma;
 
-                        thread.Start(compmsg); 
-
-                        if (this.RequestEvent != null)
-                        {
-                            ComponentRecievedEventArgs e = new ComponentRecievedEventArgs();
-
-                            e.Component = compmsg.Component;
-                            e.Input = compmsg.Values.ToList();
-                            e.External = compmsg.External;
-                            e.ToBeExceuted = compmsg.ToBeExecuted;
-
-                            this.RequestEvent(this, e);
-                        }
-
-
-
+                        this.HandleComponentMessage(compmsg);
                     }
                     else if (ma is AliveMessage)
                     {
@@ -120,7 +103,27 @@ namespace Client
             }
         }
 
-        private void HandleComponent(object obj)
+        private void HandleComponentMessage(ComponentMessage msg)
+        {
+            Thread thread = new Thread(new ParameterizedThreadStart(ExecuteComponent));
+
+            thread.Start(msg);
+
+            if (this.RequestEvent != null)
+            {
+                ClientComponentEventArgs e = new ClientComponentEventArgs();
+
+                e.Component = msg.Component;
+                e.Input = msg.Values.ToList();
+                e.External = msg.External; // not neccessary
+                e.ToBeExceuted = msg.ToBeExecuted;
+                e.Assembly = msg.Assembly;
+
+                this.RequestEvent(this, e);
+            }
+        }
+
+        private void ExecuteComponent(object obj)
         {
             ComponentMessage compmsg = (ComponentMessage)obj;
 
@@ -194,7 +197,7 @@ namespace Client
             return this.SendMessage(compMessage);
         }
 
-        public event EventHandler<ComponentRecievedEventArgs> RequestEvent;
+        public event EventHandler<ClientComponentEventArgs> RequestEvent;
 
 
         public void Connect(string ip)

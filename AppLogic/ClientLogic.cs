@@ -128,19 +128,19 @@ namespace AppLogic
 
         public Task<List<Tuple<ComponentType, IComponent>>> LoadComponents()
         {
-            //var loadingTask = new Task(() =>
-            //{
-            //    var assemblyData = this.ComponentStore.LoadAssemblies();
-            //    foreach(var entry in assemblyData)
-            //    {
-            //        this.ComponentManager.LoadAssemblyContents(entry);
-            //    }
+            var loadingTask = new Task<List<Tuple<ComponentType, IComponent>>>(() =>
+            {
+               var assemblyData = this.ComponentStore.LoadAssemblies();
+               foreach(var entry in assemblyData)
+                {
+                    this.ComponentManager.LoadAssemblyContents(entry);
+                }
 
-            //    return new List<Tuple<ComponentType, IComponent>>();
-            //});
+              return this.ComponentManager.LoadedComponents;
+            });
 
-            //loadingTask.Start();
-            //return loadingTask;
+            loadingTask.Start();
+            return loadingTask;
 
             throw new NotImplementedException();
         }

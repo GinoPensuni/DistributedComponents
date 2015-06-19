@@ -8,6 +8,7 @@ using System.Net;
 using System.Net.Sockets;
 using System.IO;
 using CommonInterfaces;
+using AppLogic.ServerLogic;
 
 namespace Server
 {
@@ -18,26 +19,36 @@ namespace Server
 
         public List<Slave> Slaves { get; private set; }
 
+        public Dictionary<Guid, Slave> Jobs { get; private set; }
+
+        public ILogic ServerLogic { get; private set; }
+
         public NetworkState ServerState
         {
-            get
-            {
-                throw new NotImplementedException();
-            }
-            set
-            {
-            }
+            get;
+            set;
         }
 
         public event EventHandler<ComponentRecievedEventArgs> RequestEvent;
 
-        public bool SendResult(List<object> Result, Guid id)
+
+        public bool SendResult(Guid id, List<Tuple<Guid, IComponent, byte[]>> Assembly)
         {
-            return false;
+            foreach (Tuple<Guid, IComponent, byte[]> item in Assembly)
+            {
+                
+            }
+        }
+
+        public bool SendError(Guid id, Exception logicException)
+        {
+            throw new NotImplementedException();
         }
 
         public void Run()
         {
+            this.ServerLogic = new ServerLogicCore(this);
+            this.Jobs = new Dictionary<Guid, Slave>();
             this.Slaves = new List<Slave>();
             this.tcpListener = new TcpListener(IPAddress.Any, 8081);
             this.ServerState = NetworkState.Running;
@@ -73,7 +84,7 @@ namespace Server
         void Slave_OnSlaveDied(object sender, SlaveDiedEventArgs e)
         {
             this.Slaves.Remove((Slave)sender);
-            Console.WriteLine("Slave died.. do you want to buy a new slave?");
+            Console.WriteLine("Client died");
         }
 
         public void Slave_OnMessageReceived(object sender, MessageReceivedEventArgs e)
@@ -91,17 +102,21 @@ namespace Server
                     Console.WriteLine(msg.ToString());
                 }
             }
-        }
 
-        public void SendComponents(NetworkStream clientStream)
-        {
-            ComponentMessage msg = new ComponentMessage(Guid.NewGuid());
-            msg.Component = new Component(Guid.NewGuid(), "test", null, null);
-
-            byte[] test = Protocol.GetByteArrayFromMessage(msg);
-
-            clientStream.Write(test, 0, test.Length);
-            Console.WriteLine("Component sent");
+            if (e.Msg is ComponentMessage)
+            {
+                if (this.RequestEvent != null)
+                {
+                    ComponentRecievedEventArgs args = new ComponentRecievedEventArgs();
+                    args.Component = ((ComponentMessage)e.Msg).Component;
+                    args.ToBeExceuted = Guid.NewGuid();
+                    //TODO: External wenns von anderem Server kommt.
+                    args.External = false;
+                    args.Input = ((ComponentMessage)e.Msg).Values.ToList();
+                    this.Jobs.Add(args.ToBeExceuted, slave);
+                    this.RequestEvent(this, args);
+                }
+            }
         }
 
         public void Stop()

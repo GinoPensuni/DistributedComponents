@@ -51,7 +51,7 @@ namespace Server
                 Console.WriteLine("Message sent");
                 return true;
             }
-            catch (Exception e)
+            catch
             {
                 return false;
             }
@@ -62,7 +62,7 @@ namespace Server
             ComponentMessage compmsg = new ComponentMessage(Guid.NewGuid());
             compmsg.Component = comp;
             compmsg.Values = values;
-            Console.Write("Requst Komponent id: ");
+            Console.Write("Request Component id: ");
             Console.WriteLine(compmsg.ID);
             return this.SendMessage(compmsg);
         }
