@@ -14,6 +14,8 @@ namespace Client
     {
         public const int ServerConnectionPort = 8081;
 
+        public const int liveCheckIntervall = 5000; // milli
+
         private TcpClient client;
 
         private NetworkStream networkStream;
@@ -22,9 +24,12 @@ namespace Client
 
         private NetworkState state;
 
+        private DateTime lastAliveMessageFromServer;
+
         public Client()
         {
             this.running = false;
+            this.lastAliveMessageFromServer = DateTime.Now;
         }
 
         
@@ -79,9 +84,13 @@ namespace Client
                     }
                     else if (ma is AliveMessage)
                     {
-                        byte[] response = Protocol.GetByteArrayFromMessage((AliveMessage)ma);
+                        this.SendMessage((AliveMessage)ma);
 
-                        networkStream.Write(response, 0, response.Length);
+                        this.lastAliveMessageFromServer = DateTime.Now;
+
+                        //byte[] response = Protocol.GetByteArrayFromMessage((AliveMessage)ma);
+
+                        //networkStream.Write(response, 0, response.Length);
                     }
                     else if (ma is AssignMessage)
                     {
@@ -90,24 +99,31 @@ namespace Client
 
                         Console.WriteLine("guid: " + this.clientGuid);
 
-                        byte[] response = Protocol.GetByteArrayFromMessage((AssignMessage)ma);
+                        this.SendMessage((AssignMessage)ma);
 
-                        networkStream.Write(response, 0, response.Length);
+                        //byte[] response = Protocol.GetByteArrayFromMessage((AssignMessage)ma);
+
+                        //networkStream.Write(response, 0, response.Length);
                     }
                 }
                 else
                 {
                     Thread.Sleep(1000);
                     Console.WriteLine("waiting...");
+
+                    if ((DateTime.Now.Ticks - this.lastAliveMessageFromServer.Ticks) / TimeSpan.TicksPerMillisecond > Client.liveCheckIntervall)
+                    {
+                        this.Disconnect();
+                    }
                 }
             }
         }
 
         private void HandleComponentMessage(ComponentMessage msg)
         {
-            Thread thread = new Thread(new ParameterizedThreadStart(ExecuteComponent));
+            //Thread thread = new Thread(new ParameterizedThreadStart(ExecuteComponent));
 
-            thread.Start(msg);
+            //thread.Start(msg);
 
             if (this.RequestEvent != null)
             {

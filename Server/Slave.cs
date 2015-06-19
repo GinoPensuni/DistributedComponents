@@ -62,16 +62,28 @@ namespace Server
             ComponentMessage compmsg = new ComponentMessage(Guid.NewGuid());
             compmsg.Component = comp;
             compmsg.Values = values;
+
             Console.Write("Request Component id: ");
             Console.WriteLine(compmsg.ID);
+
             return this.SendMessage(compmsg);
+        }
+
+        public bool SendComponent(ComponentMessage compMessage)
+        {
+
+
+
+            return true;
         }
 
         public void AssignGuid(Guid guid)
         {
             this.clientGuid = guid;
+
             AssignMessage assignmsg = new AssignMessage(Guid.NewGuid());
             assignmsg.ClientGuid = this.clientGuid;
+
             this.SendMessage(assignmsg);
         }
 
@@ -92,13 +104,6 @@ namespace Server
                     this.OnSlaveDied(this, new SlaveDiedEventArgs());
                 }
             }
-
-            //Message msg = this.SearchForMessage(alivemsg.ID);
-            //if (msg != null)
-            //{
-            //    this.IsAlive = false;
-            //    this.UnconfirmedMessages.Remove(msg);
-            //}
         }
 
         public Message SearchForMessage(Guid id)

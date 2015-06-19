@@ -19,40 +19,32 @@ namespace Server
 
         public List<Slave> Slaves { get; private set; }
 
-        public Dictionary<Guid, Slave> Jobs { get; private set; }
-
-        public ILogic ServerLogic { get; private set; }
-
-        public NetworkState ServerState
+        // Guid = From Job Request from Client
+        // Slave = handles the component
+        // Component Handled component
+        // A list of atomic components which will be handled by the slaves
+        private List<Tuple<Guid, Slave, IComponent>> PendingComponentJobs
         {
             get;
             set;
         }
 
-        public event EventHandler<ComponentRecievedEventArgs> RequestEvent;
+        public Dictionary<Guid, Slave> ExecutionCustomers { get; private set; }
 
-
-        public bool SendResult(Guid id, List<Tuple<Guid, IComponent, byte[]>> Assembly)
-        {
-            foreach (Tuple<Guid, IComponent, byte[]> item in Assembly)
-            {
-                
-            }
-        }
-
-        public bool SendError(Guid id, Exception logicException)
-        {
-            throw new NotImplementedException();
-        }
+        public ILogic ServerLogic { get; private set; }
 
         public void Run()
         {
             this.ServerLogic = new ServerLogicCore(this);
-            this.Jobs = new Dictionary<Guid, Slave>();
+
+            this.PendingComponentJobs = new List<Tuple<Guid, Slave, IComponent>>();
+            this.ExecutionCustomers = new Dictionary<Guid, Slave>();
+
             this.Slaves = new List<Slave>();
             this.tcpListener = new TcpListener(IPAddress.Any, 8081);
             this.ServerState = NetworkState.Running;
             this.listenThread = new Thread(new ThreadStart(SlaveListening));
+
             this.listenThread.Start();
         }
 
@@ -95,34 +87,92 @@ namespace Server
 
             if (e.Msg is ResultMessage)
             {
-                Console.Write("Result id vom Komponent:");
+                Console.Write("Result id vom Komponent: ");
                 Console.WriteLine(((ResultMessage)e.Msg).ID);
                 foreach (object msg in ((ResultMessage)e.Msg).Result)
                 {
                     Console.WriteLine(msg.ToString());
                 }
             }
-
-            if (e.Msg is ComponentMessage)
+            else if (e.Msg is ComponentMessage)
             {
-                if (this.RequestEvent != null)
+                if (e.Msg.Type == MessageType.RequestForJob)
                 {
-                    ComponentRecievedEventArgs args = new ComponentRecievedEventArgs();
-                    args.Component = ((ComponentMessage)e.Msg).Component;
-                    args.ToBeExceuted = Guid.NewGuid();
-                    //TODO: External wenns von anderem Server kommt.
-                    args.External = false;
-                    args.Input = ((ComponentMessage)e.Msg).Values.ToList();
-                    this.Jobs.Add(args.ToBeExceuted, slave);
-                    this.RequestEvent(this, args);
+                    this.ExecutionCustomers.Add(e.Msg.ID, slave);
+
+                    if (this.RequestEvent != null)
+                    {
+                        ComponentRecievedEventArgs args = new ComponentRecievedEventArgs();
+
+                        args.Component = ((ComponentMessage)e.Msg).Component;
+                        args.External = this.findOutIfExternal();
+                        args.ToBeExceuted = e.Msg.ID;
+                        args.Input = ((ComponentMessage)e.Msg).Values.ToList();
+
+                        this.RequestEvent(this, args);
+
+                        /*args.Component = ((ComponentMessage)e.Msg).Component;
+                        args.ToBeExceuted = Guid.NewGuid();
+                        //TODO: External wenns von anderem Server kommt.
+                        args.External = false;
+                        args.Input = ((ComponentMessage)e.Msg).Values.ToList();
+
+                        this.Jobs.Add(args.ToBeExceuted, slave); // Which slave wanted a component to be executed?
+                        this.RequestEvent(this, args);*/
+                    }
                 }
             }
+        }
+
+        private bool findOutIfExternal()
+        {
+            return false;
         }
 
         public void Stop()
         {
             this.ServerState = NetworkState.Stopped;
             this.listenThread.Join();
+        }
+
+        //
+        // Interface implementation
+
+        public NetworkState ServerState
+        {
+            get
+            {
+                return this.ServerState;
+            }
+            set
+            {
+                // why?
+            }
+        }
+
+        public event EventHandler<ComponentRecievedEventArgs> RequestEvent;
+
+
+        public bool SendResult(Guid id, List<Tuple<Guid, IComponent, byte[]>> Assembly)
+        {
+            Random rand = new Random();
+
+            foreach (Tuple<Guid, IComponent, byte[]> item in Assembly)
+            {
+
+            }
+
+            return false;
+        }
+
+        private void SendComponentToSlave(Tuple<Guid, IComponent, byte[]> component)
+        {
+            ComponentMessage mess = new ComponentMessage(component.Item1);
+        }
+
+        public bool SendError(Guid id, Exception logicException)
+        {
+            throw new NotImplementedException();
         }
     }
 }
