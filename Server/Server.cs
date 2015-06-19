@@ -8,6 +8,7 @@ using System.Net;
 using System.Net.Sockets;
 using System.IO;
 using CommonInterfaces;
+using AppLogic.ServerLogic;
 
 namespace Server
 {
@@ -18,7 +19,9 @@ namespace Server
 
         public List<Slave> Slaves { get; private set; }
 
-        public Dictionary<Guid, IComponent> Jobs { get; private set; }
+        public Dictionary<Guid, Slave> Jobs { get; private set; }
+
+        public ILogic ServerLogic { get; private set; }
 
         public NetworkState ServerState
         {
@@ -28,9 +31,13 @@ namespace Server
 
         public event EventHandler<ComponentRecievedEventArgs> RequestEvent;
 
+
         public bool SendResult(Guid id, List<Tuple<Guid, IComponent, byte[]>> Assembly)
         {
-            throw new NotImplementedException();
+            foreach (Tuple<Guid, IComponent, byte[]> item in Assembly)
+            {
+                
+            }
         }
 
         public bool SendError(Guid id, Exception logicException)
@@ -40,7 +47,8 @@ namespace Server
 
         public void Run()
         {
-            this.Jobs = new Dictionary<Guid, IComponent>();
+            this.ServerLogic = new ServerLogicCore(this);
+            this.Jobs = new Dictionary<Guid, Slave>();
             this.Slaves = new List<Slave>();
             this.tcpListener = new TcpListener(IPAddress.Any, 8081);
             this.ServerState = NetworkState.Running;
@@ -105,7 +113,7 @@ namespace Server
                     //TODO: External wenns von anderem Server kommt.
                     args.External = false;
                     args.Input = ((ComponentMessage)e.Msg).Values.ToList();
-                    this.Jobs.Add(args.ToBeExceuted, (IComponent)args.Component);
+                    this.Jobs.Add(args.ToBeExceuted, slave);
                     this.RequestEvent(this, args);
                 }
             }
