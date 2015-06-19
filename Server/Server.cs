@@ -18,26 +18,29 @@ namespace Server
 
         public List<Slave> Slaves { get; private set; }
 
+        public Dictionary<Guid, IComponent> Jobs { get; private set; }
+
         public NetworkState ServerState
         {
-            get
-            {
-                throw new NotImplementedException();
-            }
-            set
-            {
-            }
+            get;
+            set;
         }
 
         public event EventHandler<ComponentRecievedEventArgs> RequestEvent;
 
-        public bool SendResult(List<object> Result, Guid id)
+        public bool SendResult(Guid id, List<Tuple<Guid, IComponent, byte[]>> Assembly)
         {
-            return false;
+            throw new NotImplementedException();
+        }
+
+        public bool SendError(Guid id, Exception logicException)
+        {
+            throw new NotImplementedException();
         }
 
         public void Run()
         {
+            this.Jobs = new Dictionary<Guid, IComponent>();
             this.Slaves = new List<Slave>();
             this.tcpListener = new TcpListener(IPAddress.Any, 8081);
             this.ServerState = NetworkState.Running;
@@ -73,7 +76,7 @@ namespace Server
         void Slave_OnSlaveDied(object sender, SlaveDiedEventArgs e)
         {
             this.Slaves.Remove((Slave)sender);
-            Console.WriteLine("Slave died.. do you want to buy a new slave?");
+            Console.WriteLine("Client died");
         }
 
         public void Slave_OnMessageReceived(object sender, MessageReceivedEventArgs e)
@@ -89,6 +92,21 @@ namespace Server
                 foreach (object msg in ((ResultMessage)e.Msg).Result)
                 {
                     Console.WriteLine(msg.ToString());
+                }
+            }
+
+            if (e.Msg is ComponentMessage)
+            {
+                if (this.RequestEvent != null)
+                {
+                    ComponentRecievedEventArgs args = new ComponentRecievedEventArgs();
+                    args.Component = ((ComponentMessage)e.Msg).Component;
+                    args.ToBeExceuted = Guid.NewGuid();
+                    //TODO: External wenns von anderem Server kommt.
+                    args.External = false;
+                    args.Input = ((ComponentMessage)e.Msg).Values.ToList();
+                    this.Jobs.Add(args.ToBeExceuted, (IComponent)args.Component);
+                    this.RequestEvent(this, args);
                 }
             }
         }
