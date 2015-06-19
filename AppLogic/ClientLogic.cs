@@ -128,7 +128,7 @@ namespace AppLogic
 
         public Task<List<Tuple<ComponentType, IComponent>>> LoadComponents()
         {
-            var loadingTask = new Task(() =>
+            var loadingTask = new Task<List<Tuple<ComponentType, IComponent>>>(() =>
             {
                var assemblyData = this.ComponentStore.LoadAssemblies();
                foreach(var entry in assemblyData)
@@ -136,7 +136,7 @@ namespace AppLogic
                     this.ComponentManager.LoadAssemblyContents(entry);
                 }
 
-              return new List<Tuple<ComponentType, IComponent>>();
+              return this.ComponentManager.LoadedComponents;
             });
 
             loadingTask.Start();

@@ -75,22 +75,7 @@ namespace Client
                     {
                         ComponentMessage compmsg = (ComponentMessage)ma;
 
-                        Thread thread = new Thread(new ParameterizedThreadStart(HandleComponent));
-
-                        thread.Start(compmsg); 
-
-                        if (this.RequestEvent != null)
-                        {
-                            ClientComponentEventArgs e = new ClientComponentEventArgs();
-
-                            e.Component = compmsg.Component;
-                            e.Input = compmsg.Values.ToList();
-                            e.External = compmsg.External; // not neccessary
-                            e.ToBeExceuted = compmsg.ToBeExecuted;
-                            e.Assembly = compmsg.Assembly;
-
-                            this.RequestEvent(this, e);
-                        }
+                        this.HandleComponentMessage(compmsg);
                     }
                     else if (ma is AliveMessage)
                     {
@@ -118,7 +103,27 @@ namespace Client
             }
         }
 
-        private void HandleComponent(object obj)
+        private void HandleComponentMessage(ComponentMessage msg)
+        {
+            Thread thread = new Thread(new ParameterizedThreadStart(ExecuteComponent));
+
+            thread.Start(msg);
+
+            if (this.RequestEvent != null)
+            {
+                ClientComponentEventArgs e = new ClientComponentEventArgs();
+
+                e.Component = msg.Component;
+                e.Input = msg.Values.ToList();
+                e.External = msg.External; // not neccessary
+                e.ToBeExceuted = msg.ToBeExecuted;
+                e.Assembly = msg.Assembly;
+
+                this.RequestEvent(this, e);
+            }
+        }
+
+        private void ExecuteComponent(object obj)
         {
             ComponentMessage compmsg = (ComponentMessage)obj;
 

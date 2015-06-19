@@ -119,17 +119,6 @@ namespace Server
             }
         }
 
-        public void SendComponents(NetworkStream clientStream)
-        {
-            ComponentMessage msg = new ComponentMessage(Guid.NewGuid());
-            msg.Component = new Component(Guid.NewGuid(), "test", null, null);
-
-            byte[] test = Protocol.GetByteArrayFromMessage(msg);
-
-            clientStream.Write(test, 0, test.Length);
-            Console.WriteLine("Component sent");
-        }
-
         public void Stop()
         {
             this.ServerState = NetworkState.Stopped;
