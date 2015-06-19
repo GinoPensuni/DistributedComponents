@@ -23,11 +23,14 @@ namespace AddComponent
 
             this.friendlyName = "Addition";
 
-            List<string> inputhints = new List<string>() {"System.Int32",
-                                                          "System.Int32"};
+            //List<string> inputhints = new List<string>() { "System.Int32", "System.Int32" };
+
+            List<string> inputhints = new List<string>() { typeof(Int32).ToString(), typeof(Int32).ToString() };
             this.inputHints = inputhints;
 
-            List<string> outputhint = new List<string>() { "System.Int32" };
+            //List<string> outputhint = new List<string>() { "System.Int32" };
+
+            List<string> outputhint = new List<string>() { typeof(Int32).ToString() };
 
             this.outputHints = outputhint;
                                                           

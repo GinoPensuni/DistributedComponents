@@ -23,9 +23,13 @@ namespace MultiplyComponent
 
             this.friendlyName = "Multiply";
 
-            List<string> inputhints = new List<string>() { "System.Double", "System.Double" };
+            //List<string> inputhints = new List<string>() { "System.Double", "System.Double" };
 
-            List<string> outputHints = new List<string>() { "System.Double" };
+            //List<string> outputHints = new List<string>() { "System.Double" };
+
+            List<string> inputhints = new List<string>() { typeof(double).ToString(), typeof(double).ToString() };
+
+            List<string> outputHints = new List<string>() { typeof(double).ToString() };
 
             this.inputHints = inputhints;
 

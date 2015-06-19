@@ -18,7 +18,19 @@ namespace CommonInterfaces
         {
         }
 
-        public Component Component
+        public Guid ToBeExecuted
+        {
+            get;
+            set;
+        }
+
+        public bool External
+        {
+            get;
+            set;
+        }
+
+        public IComponent Component
         {
             get;
             set;

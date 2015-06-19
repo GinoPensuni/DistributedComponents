@@ -23,9 +23,13 @@ namespace SubtractComponent
 
             this.friendlyName = "Subtraction";
 
-            this.inputHints = new List<string>() { "System.Double, System.Double" };
+            //this.inputHints = new List<string>() { "System.Double, System.Double" };
 
-            this.outputHints = new List<string>() { "System.Double" };
+            //this.outputHints = new List<string>() { "System.Double" };
+
+            this.inputHints = new List<string>() { typeof(double).ToString(), typeof(double).ToString() };
+
+            this.outputHints = new List<string>() { typeof(double).ToString() };
         }
         public Guid ComponentGuid
         {

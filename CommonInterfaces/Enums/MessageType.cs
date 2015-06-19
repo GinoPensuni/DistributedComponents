@@ -10,6 +10,7 @@ namespace CommonInterfaces
     public enum MessageType
     {
         RequestForComponentExecution = 1,
+        RequestForJob = 2,
 
         Unknown = 9999
     }
