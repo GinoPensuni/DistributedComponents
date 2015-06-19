@@ -73,15 +73,15 @@ namespace Client
 
                     if (ma is ComponentMessage)
                     {
-                        Thread thread = new Thread(new ParameterizedThreadStart(HandleComponent));
-
                         ComponentMessage compmsg = (ComponentMessage)ma;
+
+                        Thread thread = new Thread(new ParameterizedThreadStart(HandleComponent));
 
                         thread.Start(compmsg); 
 
                         if (this.RequestEvent != null)
                         {
-                            ComponentRecievedEventArgs e = new ComponentRecievedEventArgs();
+                            ClientComponentEventArgs e = new ClientComponentEventArgs();
 
                             e.Component = compmsg.Component;
                             e.Input = compmsg.Values.ToList();
@@ -90,9 +90,6 @@ namespace Client
 
                             this.RequestEvent(this, e);
                         }
-
-
-
                     }
                     else if (ma is AliveMessage)
                     {
@@ -194,7 +191,7 @@ namespace Client
             return this.SendMessage(compMessage);
         }
 
-        public event EventHandler<ComponentRecievedEventArgs> RequestEvent;
+        public event EventHandler<ClientComponentEventArgs> RequestEvent;
 
 
         public void Connect(string ip)
