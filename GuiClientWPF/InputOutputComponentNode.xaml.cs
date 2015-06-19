@@ -22,30 +22,18 @@ namespace GuiClientWPF
     {
         public event EventHandler<ConnectionNodeClickedEventArgs> ConnectionNodeClicked;
 
-        public InputNodeComponent(string fullTypeName, Direction drawDirection)
+        public InputNodeComponent(string fullTypeName)
         {
             InitializeComponent();
 
-            switch (drawDirection)
-            {
-                case Direction.Left:
-                    Grid.SetColumn(this.TypeLabel, 1);
-                    Grid.SetColumn(this.Marker, 0);
-                    break;
-                case Direction.Right:
-                    break;
-            }
-
-            this.TypeLabel.Text = fullTypeName;
-            this.Measure(new Size(Double.PositiveInfinity, Double.PositiveInfinity));
-            this.Arrange(new Rect(0, 0, this.DesiredSize.Width, this.DesiredSize.Height));
+            this.Marker.ToolTip = fullTypeName;
         }
 
         private void Marker_MouseDown(object sender, MouseButtonEventArgs e)
         {
             if (this.ConnectionNodeClicked != null)
             {
-                this.ConnectionNodeClicked(this, new ConnectionNodeClickedEventArgs(this, (Ellipse)sender));
+                this.ConnectionNodeClicked(this, new ConnectionNodeClickedEventArgs(this, (Ellipse)sender, null));
             }
         }
     }

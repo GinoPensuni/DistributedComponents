@@ -40,17 +40,15 @@ namespace GuiClientWPF
             this.FriendlyName.Text = entry.FriendlyName;
 
             double currentY = 0.0;
-            double largestExcessWidth = 10.0;
 
             foreach (var inputNode in entry.InputHints)
             {
-                var newInputNode = new InputNodeComponent(inputNode, Direction.Left);
-                this.ComponentCanvas.Children.Add(newInputNode);
+                var newInputNode = new InputNodeComponent(inputNode);
+                this.InputCanvas.Children.Add(newInputNode);
                 Canvas.SetTop(newInputNode, currentY);
-                Canvas.SetLeft(newInputNode, -1 * newInputNode.ActualWidth - 5);
+                Canvas.SetLeft(newInputNode, 0);
                 //newInputNode.Margin = new Thickness(3);
-                currentY += newInputNode.ActualHeight + 3;
-                largestExcessWidth = newInputNode.ActualWidth > largestExcessWidth ? newInputNode.ActualWidth : largestExcessWidth;
+                currentY += 15;
                 newInputNode.ConnectionNodeClicked += InputOutputNode_ConnectionNodeClicked;
                 this.inputNodes.Add(newInputNode);
             }
@@ -59,24 +57,35 @@ namespace GuiClientWPF
 
             foreach (var outputNode in entry.OutputHints)
             {
-                var newOutputNode = new InputNodeComponent(outputNode, Direction.Right);
-                this.ComponentCanvas.Children.Add(newOutputNode);
+                var newOutputNode = new InputNodeComponent(outputNode);
+                this.OutputCanvas.Children.Add(newOutputNode);
                 Canvas.SetTop(newOutputNode, currentY);
-                Canvas.SetLeft(newOutputNode, this.Width + 5);
+                Canvas.SetLeft(newOutputNode, 0);
                 //newOutputNode.Margin = new Thickness(3);
-                currentY += newOutputNode.ActualHeight + 3;
-                largestExcessWidth = newOutputNode.ActualWidth > largestExcessWidth ? newOutputNode.ActualWidth : largestExcessWidth;
+                currentY += 15;
                 newOutputNode.ConnectionNodeClicked += InputOutputNode_ConnectionNodeClicked;
                 this.outputNodes.Add(newOutputNode);
             }
-
-            this.Width += largestExcessWidth * 2;
         }
 
         private void InputOutputNode_ConnectionNodeClicked(object sender, ConnectionNodeClickedEventArgs e)
         {
+            double x;
+
+            if (this.InputCanvas.Children.Contains((UIElement)sender))
+            {
+                x = 5.0 + 0;
+            }
+            else
+            {
+                x = 5.0 + 90;
+            }
+
+            double y = 5.0 + Canvas.GetTop((UIElement)sender);
+
             if (this.InputOutputNodeClicked != null)
             {
+                e.Offset = new Point(x, y);
                 this.InputOutputNodeClicked(this, e);
             }
         }

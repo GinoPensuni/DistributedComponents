@@ -21,10 +21,10 @@ namespace GuiClientWPF
     public partial class WorkStation : UserControl
     {
         private UIElement draggedObject = null;
-        private Tuple<GuiComponent, InputNodeComponent, Ellipse>  selectedComponent = null;
+        private Tuple<GuiComponent, InputNodeComponent, Ellipse, Point>  selectedComponent = null;
         private Point? mouseOffset = null;
-        private List<Tuple<Tuple<GuiComponent, InputNodeComponent, Ellipse>, Tuple<GuiComponent, InputNodeComponent, Ellipse>, LineContainer>> connections =
-            new List<Tuple<Tuple<GuiComponent, InputNodeComponent, Ellipse>, Tuple<GuiComponent, InputNodeComponent, Ellipse>, LineContainer>>();
+        private List<Tuple<Tuple<GuiComponent, InputNodeComponent, Ellipse, Point>, Tuple<GuiComponent, InputNodeComponent, Ellipse, Point>, LineContainer>> connections =
+            new List<Tuple<Tuple<GuiComponent, InputNodeComponent, Ellipse, Point>, Tuple<GuiComponent, InputNodeComponent, Ellipse, Point>, LineContainer>>();
 
 
         private ClientManager Manager
@@ -77,7 +77,7 @@ namespace GuiClientWPF
             
             if (this.selectedComponent == null)
             {
-                this.selectedComponent = new Tuple<GuiComponent, InputNodeComponent, Ellipse>(sendingComponent, e.ClickedComponent, e.ClickedEllipse);
+                this.selectedComponent = new Tuple<GuiComponent, InputNodeComponent, Ellipse, Point>(sendingComponent, e.ClickedComponent, e.ClickedEllipse, e.Offset.Value);
                 //this.selectedComponent.Background = Brushes.Red;
             }
             else if (this.selectedComponent.Item3 == e.ClickedEllipse)
@@ -87,7 +87,7 @@ namespace GuiClientWPF
             }
             else
             {
-                var secondSelectedComponent = new Tuple<GuiComponent, InputNodeComponent, Ellipse>(sendingComponent, e.ClickedComponent, e.ClickedEllipse);
+                var secondSelectedComponent = new Tuple<GuiComponent, InputNodeComponent, Ellipse, Point>(sendingComponent, e.ClickedComponent, e.ClickedEllipse, e.Offset.Value);
                 //if (sender == null) return;
 
                 //Point p1 = new Point(
@@ -97,10 +97,15 @@ namespace GuiClientWPF
                 //    double.IsNaN(Canvas.GetLeft(secondSelectedComponent)) ? 1 : Canvas.GetLeft(secondSelectedComponent),
                 //    double.IsNaN(Canvas.GetTop(secondSelectedComponent)) ? 1 : Canvas.GetTop(secondSelectedComponent));
 
-                double x1 = Canvas.GetLeft(this.selectedComponent.Item1) + (Canvas.GetLeft(this.selectedComponent.Item2) < 0 ? 0 : this.selectedComponent.Item1.ActualWidth);
-                double y1 = Canvas.GetTop(this.selectedComponent.Item1) + Canvas.GetTop(this.selectedComponent.Item2) + this.selectedComponent.Item2.ActualHeight / 2;
-                double x2 = Canvas.GetLeft(secondSelectedComponent.Item1) + (Canvas.GetLeft(secondSelectedComponent.Item2) < 0 ? 0 : secondSelectedComponent.Item1.ActualWidth);
-                double y2 = Canvas.GetTop(secondSelectedComponent.Item1) + Canvas.GetTop(secondSelectedComponent.Item2) + secondSelectedComponent.Item2.ActualHeight / 2;
+                double lefti = Canvas.GetLeft(this.selectedComponent.Item1);
+                double leftii = Canvas.GetLeft(secondSelectedComponent.Item1);
+                double topi = Canvas.GetTop(this.selectedComponent.Item1);
+                double topii = Canvas.GetTop(secondSelectedComponent.Item1);
+
+                double x1 = (double.IsNaN(lefti) ? 1 : lefti)  + this.selectedComponent.Item4.X;
+                double y1 = (double.IsNaN(topi) ? 1 : topi) + this.selectedComponent.Item4.Y;
+                double x2 = (double.IsNaN(leftii) ? 1 : leftii) + secondSelectedComponent.Item4.X;
+                double y2 = (double.IsNaN(topii) ? 1 : topii) + secondSelectedComponent.Item4.Y;
 
                 Point p1 = new Point(
                     double.IsNaN(x1) ? 1 : x1,
@@ -109,8 +114,20 @@ namespace GuiClientWPF
                     double.IsNaN(x2) ? 1 : x2,
                     double.IsNaN(y2) ? 1 : y2);
 
-                var line = this.DrawPolyLine(p1, p2);
-                this.connections.Add(new Tuple<Tuple<GuiComponent, InputNodeComponent, Ellipse>, Tuple<GuiComponent, InputNodeComponent, Ellipse>, LineContainer>
+                Polyline line;
+
+                // TODO Don't hardcode this shit
+
+                if (this.selectedComponent.Item4.X > secondSelectedComponent.Item4.X)
+                {
+                    line = this.DrawPolyLine(p1, p2, 90);
+                }
+                else
+                {
+                    line = this.DrawPolyLine(p2, p1, 90);
+                }
+
+                this.connections.Add(new Tuple<Tuple<GuiComponent, InputNodeComponent, Ellipse, Point>, Tuple<GuiComponent, InputNodeComponent, Ellipse, Point>, LineContainer>
                     (this.selectedComponent, secondSelectedComponent, line));
                 Canvas.SetZIndex(line, -100);
                 this.ComponentBuilder.Children.Add(line);
@@ -192,10 +209,15 @@ namespace GuiClientWPF
                 {
                     this.ComponentBuilder.Children.Remove(entry.Item3);
 
-                    double x1 = Canvas.GetLeft(entry.Item1.Item1) + (Canvas.GetLeft(entry.Item1.Item2) < 0 ? 0 : entry.Item1.Item1.ActualWidth);
-                    double y1 = Canvas.GetTop(entry.Item1.Item1) + Canvas.GetTop(entry.Item1.Item2) + entry.Item1.Item2.ActualHeight / 2;
-                    double x2 = Canvas.GetLeft(entry.Item2.Item1) + (Canvas.GetLeft(entry.Item2.Item2) < 0 ? 0 : entry.Item2.Item1.ActualWidth);
-                    double y2 = Canvas.GetTop(entry.Item2.Item1) + Canvas.GetTop(entry.Item2.Item2) + entry.Item2.Item2.ActualHeight / 2;
+                    double lefti = Canvas.GetLeft(entry.Item1.Item1);
+                    double leftii = Canvas.GetLeft(entry.Item2.Item1);
+                    double topi = Canvas.GetTop(entry.Item1.Item1);
+                    double topii = Canvas.GetTop(entry.Item2.Item1);
+
+                    double x1 = (double.IsNaN(lefti) ? 1 : lefti) + entry.Item1.Item4.X;
+                    double y1 = (double.IsNaN(topi) ? 1 : topi) + entry.Item1.Item4.Y;
+                    double x2 = (double.IsNaN(leftii) ? 1 : leftii) + entry.Item2.Item4.X;
+                    double y2 = (double.IsNaN(topii) ? 1 : topii) + entry.Item2.Item4.Y;
 
                     Point p1 = new Point(
                         double.IsNaN(x1) ? 1 : x1,
@@ -204,7 +226,17 @@ namespace GuiClientWPF
                         double.IsNaN(x2) ? 1 : x2,
                         double.IsNaN(y2) ? 1 : y2);
 
-                    var line = this.DrawPolyLine(p1, p2);
+                    Polyline line;
+                    
+                    if (entry.Item1.Item4.X > entry.Item2.Item4.X)
+                    {
+                        line = this.DrawPolyLine(p1, p2, 90);
+                    }
+                    else
+                    {
+                        line = this.DrawPolyLine(p2, p1, 90);
+                    }
+
                     entry.Item3.InnerLine = line;
                     Canvas.SetZIndex(line, -100);
                     this.ComponentBuilder.Children.Add(line);

@@ -4,7 +4,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              mc:Ignorable="d" 
-            d:DesignHeight="100" d:DesignWidth="85"  Height="85" Width="75" Name="Component">
+            d:DesignHeight="100" d:DesignWidth="85"  Height="85" Width="100" Name="Component">
     
     <UserControl.Resources>
         <ResourceDictionary>
@@ -13,10 +13,17 @@
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </UserControl.Resources>
-    <Grid>
-        <Canvas Height="80" Width="70" Name="ComponentCanvas" Background="Black" >
-            <Image Source="{DynamicResource LogicalAdd}" Opacity="1" Margin="5" Height="40" Width="60" />
+    <Grid Width="100">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="10" />
+            <ColumnDefinition Width="80" />
+            <ColumnDefinition Width="10" />
+        </Grid.ColumnDefinitions>
+        <Canvas Grid.Column="0" Width="10" Height="80" Name="InputCanvas" />
+        <Canvas Grid.Column="1" Height="90" Width="80" Name="ComponentCanvas" Background="Black" HorizontalAlignment="Center" >
+            <Image Source="{DynamicResource LogicalAdd}" Opacity="1" Margin="0" Height="40" Width="60" Canvas.Left="10"/>
         </Canvas>
-        <TextBox Name="FriendlyName" Background="Gray" Margin="5" VerticalAlignment="Bottom" HorizontalAlignment="Center" IsEnabled="False"  Text="View Text" TextWrapping="WrapWithOverflow" MaxLength="40" MaxHeight="25" BorderBrush="Beige" BorderThickness="2"/>
+        <TextBox Grid.Column="1" Name="FriendlyName" Background="Gray" Margin="0" VerticalAlignment="Bottom" HorizontalAlignment="Center" IsEnabled="False"  Text="View Text" TextWrapping="WrapWithOverflow" MaxLength="40" MaxHeight="25" BorderBrush="Beige" BorderThickness="2"/>
+        <Canvas Grid.Column="2" Height="80" Width="10" Name="OutputCanvas" />
     </Grid>
 </UserControl>
