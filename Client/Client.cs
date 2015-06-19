@@ -85,8 +85,9 @@ namespace Client
 
                             e.Component = compmsg.Component;
                             e.Input = compmsg.Values.ToList();
-                            e.External = compmsg.External;
+                            e.External = compmsg.External; // not neccessary
                             e.ToBeExceuted = compmsg.ToBeExecuted;
+                            e.Assembly = compmsg.Assembly;
 
                             this.RequestEvent(this, e);
                         }

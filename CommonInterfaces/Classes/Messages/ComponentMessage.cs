@@ -18,6 +18,12 @@ namespace CommonInterfaces
         {
         }
 
+        public byte[] Assembly
+        {
+            get;
+            set;
+        }
+
         public Guid ToBeExecuted
         {
             get;
