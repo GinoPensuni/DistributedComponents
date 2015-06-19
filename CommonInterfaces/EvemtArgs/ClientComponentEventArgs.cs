@@ -8,7 +8,7 @@ namespace CommonInterfaces
 {
     public class ClientComponentEventArgs : ComponentRecievedEventArgs
     {
-        byte[] Assembly
+        public byte[] Assembly
         {
             get;
             set;
