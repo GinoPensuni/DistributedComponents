@@ -8,6 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Client;
 using InputComponentWpf;
+using StringInputComponent;
 
 namespace DistributedComponentsFinal
 {
@@ -27,12 +28,9 @@ namespace DistributedComponentsFinal
 
         //    c.Connect(IPAddress.Parse("10.101.150.27"), 8081);
 
-            Input i = new Input();
+            StringInputComponent.TextInput e = new StringInputComponent.TextInput();
 
-            List<object> t = new List<object>();
-            i.Evaluate(t);
-
-            Console.ReadLine();
+            e.Evaluate(new List<object>() { });
         }
     }
 }

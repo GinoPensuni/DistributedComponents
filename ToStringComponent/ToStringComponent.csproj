@@ -4,16 +4,15 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{F4C6B725-D2F2-440B-A903-E9B8FC5D5810}</ProjectGuid>
-    <OutputType>Exe</OutputType>
+    <ProjectGuid>{193FD222-3ADE-410A-80E5-4C862D3A4BE7}</ProjectGuid>
+    <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>DistributedComponentsFinal</RootNamespace>
-    <AssemblyName>DistributedComponentsFinal</AssemblyName>
+    <RootNamespace>ToStringComponent</RootNamespace>
+    <AssemblyName>ToStringComponent</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
@@ -23,7 +22,6 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>bin\Release\</OutputPath>
@@ -41,17 +39,10 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Program.cs" />
+    <Compile Include="ToString.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="App.config" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\Client\Client.csproj">
-      <Project>{a0ae5575-930e-40e4-9cd3-1d963adbb66f}</Project>
-      <Name>Client</Name>
-    </ProjectReference>
     <ProjectReference Include="..\CommonInterfaces\CommonRessources.csproj">
       <Project>{3467a53a-21d2-4b8a-9928-7f5cc5f6cb2e}</Project>
       <Name>CommonRessources</Name>
@@ -59,14 +50,6 @@
     <ProjectReference Include="..\Core.Component\Core.Component.csproj">
       <Project>{3cbff49b-e085-49af-8aa5-e3bab177b179}</Project>
       <Name>Core.Component</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\InputComponentWpf\InputComponentWpf.csproj">
-      <Project>{d8acf8ab-40ad-4b6a-9997-6862556b33e9}</Project>
-      <Name>InputComponentWpf</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\StringInputComponent\StringInputComponent.csproj">
-      <Project>{edc5c909-bb82-4c6d-b10e-8f1968395be7}</Project>
-      <Name>StringInputComponent</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

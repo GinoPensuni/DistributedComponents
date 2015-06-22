@@ -53,7 +53,10 @@ namespace InputComponentWpf
                 try
                 {
                     if (int.TryParse(InputBox.Text, out result))
-                    OnSubmitted(this, new TextEventArgs() { Message = InputBox.Text });
+                    {
+                        OnSubmitted(this, new TextEventArgs() { Message = InputBox.Text });
+                        this.Close();
+                    }
                 }
                 catch (Exception)
                 {
