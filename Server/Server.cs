@@ -110,10 +110,12 @@ namespace Server
             {
                 Console.Write("Result id vom Komponent: ");
                 Console.WriteLine(((ResultMessage)e.Msg).ID);
+
                 foreach (object msg in ((ResultMessage)e.Msg).Result)
                 {
                     Console.WriteLine(msg.ToString());
                 }
+
                 if(this.OnResultReceived != null)
                 {
                     ResultReceivedEventArgs resultArgs = new ResultReceivedEventArgs();
@@ -142,7 +144,6 @@ namespace Server
                 }
             }
         }
-
 
         public void Stop()
         {
