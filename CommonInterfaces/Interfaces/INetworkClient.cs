@@ -18,7 +18,7 @@ namespace CommonRessources
 
         bool SendJobRequest(IComponent component);
 
-        event EventHandler<ClientComponentEventArgs> RequestEvent;
+        event EventHandler<ClientComponentEventArgs> OnRequestEvent;
 
         void Connect(string ip);
 

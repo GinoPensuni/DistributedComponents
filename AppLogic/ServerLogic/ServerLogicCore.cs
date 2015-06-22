@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace AppLogic.ServerLogic
 {
-    public class ServerLogicCore : IServerLogic
+    public class ServerLogicCore : IServerLogic, ILogic
     {
        private INetworkServer serverReference;
 
@@ -26,7 +26,7 @@ namespace AppLogic.ServerLogic
                {
                    ServerLogicCore.isInstaniated = true;
                    this.serverReference = server;
-                   this.serverReference.RequestEvent += serverReference_RequestEvent;
+                   this.serverReference.OnRequestEvent += serverReference_RequestEvent;
                }
            }
        }

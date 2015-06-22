@@ -120,17 +120,16 @@ namespace Client
 
             ComponentMessage msg = (ComponentMessage)data;
             
-            if (this.RequestEvent != null)
+            if (this.OnRequestEvent != null)
             {
                 ClientComponentEventArgs e = new ClientComponentEventArgs();
 
                 e.Component = msg.Component;
                 e.Input = msg.Values.ToList();
-                e.External = msg.External; // not neccessary
                 e.ToBeExceuted = msg.ToBeExecuted;
                 e.Assembly = msg.Assembly;
 
-                this.RequestEvent(this, e);
+                this.OnRequestEvent(this, e);
             }
         }
 
@@ -208,7 +207,7 @@ namespace Client
             return this.SendMessage(compMessage);
         }
 
-        public event EventHandler<ClientComponentEventArgs> RequestEvent;
+        public event EventHandler<ClientComponentEventArgs> OnRequestEvent;
 
 
         public void Connect(string ip)

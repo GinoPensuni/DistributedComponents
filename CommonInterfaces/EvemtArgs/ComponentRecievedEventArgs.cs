@@ -7,12 +7,6 @@ namespace CommonRessources
 {
     public class ComponentRecievedEventArgs : EventArgs
     {
-        public bool External
-        {
-            get;
-            set;
-        }
-
         public Core.Component.IComponent Component
         {
             get;

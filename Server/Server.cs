@@ -31,7 +31,7 @@ namespace Server
 
         public Dictionary<Guid, Slave> ExecutionCustomers { get; private set; }
 
-        public ILogic ServerLogic { get; private set; }
+        public IServerLogic ServerLogic { get; private set; }
 
         public void Run()
         {
@@ -100,16 +100,15 @@ namespace Server
                 {
                     this.ExecutionCustomers.Add(e.Msg.ID, slave);
 
-                    if (this.RequestEvent != null)
+                    if (this.OnRequestEvent != null)
                     {
                         ComponentRecievedEventArgs args = new ComponentRecievedEventArgs();
 
                         args.Component = ((ComponentMessage)e.Msg).Component;
-                        args.External = this.findOutIfExternal();
                         args.ToBeExceuted = e.Msg.ID;
                         args.Input = ((ComponentMessage)e.Msg).Values.ToList();
 
-                        this.RequestEvent(this, args);
+                        this.OnRequestEvent(this, args);
 
                         /*args.Component = ((ComponentMessage)e.Msg).Component;
                         args.ToBeExceuted = Guid.NewGuid();
@@ -124,10 +123,6 @@ namespace Server
             }
         }
 
-        private bool findOutIfExternal()
-        {
-            return false;
-        }
 
         public void Stop()
         {
@@ -144,16 +139,17 @@ namespace Server
             {
                 return this.ServerState;
             }
-            set
+            private set
             {
                 // why?
+                
             }
         }
 
-        public event EventHandler<ComponentRecievedEventArgs> RequestEvent;
+        public event EventHandler<ComponentRecievedEventArgs> OnRequestEvent;
 
 
-        public bool SendResult(Guid id, List<Tuple<Guid, IComponent, byte[]>> Assembly)
+        public bool SendCalculatedResult(Guid id, List<Tuple<Guid, IComponent, byte[]>> Assembly)
         {
             Random rand = new Random();
 
