@@ -26,6 +26,30 @@ namespace GuiClientWPF
         private readonly List<InputNodeComponent> outputNodes;
         private Components entry;
 
+        public Components Entry
+        {
+            get
+            {
+                return entry;
+            }
+        }
+
+        public List<InputNodeComponent> InputNodes
+        {
+            get
+            {
+                return inputNodes;
+            }
+        }
+
+        public List<InputNodeComponent> OutputNodes
+        {
+            get
+            {
+                return outputNodes;
+            }
+        }
+
         public GuiComponent()
         {
             InitializeComponent();

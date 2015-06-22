@@ -21,6 +21,14 @@ namespace GuiClientWPF
     public partial class InputNodeComponent : UserControl
     {
         public event EventHandler<ConnectionNodeClickedEventArgs> ConnectionNodeClicked;
+        private string fullTypeName;
+        public string Hint
+        {
+            get
+            {
+                return this.fullTypeName;
+            }
+        }
 
         public InputNodeComponent(string fullTypeName)
         {

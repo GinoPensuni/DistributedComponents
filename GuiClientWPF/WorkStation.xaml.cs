@@ -27,6 +27,14 @@ namespace GuiClientWPF
             new List<Tuple<Tuple<GuiComponent, InputNodeComponent, Ellipse, Point>, Tuple<GuiComponent, InputNodeComponent, Ellipse, Point>, LineContainer>>();
 
 
+        public IReadOnlyList<Tuple<Tuple<GuiComponent, InputNodeComponent, Ellipse, Point>, Tuple<GuiComponent, InputNodeComponent, Ellipse, Point>, LineContainer>> Connections
+        {
+            get
+            {
+                return this.connections;
+            }
+        }
+
         private ClientManager Manager
         {
             get
@@ -121,14 +129,18 @@ namespace GuiClientWPF
                 if (this.selectedComponent.Item4.X > secondSelectedComponent.Item4.X)
                 {
                     line = this.DrawPolyLine(p1, p2, 90);
+                    this.connections.Add(new Tuple<Tuple<GuiComponent, InputNodeComponent, Ellipse, Point>, Tuple<GuiComponent, InputNodeComponent, Ellipse, Point>, LineContainer>
+                    (this.selectedComponent, secondSelectedComponent, line));
                 }
                 else
                 {
                     line = this.DrawPolyLine(p2, p1, 90);
+
+                    this.connections.Add(new Tuple<Tuple<GuiComponent, InputNodeComponent, Ellipse, Point>, Tuple<GuiComponent, InputNodeComponent, Ellipse, Point>, LineContainer>
+                    (secondSelectedComponent,this.selectedComponent, line));
                 }
 
-                this.connections.Add(new Tuple<Tuple<GuiComponent, InputNodeComponent, Ellipse, Point>, Tuple<GuiComponent, InputNodeComponent, Ellipse, Point>, LineContainer>
-                    (this.selectedComponent, secondSelectedComponent, line));
+               
                 Canvas.SetZIndex(line, -100);
                 this.ComponentBuilder.Children.Add(line);
                 //this.selectedComponent.Background = Brushes.White;
