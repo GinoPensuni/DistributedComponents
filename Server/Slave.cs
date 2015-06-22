@@ -76,14 +76,14 @@ namespace Server
             Console.Write("Request Component id: ");
             Console.WriteLine(compmsg.ID);
 
-            return this.SendMessage(compmsg);
+            return this.SendComponent(compmsg);
+
+            //return this.SendMessage(compmsg);
         }
 
         public bool SendComponent(ComponentMessage compMessage)
         {
-
-
-            return true;
+            return this.SendMessage(compMessage);
         }
 
         // id = ID of the component message, which has been sent to this slave before.
