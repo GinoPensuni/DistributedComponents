@@ -56,7 +56,7 @@ namespace DataStore
 
         public List<byte[]> LoadAssemblies()
         {
-            throw new NotImplementedException();
+            return this.DbContext.Components.Select(component => component.Assembly).ToList();
         }
     }
 }
