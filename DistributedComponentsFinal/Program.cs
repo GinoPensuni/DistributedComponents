@@ -6,8 +6,8 @@ using System.Net.Sockets;
 using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
-using Client;
-using Server;
+//using Client;
+//using Server;
 
 namespace DistributedComponentsFinal
 {
@@ -15,17 +15,20 @@ namespace DistributedComponentsFinal
     {
         static void Main(string[] args)
         {
-            dynamic dd = (new Int32()).GetType();
+            //<object> obj = new HashSet<object>();
+            //obj[2] = new object();
 
-            Console.WriteLine(dd.ToString());
+            Console.ReadLine();
 
-            Console.WriteLine("hello world!");
+            //dynamic dd = (new Int32()).GetType();
 
-            //Console.ReadLine();
+            //Console.WriteLine(dd.ToString());
+
+            //Console.WriteLine("hello world!");
             
-            Client.Client c = new Client.Client();
+            //Client.Client c = new Client.Client();
 
-            c.Connect(IPAddress.Parse("10.101.150.27"), 8081);
+            //c.Connect(IPAddress.Parse("10.101.150.27"), 8081);
         }
     }
 }
