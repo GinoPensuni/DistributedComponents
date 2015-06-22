@@ -8,7 +8,7 @@ namespace CommonRessources
 {
     public interface IStore
     {
-        byte[] this[Guid AssemblyID]
+        Tuple<byte[], bool> this[Guid AssemblyID]
         {
             get;
         }

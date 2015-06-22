@@ -64,6 +64,7 @@
     <Compile Include="Interfaces\IStore.cs" />
     <Compile Include="Classes\Messages\Message.cs" />
     <Compile Include="Enums\MessageType.cs" />
+    <Compile Include="EvemtArgs\ResultReceivedEventArgs.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Classes\Messages\ResultMessage.cs" />
     <Compile Include="Enums\ResultStatusCode.cs" />
