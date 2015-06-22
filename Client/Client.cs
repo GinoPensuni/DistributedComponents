@@ -33,6 +33,7 @@ namespace Client
         public Client()
         {
             this.lastAliveMessageFromServer = DateTime.Now;
+            this.workTasks = new List<WorkTask>();
         }
 
         

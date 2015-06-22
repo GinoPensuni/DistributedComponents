@@ -54,7 +54,14 @@ namespace CommonRessources
         {
             List<object> d = new List<object>();
 
-            d.Add(329023);
+            int erg = 0;
+
+            foreach (object val in values)
+            {
+                erg += (int)val;
+            }
+
+            d.Add(erg);
 
             return d.AsEnumerable();
         }
