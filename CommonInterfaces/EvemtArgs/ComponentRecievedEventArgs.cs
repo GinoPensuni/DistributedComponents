@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace CommonInterfaces
+namespace CommonRessources
 {
     public class ComponentRecievedEventArgs : EventArgs
     {

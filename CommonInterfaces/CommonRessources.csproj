@@ -7,7 +7,7 @@
     <ProjectGuid>{3467A53A-21D2-4B8A-9928-7F5CC5F6CB2E}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>CommonInterfaces</RootNamespace>
+    <RootNamespace>CommonRessources</RootNamespace>
     <AssemblyName>CommonInterfaces</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
@@ -53,11 +53,13 @@
     <Compile Include="Enums\NetworkState.cs" />
     <Compile Include="EvemtArgs\ClientComponentEventArgs.cs" />
     <Compile Include="EvemtArgs\ComponentRecievedEventArgs.cs" />
+    <Compile Include="Interfaces\IClientLogic.cs" />
     <Compile Include="Interfaces\INetworkServer.cs" />
     <Compile Include="Interfaces\INetworkClient.cs" />
     <Compile Include="Interfaces\IComponent.cs" />
     <Compile Include="Interfaces\IGUI.cs" />
     <Compile Include="Interfaces\ILogic.cs" />
+    <Compile Include="Interfaces\IServerLogic.cs" />
     <Compile Include="Interfaces\IStore.cs" />
     <Compile Include="Classes\Messages\Message.cs" />
     <Compile Include="Enums\MessageType.cs" />

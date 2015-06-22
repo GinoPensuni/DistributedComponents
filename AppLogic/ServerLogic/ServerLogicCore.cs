@@ -1,4 +1,4 @@
-﻿using CommonInterfaces;
+﻿using CommonRessources;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace AppLogic.ServerLogic
 {
-    public class ServerLogicCore : ILogic
+    public class ServerLogicCore : IServerLogic
     {
        private INetworkServer serverReference;
 
@@ -36,25 +36,5 @@ namespace AppLogic.ServerLogic
             
         }
 
-        //private void Process
-        public Task<bool> DisconnectFromServer()
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task SaveComponent(IComponent component)
-        {
-            throw new NotImplementedException();
-        }
-
-        public void ConnenctToServer()
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task<List<Tuple<Type, IComponent>>> LoadComponents()
-        {
-            throw new NotImplementedException();
-        }
     }
 }

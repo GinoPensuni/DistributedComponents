@@ -1,4 +1,4 @@
-﻿using CommonInterfaces;
+﻿using CommonRessources;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,7 +11,7 @@ namespace GuiClientWPF
 {
     public class ClientManager
     {
-        private ILogic logic;
+        private IClientLogic logic;
         private readonly static ClientManager manager = new ClientManager();
 
         public static ClientManager Manager
@@ -40,7 +40,7 @@ namespace GuiClientWPF
 
         public ClientManager()
         {
-            logic = default(ILogic);
+            logic = default(IClientLogic);
             CathegoryCollection = new ObservableCollection<Category>();
             CanvasComponents = new ObservableCollection<Components>();
             CathegoryCollection.Add(new Category() { Name = "Simple" });
@@ -60,10 +60,7 @@ namespace GuiClientWPF
 
         internal Task ConnectAction()
         {
-            var connectionTask = new Task(() =>
-            {
-                logic.ConnenctToServer();
-            });
+            var connectionTask = new Task(() => { logic.ConnenctToServer("test"); });
 
             connectionTask.Start();
             return connectionTask;

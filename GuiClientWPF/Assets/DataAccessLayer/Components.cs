@@ -1,4 +1,4 @@
-﻿using CommonInterfaces;
+﻿using CommonRessources;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -7,7 +7,7 @@ using System.Text;
 
 namespace GuiClientWPF
 {
-    public class Components : CommonInterfaces.IComponent, INotifyPropertyChanged
+    public class Components : CommonRessources.IComponent, INotifyPropertyChanged
     {
         private IEnumerable<string> inputHints;
         private string name;

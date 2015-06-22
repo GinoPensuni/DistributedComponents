@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Net;
 using System.Net.Sockets;
-using CommonInterfaces;
+using CommonRessources;
 using System.Threading;
 
 namespace Server

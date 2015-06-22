@@ -329,6 +329,7 @@ namespace GuiClientWPF
                 polyline.Points.Add(input);
             }
 
+            polyline.Margin = new Thickness(3);
             polyline.Stroke = Brushes.Black;
             polyline.StrokeThickness = 4;
             polyline.Visibility = Visibility.Visible;

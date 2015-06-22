@@ -1,4 +1,4 @@
-﻿using CommonInterfaces;
+﻿using CommonRessources;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,7 +7,7 @@ using System.Text;
 
 namespace AppLogic
 {
-    class LoadedComponent : CommonInterfaces.IComponent
+    class LoadedComponent : CommonRessources.IComponent
     {
 
         private readonly Type componentType;

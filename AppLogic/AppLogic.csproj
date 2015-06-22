@@ -39,7 +39,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ClientLogic.cs" />
+    <Compile Include="ClientLogic\ClientLogic.cs" />
     <Compile Include="ComponentManager.cs" />
     <Compile Include="LoadedComponent.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using CommonInterfaces;
+using CommonRessources;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.IO;
 

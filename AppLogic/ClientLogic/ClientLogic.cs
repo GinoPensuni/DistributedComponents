@@ -1,4 +1,4 @@
-﻿using CommonInterfaces;
+﻿using CommonRessources;
 using DataStore;
 using System;
 using System.Collections.Generic;
@@ -8,11 +8,12 @@ using System.Threading.Tasks;
 using NetworkClient = Client.Client;
 using System.Reflection;
 using System.IO;
-namespace AppLogic
+
+namespace AppLogic.ClientLogic
 {
-    public class ClientLogic  : ILogic
+    public class ClientLogic  : ILogic, IClientLogic
     {
-        private static readonly ILogic instance = new ClientLogic();
+        private static readonly IClientLogic instance = new ClientLogic();
         private static readonly INetworkClient client = new NetworkClient();
         private static readonly ComponentManager componentManager = ComponentManager.Instance;
         private static readonly IStore componentStore = new ComponentStore();
@@ -53,35 +54,16 @@ namespace AppLogic
             }
         }
 
-        public ILogic LogicClient
+        public IClientLogic LogicClient
         {
             get
             {
-
                 return ClientLogic.instance;
             }
             set
             {
                 
             }
-        }
-
-        public Task DisconnectFromServer()
-        {
-            var disconnectionTask = new Task(() =>
-            {
-                try
-                {
-                    this.NetworkClient.Disconnect();
-                }
-                catch
-                {
-                }
-            });
-
-            disconnectionTask.Start();
-            return disconnectionTask;
-
         }
 
         public Task SaveComponent(IComponent component)
@@ -109,23 +91,6 @@ namespace AppLogic
             return saveTask;
         }
 
-        public Task ConnenctToServer(string ip)
-        {
-            var connectionTask = new Task(() =>
-            {
-                try
-                {
-                    this.NetworkClient.Connect(ip);
-                }
-                catch
-                {
-                }
-            });
-
-            connectionTask.Start();
-            return connectionTask;
-        }
-
         public Task<List<Tuple<ComponentType, IComponent>>> LoadComponents()
         {
             var loadingTask = new Task<List<Tuple<ComponentType, IComponent>>>(() =>
@@ -145,20 +110,45 @@ namespace AppLogic
             throw new NotImplementedException();
         }
 
-
-        Task<bool> ILogic.DisconnectFromServer()
+        Task<List<Tuple<Type, IComponent>>> IClientLogic.LoadComponents()
         {
             throw new NotImplementedException();
         }
 
-        public void ConnenctToServer()
+        Task<bool> IClientLogic.DisconnectFromServer()
         {
-            throw new NotImplementedException();
+            var disconnectionTask = new Task<bool>(() =>
+            {
+                try
+                {
+                    this.NetworkClient.Disconnect();
+                    return true;
+                }
+                catch
+                {
+                    return false;
+                }
+            });
+
+            disconnectionTask.Start();
+            return disconnectionTask;
         }
 
-        Task<List<Tuple<Type, IComponent>>> ILogic.LoadComponents()
+        Task IClientLogic.ConnenctToServer(string ip)
         {
-            throw new NotImplementedException();
+            var connectionTask = new Task(() =>
+            {
+                try
+                {
+                    this.NetworkClient.Connect(ip);
+                }
+                catch
+                {
+                }
+            });
+
+            connectionTask.Start();
+            return connectionTask;
         }
     }
 }
