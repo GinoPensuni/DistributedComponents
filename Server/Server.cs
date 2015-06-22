@@ -116,8 +116,10 @@ namespace Server
                 }
                 if(this.OnResultReceived != null)
                 {
-                    ResultRe
-                    this.OnResultReceived(this, )
+                    ResultReceivedEventArgs resultArgs = new ResultReceivedEventArgs();
+                    resultArgs.JobGuid = e.Msg.ID;
+                    resultArgs.Results = ((ResultMessage)e.Msg).Result;
+                    this.OnResultReceived(this, resultArgs);
                 }
             }
             else if (e.Msg is ComponentMessage)
@@ -189,7 +191,7 @@ namespace Server
             return this.Slaves[rand.Next(0, this.Slaves.Count)].SendComponent(compMsg);
         }
 
-        public event EventHandler<CommonRessources.Interfaces.ResultReceivedEventArgs> OnResultReceived;
+        public event EventHandler<CommonRessources.ResultReceivedEventArgs> OnResultReceived;
     }
 }
 
