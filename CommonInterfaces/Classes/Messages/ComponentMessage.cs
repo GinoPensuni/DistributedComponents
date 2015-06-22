@@ -47,5 +47,11 @@ namespace CommonRessources
             get;
             set;
         }
+
+        public Guid ComponentGuid
+        {
+            get;
+            set;
+        }
     }
 }

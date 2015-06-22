@@ -114,6 +114,11 @@ namespace Server
                 {
                     Console.WriteLine(msg.ToString());
                 }
+                if(this.OnResultReceived != null)
+                {
+                    ResultRe
+                    this.OnResultReceived(this, )
+                }
             }
             else if (e.Msg is ComponentMessage)
             {
@@ -162,18 +167,6 @@ namespace Server
         public event EventHandler<ComponentRecievedEventArgs> OnRequestEvent;
 
 
-        public bool SendCalculatedResult(Guid id, List<Tuple<Guid, IComponent, byte[]>> Assembly)
-        {
-            Random rand = new Random();
-
-            foreach (Tuple<Guid, IComponent, byte[]> item in Assembly)
-            {
-
-            }
-
-            return false;
-        }
-
         private void SendComponentToSlave(Tuple<Guid, IComponent, byte[]> component)
         {
             ComponentMessage mess = new ComponentMessage(component.Item1);
@@ -184,11 +177,19 @@ namespace Server
             throw new NotImplementedException();
         }
 
-
-        public bool SendCalculatedResult(Guid id, List<Tuple<Guid, Core.Network.Component, byte[]>> Assembly)
+        public bool SendCalculatedResult(Guid id, Tuple<Guid, IEnumerable<object>, byte[]> job)
         {
-            return false;
+            ComponentMessage compMsg = new ComponentMessage(id);
+            compMsg.Values = job.Item2;
+
+            compMsg.ComponentGuid = job.Item1;
+
+            Random rand = new Random(42);
+
+            return this.Slaves[rand.Next(0, this.Slaves.Count)].SendComponent(compMsg);
         }
+
+        public event EventHandler<CommonRessources.Interfaces.ResultReceivedEventArgs> OnResultReceived;
     }
 }
 
