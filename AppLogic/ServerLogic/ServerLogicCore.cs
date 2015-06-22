@@ -38,16 +38,23 @@ namespace AppLogic.ServerLogic
             }
         }
 
+        ~ServerLogicCore()
+        {
+            lock (syncRoot)
+            {
+                isInstantiated = false;
+            }
+        }
+
         private void ServerReference_RequestEvent(object sender, ComponentRecievedEventArgs e)
         {
 
         }
 
-        private List<ComponentNode> SimplifyGraph(List<ComponentEdge> edgeList)
+        private List<ComponentNode> SimplifyGraph(IEnumerable<ComponentEdge> edgeList)
         {
             var internalEdges = edgeList.Where(edge => edge.InternalInputComponentGuid != Guid.Empty && edge.InternalOutputComponentGuid != Guid.Empty);
-            var inputEdges = edgeList.Where(edge => edge.InternalInputComponentGuid == Guid.Empty);
-            var outputEdges = edgeList.Where(edge => edge.InternalOutputComponentGuid == Guid.Empty);
+            var outerEdges = edgeList.Where(edge => edge.InternalInputComponentGuid == Guid.Empty || edge.InternalOutputComponentGuid == Guid.Empty);
             var result = new List<ComponentNode>();
 
             foreach (var edge in internalEdges)
@@ -68,6 +75,51 @@ namespace AppLogic.ServerLogic
                 targetNode.Inputs[edge.OutputValueID] = sourceNode;
             }
 
+            List<ComponentNode> complexNodes = result.Where(n => n.InternalEdges != null).ToList();
+            List<ComponentNode> simplifiedNodes = new List<ComponentNode>();
+
+            foreach (var node in complexNodes)
+            {
+                var subGraph = this.SimplifyGraph(node.InternalEdges);
+                var subGraphEdges = node.InternalEdges;
+
+                foreach (var subNode in subGraph.Where(subNode => subNode.Inputs.ContainsValue(null)))
+                {
+                    var ingoingEdges = subGraphEdges.Where(
+                        edge =>
+                            edge.InternalOutputComponentGuid == subNode.InternalId
+                            && (edge.InternalInputComponentGuid == Guid.Empty || edge.InternalInputComponentGuid == node.InternalId));
+
+                    foreach (var inEdge in ingoingEdges)
+                    {
+                        uint port = inEdge.InputValueID;
+                        var outerEdge = edgeList.Single(edge => edge.InternalOutputComponentGuid == node.InternalId && edge.OutputValueID == port);
+                        var extNode = result.Single(n => n.InternalId == outerEdge.InternalInputComponentGuid);
+                        subNode.Inputs[inEdge.OutputValueID] = extNode;
+                        extNode.Outputs[port] = subNode;
+                    }
+                }
+
+                foreach (var subNode in subGraph.Where(subNode => subNode.Outputs.ContainsValue(null)))
+                {
+                    var outgoingEdges = subGraphEdges.Where(
+                        edge =>
+                            edge.InternalInputComponentGuid == subNode.InternalId
+                            && (edge.InternalOutputComponentGuid == Guid.Empty || edge.InternalOutputComponentGuid == node.InternalId));
+
+                    foreach (var outEdge in outgoingEdges)
+                    {
+                        uint port = outEdge.OutputValueID;
+                        var outerEdge = edgeList.Single(edge => edge.InternalInputComponentGuid == node.InternalId && edge.InputValueID == port);
+                        var extNode = result.Single(n => n.InternalId == outerEdge.InternalOutputComponentGuid);
+                        subNode.Outputs[outEdge.InputValueID] = extNode;
+                        extNode.Inputs[port] = subNode;
+                    }
+                }
+            }
+
+            complexNodes.ForEach(n => result.Remove(n));
+
             return result;
         }
 
@@ -84,8 +136,8 @@ namespace AppLogic.ServerLogic
                 {
                     ComponentId = instance.ComponentGuid,
                     FriendlyName = instance.FriendlyName,
-                    InputTypes = instance.InputHints,
-                    OutputTypes = instance.OutputHints,
+                    InputTypes = instance.InputHints.ToList(),
+                    OutputTypes = instance.OutputHints.ToList(),
                     InternalEdges = null,
                     InternalId = internalComponentGuid,
                 };
@@ -106,8 +158,8 @@ namespace AppLogic.ServerLogic
                 {
                     ComponentId = component.ComponentGuid,
                     FriendlyName = component.FriendlyName,
-                    InputTypes = component.InputHints,
-                    OutputTypes = component.OutputHints,
+                    InputTypes = component.InputHints.ToList(),
+                    OutputTypes = component.OutputHints.ToList(),
                     InternalEdges = component.Edges,
                     InternalId = internalComponentGuid,
                 };

@@ -91,9 +91,9 @@ namespace AppLogic.ClientLogic
             return saveTask;
         }
 
-        public Task<List<Tuple<ComponentType, IComponent>>> LoadComponents()
+        public Task<List<Tuple<ComponentType, Core.Network.Component>>> LoadComponents()
         {
-            var loadingTask = new Task<List<Tuple<ComponentType, IComponent>>>(() =>
+            var loadingTask = new Task<List<Tuple<ComponentType, Core.Network.Component>>>(() =>
             {
                var assemblyData = this.ComponentStore.LoadAssemblies();
                foreach(var entry in assemblyData)
@@ -101,17 +101,24 @@ namespace AppLogic.ClientLogic
                     this.ComponentManager.LoadAssemblyContents(entry);
                 }
 
-              return this.ComponentManager.LoadedComponents;
+                // TODO Make this shit work
+
+               //return this.ComponentManager.LoadedComponents.Select(
+               //    comp =>
+               //    {
+               //        return new Core.Network.Component()
+               //        {
+               //            ComponentGuid = comp.Item2.ComponentGuid,
+               //            Edges = comp.Item1 == ComponentType.Complex ? comp.Item2.
+               //        };
+               //    });
+
+               return new List<Tuple<ComponentType, Core.Network.Component>>();
             });
 
             loadingTask.Start();
             return loadingTask;
 
-            throw new NotImplementedException();
-        }
-
-        Task<List<Tuple<Type, IComponent>>> IClientLogic.LoadComponents()
-        {
             throw new NotImplementedException();
         }
 
@@ -149,6 +156,12 @@ namespace AppLogic.ClientLogic
 
             connectionTask.Start();
             return connectionTask;
+        }
+
+
+        public Task SaveComponent(Core.Network.Component component)
+        {
+            throw new NotImplementedException();
         }
     }
 }
