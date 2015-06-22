@@ -3,14 +3,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using System.Runtime.InteropServices;
 using CommonRessources;
 using System.Threading;
 
-
-namespace InputComponentWpf
+namespace StringInputComponent
 {
-    public class Input : IComponent
+    public class TextInput : IComponent
     {
         private Guid componentGuid;
 
@@ -20,20 +18,21 @@ namespace InputComponentWpf
 
         private IEnumerable<string> outputHints;
 
-        private List<object> integer;
+        private List<object> text;
 
-        private MainWindow inputBox;
+        private MainWindow textbox; 
 
-        public Input()
+        public TextInput()
         {
-            this.componentGuid = new Guid("AFF922C1-6EE1-4DD5-A8C8-8A3A8EA7563C");
+            this.componentGuid = new Guid("93B15EA3-9B3A-4568-8B58-3640F9D13978");
 
-            this.friendlyName = "Integer-Input";
+            this.friendlyName = "Enter Text";
 
             this.inputHints = new List<string>() { typeof(String).ToString() };
 
-            this.outputHints = new List<string>() { typeof(Int32).ToString() };
+            this.outputHints = new List<string>() { typeof(String).ToString() };
         }
+
         public Guid ComponentGuid
         {
             get { return this.componentGuid; }
@@ -46,7 +45,7 @@ namespace InputComponentWpf
 
         public IEnumerable<string> InputHints
         {
-            get { return this.inputHints; }
+            get {return this.inputHints; }
         }
 
         public IEnumerable<string> OutputHints
@@ -56,28 +55,27 @@ namespace InputComponentWpf
 
         public IEnumerable<object> Evaluate(IEnumerable<object> values)
         {
-            var t = new Thread(new ThreadStart(Instantiate));
-            t.SetApartmentState(ApartmentState.STA);
-            t.Start();
-            t.IsBackground = true;    
-            t.Join();
-            return integer;
+            var thread = new Thread(new ThreadStart(Initialize));
+            thread.SetApartmentState(ApartmentState.STA);
+            thread.Start();
+            thread.IsBackground = true;
+            thread.Join();
+            return this.text;
         }
 
-        private void Instantiate()
+        private void Initialize()
         {
-            inputBox = new MainWindow();
-            inputBox.OnSubmitted += inputBox_OnSubmitted;
+            textbox = new MainWindow();
+            textbox.OnSubmitted += textbox_OnSubmitted;
             System.Windows.Application application = new System.Windows.Application();
-            application.Run(inputBox);      
+            application.Run(textbox);  
+
         }
 
-
-        void inputBox_OnSubmitted(object sender, TextEventArgs e)
+        private void textbox_OnSubmitted(object sender, TextInputEventArgs e)
         {
-            
-            integer = new List<object>();
-            integer.Add(int.Parse(e.Message)    );
+            this.text = new List<object>();
+            this.text.Add(e.Text);
         }
     }
 }

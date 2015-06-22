@@ -23,31 +23,83 @@ namespace ToInt32
 
             this.friendlyName = "DoubleToInt32";
 
-            
+            this.inputHints = new List<string>() { typeof(System.Double).ToString() };
+
+            this.outputHints = new List<string>() { typeof(System.Int32).ToString() };            
         }
         public Guid ComponentGuid
         {
-            get { throw new NotImplementedException(); }
+            get { return this.componentGuid; }
         }
 
         public string FriendlyName
         {
-            get { throw new NotImplementedException(); }
+            get { return this.friendlyName; }
         }
 
         public IEnumerable<string> InputHints
         {
-            get { throw new NotImplementedException(); }
+            get { return this.inputHints; }
         }
 
         public IEnumerable<string> OutputHints
         {
-            get { throw new NotImplementedException(); }
+            get { return this.outputHints; }
         }
 
         public IEnumerable<object> Evaluate(IEnumerable<object> values)
         {
-            throw new NotImplementedException();
+            int integer = 0;
+
+            bool checkValues = this.CheckIfAllowedValues(values);
+
+            if (checkValues)
+            {
+                var array = values.ToArray();
+
+
+                try
+                {
+                    integer = Convert.ToInt32(array[0]);
+
+                    List<object> obj = new List<object>();
+
+                    obj.Add(integer);
+
+                    return obj;
+                }
+                catch
+                {
+                    throw new ArgumentException("The value must be of the type described in the input hints!");
+                }
+            }
+            else
+            {
+                throw new ArgumentException("The number of values must be the same as described in the input hints!");
+            }
         }
+        private bool CheckIfAllowedValues(IEnumerable<object> values)
+        {
+            var array = values.ToArray();
+            var inputHintsArray = this.InputHints.ToArray();
+
+            if (array.Length != this.InputHints.Count())
+            {
+                return false;
+            }
+            else
+            {
+                for (int i = 0; i < array.Length; i++)
+                {
+                    if (array[i].GetType().ToString() != inputHintsArray[i])
+                    {
+                        return false;
+                    }
+                }
+            }
+
+            return true;
+        }
+
     }
 }

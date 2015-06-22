@@ -6,7 +6,7 @@
         <Grid.RowDefinitions>
             <RowDefinition Height="*"/>
             <RowDefinition Height="*"/>
-        </Grid.RowDefinitions>
+        </Grid.RowDefinitions>  
         <Label Content="Please type in a number: " Grid.Row="0" IsEnabled="False" HorizontalAlignment="Left" Margin="10" VerticalAlignment="Center"></Label>
         <TextBox Name="InputBox" KeyUp="InputBox_KeyUp" Width="70"  HorizontalAlignment="Right" Margin="10" VerticalAlignment="Center"/>
         <Button Click="Button_Click" Grid.Row="1" Height="35" VerticalAlignment="Center" HorizontalAlignment="Center" Name="btn" Content="Submit"/>

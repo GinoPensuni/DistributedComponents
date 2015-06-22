@@ -3,12 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using System.Runtime.InteropServices;
 using CommonRessources;
-using System.Threading;
+using System.Runtime.InteropServices;
 
-
-namespace InputComponentWpf
+namespace InputComponent
 {
     public class Input : IComponent
     {
@@ -20,9 +18,8 @@ namespace InputComponentWpf
 
         private IEnumerable<string> outputHints;
 
-        private List<object> integer;
-
-        private MainWindow inputBox;
+        private IEnumerable<object> integer;
+        private bool finish;
 
         public Input()
         {
@@ -56,28 +53,37 @@ namespace InputComponentWpf
 
         public IEnumerable<object> Evaluate(IEnumerable<object> values)
         {
-            var t = new Thread(new ThreadStart(Instantiate));
-            t.SetApartmentState(ApartmentState.STA);
-            t.Start();
-            t.IsBackground = true;    
-            t.Join();
-            return integer;
+            return Eval().Result;
         }
 
-        private void Instantiate()
+        private async Task<IEnumerable<object>> Eval()
         {
-            inputBox = new MainWindow();
-            inputBox.OnSubmitted += inputBox_OnSubmitted;
-            System.Windows.Application application = new System.Windows.Application();
-            application.Run(inputBox);      
+
+            var inputBox = new InputWindow1();
+
+            inputBox.Show();
+
+            inputBox.submit += inputBox_submit;
+            await Await();
+            return this.integer;
+
         }
 
-
-        void inputBox_OnSubmitted(object sender, TextEventArgs e)
+        void inputBox_submit(object sender, TextEvent e)
         {
-            
             integer = new List<object>();
-            integer.Add(int.Parse(e.Message)    );
+            integer.Concat(new List<object>() { int.Parse(e.Message) });
+        }
+
+        private Task Await() {
+            var task = new Task(() => {
+                while (!finish);
+
+                return;
+            });
+
+            task.Start();
+            return task;
         }
     }
 }
