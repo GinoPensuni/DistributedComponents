@@ -140,8 +140,21 @@ namespace Client
             ComponentMessage msg = (ComponentMessage)data;
             WorkTask task = new WorkTask(msg.ID, msg.Component);
 
+            // Maybe the message already contains all values?
+            if (msg.Values.Count() == msg.Component.InputHints.Count())
+            {
+                int index = 0;
+
+                foreach (object val in msg.Values)
+                {
+                    task.SetParameter(val, index);
+                    index++;
+                }
+            }
+
             this.workTasks.Add(task);
 
+            // Nah, stuipd server :-(
             while (!task.HasAllInputParameters())
             {
                 Thread.Sleep(1000);
