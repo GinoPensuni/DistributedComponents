@@ -152,7 +152,6 @@ namespace Server
 
         //
         // Interface implementation
-
         public NetworkState ServerState
         {
             get
