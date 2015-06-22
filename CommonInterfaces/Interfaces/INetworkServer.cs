@@ -14,7 +14,7 @@ namespace CommonRessources
             get;
         }
 
-        bool SendCalculatedResult(Guid id, Tuple<Guid, Core.Network.Component, IEnumerable<object>, byte[]> job);
+        bool SendCalculatedResult(Guid id, Tuple<Guid, IEnumerable<object>, byte[]> job);
 
         bool SendError(Guid id, Exception logicException);
 
