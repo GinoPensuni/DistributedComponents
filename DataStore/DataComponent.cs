@@ -18,6 +18,12 @@ namespace DataStore
             set;
         }
 
+        public bool IsAtomic 
+        { 
+            get; 
+            set; 
+        }
+
         public byte[] Assembly
         {
             get;
