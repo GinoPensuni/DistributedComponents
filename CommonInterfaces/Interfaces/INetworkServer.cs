@@ -13,7 +13,7 @@ namespace CommonRessources
             get;
         }
 
-        bool SendCalculatedResult(Guid id, List<Tuple<Guid, IComponent, byte[]>> Assembly);
+        bool SendCalculatedResult(Guid id, List<Tuple<Guid, Core.Network.Component, byte[]>> Assembly);
 
         bool SendError(Guid id, Exception logicException);
 
