@@ -7,7 +7,7 @@ using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using Client;
-using Server;
+using InputComponentWpf;
 
 namespace DistributedComponentsFinal
 {
@@ -15,17 +15,24 @@ namespace DistributedComponentsFinal
     {
         static void Main(string[] args)
         {
-            dynamic dd = (new Int32()).GetType();
+        //    dynamic dd = (new Int32()).GetType();
 
-            Console.WriteLine(dd.ToString());
+        //    Console.WriteLine(dd.ToString());
 
-            Console.WriteLine("hello world!");
+        //    Console.WriteLine("hello world!");
 
-            //Console.ReadLine();
+        //    //Console.ReadLine();
             
-            Client.Client c = new Client.Client();
+        //    Client.Client c = new Client.Client();
 
-            c.Connect(IPAddress.Parse("10.101.150.27"), 8081);
+        //    c.Connect(IPAddress.Parse("10.101.150.27"), 8081);
+
+            Input i = new Input();
+
+            List<object> t = new List<object>();
+            i.Evaluate(t);
+
+            Console.ReadLine();
         }
     }
 }

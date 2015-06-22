@@ -1,0 +1,14 @@
+﻿<Window x:Class="InputWpd.Window1"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Window1" Height="300" Width="300">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <Label IsEnabled="False" Content="Please type in a number of type integer: "/>
+        <TextBox Name="UserInputBox" Grid.Row="0" Height="20" Margin="221,0,19,116" />
+        <Button Click="Button_Click" Content="submit" Height="20" Width="250"/>
+    </Grid>
+</Window>

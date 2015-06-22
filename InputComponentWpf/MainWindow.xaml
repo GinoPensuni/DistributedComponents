@@ -1,0 +1,10 @@
+﻿<Window x:Class="InputComponentWpf.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="MainWindow" Height="150" Width="250" ResizeMode="NoResize">
+    <Grid>
+        <Label Content="Please type in a number: " IsEnabled="False"></Label>
+        <TextBox Name="InputBox" Width="70" Margin="133,0,39,102"/>
+        <Button Click="Button_Click" Height="35" Margin="57,78,71,10" Content="Submit"/>
+    </Grid>
+</Window>
