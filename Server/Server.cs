@@ -117,29 +117,21 @@ namespace Server
             }
             else if (e.Msg is ComponentMessage)
             {
-                if (e.Msg.Type == MessageType.RequestForJob)
+                
+            }
+            else if (e.Msg is JobRequestMessage)
+            {
+                this.ExecutionCustomers.Add(e.Msg.ID, slave);
+
+                if (this.OnRequestEvent != null)
                 {
-                    this.ExecutionCustomers.Add(e.Msg.ID, slave);
+                    ComponentRecievedEventArgs args = new ComponentRecievedEventArgs();
 
-                    if (this.OnRequestEvent != null)
-                    {
-                        ComponentRecievedEventArgs args = new ComponentRecievedEventArgs();
+                    args.Component = ((JobRequestMessage)e.Msg).Component;
+                    args.ToBeExceuted = e.Msg.ID;
+                    args.Input = ((ComponentMessage)e.Msg).Values.ToList();
 
-                        args.Component = ((ComponentMessage)e.Msg).Component;
-                        args.ToBeExceuted = e.Msg.ID;
-                        args.Input = ((ComponentMessage)e.Msg).Values.ToList();
-
-                        this.OnRequestEvent(this, args);
-
-                        /*args.Component = ((ComponentMessage)e.Msg).Component;
-                        args.ToBeExceuted = Guid.NewGuid();
-                        //TODO: External wenns von anderem Server kommt.
-                        args.External = false;
-                        args.Input = ((ComponentMessage)e.Msg).Values.ToList();
-
-                        this.Jobs.Add(args.ToBeExceuted, slave); // Which slave wanted a component to be executed?
-                        this.RequestEvent(this, args);*/
-                    }
+                    this.OnRequestEvent(this, args);
                 }
             }
         }
@@ -190,6 +182,12 @@ namespace Server
         public bool SendError(Guid id, Exception logicException)
         {
             throw new NotImplementedException();
+        }
+
+
+        public bool SendCalculatedResult(Guid id, List<Tuple<Guid, Core.Network.Component, byte[]>> Assembly)
+        {
+            return false;
         }
     }
 }

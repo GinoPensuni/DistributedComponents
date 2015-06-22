@@ -167,7 +167,7 @@ namespace Client
             {
                 ClientComponentEventArgs e = new ClientComponentEventArgs();
 
-                e.Component = msg.Component;
+                //e.Component = msg.Component;
                 e.Input = msg.Values.ToList();
                 e.ToBeExceuted = msg.ToBeExecuted;
                 e.Assembly = msg.Assembly;
@@ -248,15 +248,26 @@ namespace Client
 
         public bool SendJobRequest(IComponent component)
         {
+            /*
             ComponentMessage compMessage = new ComponentMessage(MessageType.RequestForJob, Guid.NewGuid());
             compMessage.Component = component;
             compMessage.Values = new List<object>();
 
             return this.SendMessage(compMessage);
+            */
+            return false;
+        }
+
+        public bool SendJobRequest(Core.Network.Component component)
+        {
+            JobRequestMessage jrMess = new JobRequestMessage(Guid.NewGuid());
+            jrMess.Component = component;
+            jrMess.Values = new List<object>();
+
+            return this.SendMessage(jrMess);
         }
 
         public event EventHandler<ClientComponentEventArgs> OnRequestEvent;
-
 
         public void Connect(string ip)
         {

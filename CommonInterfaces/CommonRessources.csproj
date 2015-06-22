@@ -45,6 +45,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Classes\Messages\InputParameterMessage.cs" />
+    <Compile Include="Classes\Messages\JobRequestMessage.cs" />
     <Compile Include="Enums\ComponentType.cs" />
     <Compile Include="Classes\Messages\AssignMessage.cs" />
     <Compile Include="Classes\Messages\AliveMessage.cs" />
