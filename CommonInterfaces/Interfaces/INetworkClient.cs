@@ -16,7 +16,7 @@ namespace CommonRessources
 
         bool SendResult(List<object> Result, Guid id);
 
-        bool SendJobRequest(IComponent component);
+        bool SendJobRequest(Core.Network.Component component);
 
         event EventHandler<ClientComponentEventArgs> OnRequestEvent;
 
