@@ -7,7 +7,7 @@ namespace CommonRessources
 {
     public class ComponentRecievedEventArgs : EventArgs
     {
-        public Core.Component.IComponent Component
+        public Core.Network.Component Component
         {
             get;
             set;

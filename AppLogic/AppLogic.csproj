@@ -58,6 +58,10 @@
       <Project>{3cbff49b-e085-49af-8aa5-e3bab177b179}</Project>
       <Name>Core.Component</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Core.Network\Core.Network.csproj">
+      <Project>{b1b4b865-f61c-4ed7-93ec-01c6339a82b6}</Project>
+      <Name>Core.Network</Name>
+    </ProjectReference>
     <ProjectReference Include="..\DataStore\DataStore.csproj">
       <Project>{deac972d-e853-4d12-a41b-1fd4f29e98ec}</Project>
       <Name>DataStore</Name>
