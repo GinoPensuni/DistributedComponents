@@ -21,11 +21,12 @@ namespace DataStore
             set;
         }
 
-        public byte[] this[Guid AssemblyID]
+        public Tuple<byte[], bool> this[Guid AssemblyID]
         {
             get
             {
-                return DbContext.Components.Single(component => component.Id == AssemblyID).Assembly;
+                var comp = DbContext.Components.Single(component => component.Id == AssemblyID);
+                return new Tuple<byte[], bool>(comp.Assembly, comp.IsAtomic);
             }
         }
 
