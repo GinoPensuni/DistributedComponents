@@ -57,6 +57,16 @@ namespace Server
             }
         }
 
+        public void AssignGuid(Guid guid)
+        {
+            this.clientGuid = guid;
+
+            AssignMessage assignmsg = new AssignMessage(Guid.NewGuid());
+            assignmsg.ClientGuid = this.clientGuid;
+
+            this.SendMessage(assignmsg);
+        }
+
         public bool SendComponent(Component comp, IEnumerable<object> values)
         {
             ComponentMessage compmsg = new ComponentMessage(Guid.NewGuid());
@@ -76,14 +86,15 @@ namespace Server
             return true;
         }
 
-        public void AssignGuid(Guid guid)
+        // id = ID of the component message, which has been sent to this slave before.
+        public bool SendInputParameter(Guid id, object value, int index)
         {
-            this.clientGuid = guid;
+            InputParameterMessage ipm = new InputParameterMessage(Guid.NewGuid());
+            ipm.WorkTaskGuid = id;
+            ipm.Value = value;
+            ipm.Index = index;
 
-            AssignMessage assignmsg = new AssignMessage(Guid.NewGuid());
-            assignmsg.ClientGuid = this.clientGuid;
-
-            this.SendMessage(assignmsg);
+            return this.SendMessage(ipm);
         }
 
         private void CheckAliveStatus()

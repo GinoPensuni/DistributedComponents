@@ -16,6 +16,7 @@ namespace Server
     {
         private Thread listenThread;
         private TcpListener tcpListener;
+        private NetworkState state;
 
         public List<Slave> Slaves { get; private set; }
 
@@ -64,13 +65,33 @@ namespace Server
         {
             TcpClient client = (TcpClient)clientobj;
             Slave slave = new Slave(client);
-            Component comp = new Component(Guid.NewGuid(), "test", null, null);
+
             slave.OnMessageReceived += Slave_OnMessageReceived;
             slave.OnSlaveDied += Slave_OnSlaveDied;
             slave.AssignGuid(Guid.NewGuid());
+
             this.Slaves.Add(slave);
+
+            //
+            // Only for testing purposes!!!!!
+            //
+
             Thread.Sleep(1000);
-            slave.SendComponent(comp, null);
+            Component comp = new Component(Guid.NewGuid(), "test", new List<string>() { typeof(int).ToString(), typeof(int).ToString() }, new List<string>() { typeof(int).ToString(), typeof(string).ToString() });
+
+            ComponentMessage compmsg = new ComponentMessage(Guid.NewGuid());
+            compmsg.Component = comp;
+            compmsg.Values = new List<object>();
+
+            slave.SendMessage(compmsg);
+
+            Thread.Sleep(2000);
+
+            slave.SendInputParameter(compmsg.ID, 2, 0);
+
+            Thread.Sleep(2000);
+
+            slave.SendInputParameter(compmsg.ID, 2, 1);
         }
 
         void Slave_OnSlaveDied(object sender, SlaveDiedEventArgs e)
@@ -137,12 +158,12 @@ namespace Server
         {
             get
             {
-                return this.ServerState;
+                return this.state;
             }
             private set
             {
-                // why?
-                
+                this.state = value;
+
             }
         }
 

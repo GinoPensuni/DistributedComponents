@@ -20,16 +20,20 @@ namespace Client
 
         private NetworkStream networkStream;
 
-        private bool running;
-
         private NetworkState state;
 
         private DateTime lastAliveMessageFromServer;
 
+        private bool isListening;
+
+        // work work
+
+        private List<WorkTask> workTasks; // A list of currently running tasks, which get executed by the client.
+
         public Client()
         {
-            this.running = false;
             this.lastAliveMessageFromServer = DateTime.Now;
+            this.workTasks = new List<WorkTask>();
         }
 
         
@@ -45,7 +49,7 @@ namespace Client
 
                 this.networkStream = this.client.GetStream();
 
-                this.running = true;
+                this.isListening = true;
 
                 // this.NetworkClient = NetworkState.Running; // no guid :-(
 
@@ -62,7 +66,7 @@ namespace Client
 
         private void Listen()
         {
-            while (running)
+            while (this.isListening)
             {
                 if (this.networkStream.DataAvailable)
                 {
@@ -76,28 +80,7 @@ namespace Client
 
                     Message ma = Protocol.GetComponentMessageFromByteArray(message);
 
-                    if (ma is ComponentMessage)
-                    {
-                        ComponentMessage compmsg = (ComponentMessage)ma;
-
-                        Thread thread = new Thread(new ParameterizedThreadStart(this.HandleComponentMessage));
-                        thread.Start(compmsg);
-                    }
-                    else if (ma is AliveMessage)
-                    {
-                        this.SendMessage((AliveMessage)ma);
-
-                        this.lastAliveMessageFromServer = DateTime.Now;
-                    }
-                    else if (ma is AssignMessage)
-                    {
-                        this.clientGuid = ((AssignMessage)ma).ClientGuid;
-                        this.state = NetworkState.Running; // we have a guid, so we are running ^_^
-
-                        Console.WriteLine("guid: " + this.clientGuid);
-
-                        this.SendMessage((AssignMessage)ma);
-                    }
+                    this.HandleMessage(ma);   
                 }
                 else
                 {
@@ -112,14 +95,61 @@ namespace Client
             }
         }
 
+        private void HandleMessage(Message ma)
+        {
+            if (ma is AssignMessage)
+            {
+                // Just send it back to let the server know that the client accepted this guid.
+                this.clientGuid = ((AssignMessage)ma).ClientGuid;
+                this.state = NetworkState.Running; // we have a guid, so we are running ^_^
+
+                Console.WriteLine("> Got a GUID from the server: " + this.clientGuid);
+
+                this.SendMessage((AssignMessage)ma);
+            }
+            else if (ma is AliveMessage)
+            {
+                // Just send it back to let the server know that the client still exists.
+                this.SendMessage((AliveMessage)ma);
+
+                this.lastAliveMessageFromServer = DateTime.Now;
+            }
+            else if (ma is ComponentMessage)
+            {
+                ComponentMessage compmsg = (ComponentMessage)ma;
+
+                Thread thread = new Thread(new ParameterizedThreadStart(this.HandleComponentMessage));
+                thread.Start(compmsg);
+            }
+            else if (ma is InputParameterMessage)
+            {
+                InputParameterMessage ipM = (InputParameterMessage)ma;
+
+                List<WorkTask> foundTask = this.workTasks.Where(i => i.ID.Equals(ipM.WorkTaskGuid)).ToList();
+
+                if (foundTask.Count > 0)
+                {
+                    foundTask[0].SetParameter(ipM.Value, ipM.Index);
+                }
+            }
+        }
+
+        // Please run in a new thread!!
         private void HandleComponentMessage(object data)
         {
-            //Thread thread = new Thread(new ParameterizedThreadStart(ExecuteComponent));
-
-            //thread.Start(msg);
-
             ComponentMessage msg = (ComponentMessage)data;
-            
+            WorkTask task = new WorkTask(msg.ID, msg.Component);
+
+            this.workTasks.Add(task);
+
+            while (!task.HasAllInputParameters())
+            {
+                Thread.Sleep(1000);
+                Console.WriteLine("Waiting for input parameter");
+            }
+
+            msg.Values = task.InputParameters.ToList();
+
             if (this.OnRequestEvent != null)
             {
                 ClientComponentEventArgs e = new ClientComponentEventArgs();
@@ -131,6 +161,9 @@ namespace Client
 
                 this.OnRequestEvent(this, e);
             }
+
+            // will be taken over to the logic class
+            this.ExecuteComponent(msg);
         }
 
         private void ExecuteComponent(object obj)
@@ -195,6 +228,8 @@ namespace Client
             ResultMessage resMessage = new ResultMessage(ResultStatusCode.Successful, id);
             resMessage.Result = Result;
 
+            this.workTasks.Remove(this.workTasks.First(i => i.ID.Equals(id)));
+
             return this.SendMessage(resMessage);
         }
 
@@ -223,7 +258,7 @@ namespace Client
 
         public void Disconnect()
         {
-            this.running = false;
+            this.isListening = false;
             this.networkStream.Close();
             this.client.Close();
             this.state = NetworkState.Stopped;
