@@ -46,15 +46,37 @@ namespace InputComponentWpf
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
+            int result = 0;
+
             if (OnSubmitted != null)
             {
                 try
                 {
+                    if (int.TryParse(InputBox.Text, out result))
                     OnSubmitted(this, new TextEventArgs() { Message = InputBox.Text });
                 }
                 catch (Exception)
                 {
                 }
+            }
+        }
+
+        private void InputBox_KeyUp(object sender, KeyEventArgs e)
+        {
+            try
+            {
+                int.Parse(InputBox.Text);
+                InputBox.BorderBrush = Brushes.Green;
+                InputBox.Foreground = Brushes.Green;
+                InputBox.BorderThickness = new Thickness(1);
+                btn.IsEnabled = true;
+            }
+            catch
+            {
+                InputBox.BorderBrush = Brushes.Red;
+                InputBox.Foreground = Brushes.Red;
+                InputBox.BorderThickness = new Thickness(1);
+                btn.IsEnabled = false;
             }
         }
     }

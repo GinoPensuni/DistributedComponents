@@ -21,7 +21,7 @@ namespace InputComponentWpf
         private IEnumerable<string> outputHints;
 
         private List<object> integer;
-        private bool finish;
+
         private MainWindow inputBox;
 
         public Input()
@@ -75,8 +75,9 @@ namespace InputComponentWpf
 
         void inputBox_OnSubmitted(object sender, TextEventArgs e)
         {
+            
             integer = new List<object>();
-            integer.Add(e.Message);
+            integer.Add(int.Parse(e.Message));
         }
     }
 }
