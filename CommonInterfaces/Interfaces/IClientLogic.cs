@@ -10,10 +10,10 @@ namespace CommonRessources
     {
         Task<bool> DisconnectFromServer();
 
-        Task SaveComponent(IComponent component);
+        Task SaveComponent(Core.Network.Component component);
 
         Task ConnenctToServer(string ip);
 
-        Task<List<Tuple<Type, IComponent>>> LoadComponents();
+        Task<List<Tuple<ComponentType, Core.Network.Component>>> LoadComponents();
     }
 }
