@@ -80,17 +80,14 @@ namespace Client
                     {
                         ComponentMessage compmsg = (ComponentMessage)ma;
 
-                        this.HandleComponentMessage(compmsg);
+                        Thread thread = new Thread(new ParameterizedThreadStart(this.HandleComponentMessage));
+                        thread.Start(compmsg);
                     }
                     else if (ma is AliveMessage)
                     {
                         this.SendMessage((AliveMessage)ma);
 
                         this.lastAliveMessageFromServer = DateTime.Now;
-
-                        //byte[] response = Protocol.GetByteArrayFromMessage((AliveMessage)ma);
-
-                        //networkStream.Write(response, 0, response.Length);
                     }
                     else if (ma is AssignMessage)
                     {
@@ -100,10 +97,6 @@ namespace Client
                         Console.WriteLine("guid: " + this.clientGuid);
 
                         this.SendMessage((AssignMessage)ma);
-
-                        //byte[] response = Protocol.GetByteArrayFromMessage((AssignMessage)ma);
-
-                        //networkStream.Write(response, 0, response.Length);
                     }
                 }
                 else
@@ -119,12 +112,14 @@ namespace Client
             }
         }
 
-        private void HandleComponentMessage(ComponentMessage msg)
+        private void HandleComponentMessage(object data)
         {
             //Thread thread = new Thread(new ParameterizedThreadStart(ExecuteComponent));
 
             //thread.Start(msg);
 
+            ComponentMessage msg = (ComponentMessage)data;
+            
             if (this.RequestEvent != null)
             {
                 ClientComponentEventArgs e = new ClientComponentEventArgs();
