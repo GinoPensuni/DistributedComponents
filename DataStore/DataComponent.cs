@@ -12,6 +12,7 @@ namespace DataStore
     public class DataComponent
     {
         [Key]
+        [DatabaseGenerated(System.ComponentModel.DataAnnotations.Schema.DatabaseGeneratedOption.Identity)]
         public Guid Id
         {
             get;

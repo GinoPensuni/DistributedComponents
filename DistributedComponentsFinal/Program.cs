@@ -28,9 +28,15 @@ namespace DistributedComponentsFinal
 
         //    c.Connect(IPAddress.Parse("10.101.150.27"), 8081);
 
-            StringInputComponent.TextInput e = new StringInputComponent.TextInput();
+            // StringInputComponent.TextInput e = new StringInputComponent.TextInput();
 
-            e.Evaluate(new List<object>() { });
+            // e.Evaluate(new List<object>() { });
+
+            Console.WriteLine(uint.MaxValue);
+
+            Console.WriteLine((uint)0);
+
+            Console.ReadLine();
         }
     }
 }

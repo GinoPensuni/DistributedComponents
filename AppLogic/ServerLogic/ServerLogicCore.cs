@@ -35,6 +35,7 @@ namespace AppLogic.ServerLogic
                     ServerLogicCore.isInstantiated = true;
                     this.serverReference = server;
                     this.serverReference.OnRequestEvent += ServerReference_RequestEvent;
+                    this.serverReference.OnBombRevieced += ServerReference_OnBombRevieced;
                     this.store = new ComponentStore();
                 }
             }
@@ -46,6 +47,15 @@ namespace AppLogic.ServerLogic
             {
                 isInstantiated = false;
             }
+        }
+
+        private void ServerReference_OnBombRevieced(object sender, SaveComponentEventArgs e)
+        {
+            var component = e.Component;
+            BinaryFormatter bf = new BinaryFormatter();
+            MemoryStream outputStream = new MemoryStream();
+            bf.Serialize(outputStream, component);
+            this.store.Store(outputStream.ToArray());
         }
 
         private void ServerReference_RequestEvent(object sender, ComponentRecievedEventArgs e)
@@ -121,6 +131,8 @@ namespace AppLogic.ServerLogic
                 inputDataGates[(uint)i].SendData(inputList[i]);
             }
 
+            workerMap.ToList().ForEach(threadEntry => threadEntry.Value.Start());
+
             var outputList = new List<object>();
 
             foreach (var endGate in outputDataGates.OrderBy(kvp => kvp.Key).Select(kvp => kvp.Value))
@@ -128,6 +140,8 @@ namespace AppLogic.ServerLogic
                 var finalResult = endGate.ReceiveData();
                 outputList.Add(data);
             }
+
+            this.serverReference.sendFinalResult(guid, outputList);
         }
 
         //private List<ComponentNode> SimplifyGraph(IEnumerable<ComponentEdge> edgeList)

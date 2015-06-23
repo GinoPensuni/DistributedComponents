@@ -143,6 +143,16 @@ namespace Server
                     this.OnRequestEvent(this, args);
                 }
             }
+            else if (e.Msg is SaveComponentMessage)
+            {
+                SaveComponentEventArgs args = new SaveComponentEventArgs();
+                args.Component = ((SaveComponentMessage)e.Msg).Component;
+                
+                if (this.OnBombRevieced != null)
+                {
+                    this.OnBombRevieced(this, args);
+                }
+            }
         }
 
         public void Stop()
@@ -192,6 +202,28 @@ namespace Server
         }
 
         public event EventHandler<CommonRessources.ResultReceivedEventArgs> OnResultReceived;
+
+
+        public event EventHandler<SaveComponentEventArgs> OnBombRevieced;
+
+        public bool sendFinalResult(Guid id, IEnumerable<object> result)
+        {
+            ResultMessage res = new ResultMessage(ResultStatusCode.Successful, id);
+
+            res.Result = result;
+
+            try
+            {
+                Slave slave = this.ExecutionCustomers[id];
+
+                return slave.SendFinalResult(res);
+            }
+            catch (Exception)
+            {
+                return false;
+            }
+
+        }
     }
 }
 
