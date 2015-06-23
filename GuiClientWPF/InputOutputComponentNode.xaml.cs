@@ -33,7 +33,7 @@ namespace GuiClientWPF
         public InputNodeComponent(string fullTypeName)
         {
             InitializeComponent();
-
+            this.fullTypeName = fullTypeName;
             this.Marker.ToolTip = fullTypeName;
         }
 
