@@ -10,6 +10,17 @@ namespace GuiClientWPF
     public class LineContainer
     {
         public Polyline InnerLine { get; set; }
+        public InputNodeComponent From
+        {
+            get;
+            set;
+        }
+
+        public InputNodeComponent To
+        {
+            get;
+            set;
+        }
 
         public static implicit operator LineContainer(Polyline innerLine) 
         {

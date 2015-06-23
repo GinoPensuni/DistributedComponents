@@ -25,6 +25,27 @@ namespace GuiClientWPF
         private readonly List<InputNodeComponent> inputNodes;
         private readonly List<InputNodeComponent> outputNodes;
         private Components entry;
+        private List<InputNodeComponent> freeInputNodes;
+        private List<InputNodeComponent> freeOutputNodes;
+        private Guid id;
+        public Guid Id
+        {
+            get
+            {
+                return id;
+            }
+        }
+        public int FreeInputNodes
+        {
+            get;
+            set;
+        }
+
+        public int FreeOutputNodes
+        {
+            get;
+            set;
+        }
 
         public Components Entry
         {
@@ -34,7 +55,7 @@ namespace GuiClientWPF
             }
         }
 
-        public List<InputNodeComponent> InputNodes
+        public List<InputNodeComponent> InputNodesList
         {
             get
             {
@@ -42,11 +63,27 @@ namespace GuiClientWPF
             }
         }
 
-        public List<InputNodeComponent> OutputNodes
+        public List<InputNodeComponent> OutputNodesList
         {
             get
             {
                 return outputNodes;
+            }
+        }
+
+        public List<InputNodeComponent> FreeInputNodesList
+        {
+            get
+            {
+                return freeInputNodes;
+            }
+        }
+
+        public List<InputNodeComponent> FreeOutputNodesList
+        {
+            get
+            {
+                return freeOutputNodes;
             }
         }
 
@@ -55,6 +92,9 @@ namespace GuiClientWPF
             InitializeComponent();
             this.inputNodes = new List<InputNodeComponent>();
             this.outputNodes = new List<InputNodeComponent>();
+            this.freeInputNodes = new List<InputNodeComponent>();
+            this.freeOutputNodes = new List<InputNodeComponent>();
+            this.id = Guid.NewGuid();
         }
 
         public GuiComponent(Components entry)
@@ -75,6 +115,7 @@ namespace GuiClientWPF
                 currentY += 15;
                 newInputNode.ConnectionNodeClicked += InputOutputNode_ConnectionNodeClicked;
                 this.inputNodes.Add(newInputNode);
+                this.FreeInputNodes++;
             }
 
             currentY = 0.0;
@@ -89,7 +130,11 @@ namespace GuiClientWPF
                 currentY += 15;
                 newOutputNode.ConnectionNodeClicked += InputOutputNode_ConnectionNodeClicked;
                 this.outputNodes.Add(newOutputNode);
+                this.FreeOutputNodes ++;
             }
+
+            freeOutputNodes.AddRange(this.outputNodes);
+            freeInputNodes.AddRange(this.inputNodes);
         }
 
         private void InputOutputNode_ConnectionNodeClicked(object sender, ConnectionNodeClickedEventArgs e)
