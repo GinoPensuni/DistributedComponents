@@ -13,7 +13,7 @@ namespace CommonRessources
         {
         }
 
-        public SaveComponentMessage(ResultStatusCode status, Guid ID)
+        public SaveComponentMessage(Guid ID)
             : this(MessageType.Unknown, ID)
         {
             

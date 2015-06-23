@@ -57,6 +57,12 @@ namespace Server
             }
         }
 
+        public bool SendFinalResult(Message msg)
+        {
+            this.SendMessage(msg);
+            return this.UnconfirmedMessages.Remove(msg);
+        }
+
         public void AssignGuid(Guid guid)
         {
             this.clientGuid = guid;
