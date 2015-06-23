@@ -21,5 +21,10 @@ namespace CommonRessources
         event EventHandler<ComponentRecievedEventArgs> OnRequestEvent;
 
         event EventHandler<ResultReceivedEventArgs> OnResultReceived;
+       
+        /// <summary>
+        /// The component to be uploaded.
+        /// </summary>
+        event EventHandler<ComponentRecievedEventArgs> OnBombRevieced;
     }
 }

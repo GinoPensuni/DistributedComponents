@@ -49,7 +49,7 @@ namespace GuiClientWPF
 
         private async void SaveAction_Click(object sender, RoutedEventArgs e)
         {
-            await this.Manager.SaveComponent(default(List<Tuple<Rectangle, Rectangle>>));
+           await this.Manager.SaveComponent(this.WorkingSTATION.Connections, this.Dispatcher);
         }
 
         private void RunAction_Click(object sender, RoutedEventArgs e)

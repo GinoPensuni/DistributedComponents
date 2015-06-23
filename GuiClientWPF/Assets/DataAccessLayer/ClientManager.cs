@@ -17,7 +17,7 @@ namespace GuiClientWPF
         private NetworkComponent currentGui;
         private IClientLogic logic;
         private readonly static ClientManager manager = new ClientManager();
-
+        private System.Windows.Threading.Dispatcher disp;
         public static ClientManager Manager
         {
             get
@@ -70,10 +70,14 @@ namespace GuiClientWPF
             return connectionTask;
         }
 
-        internal Task SaveComponent(ICollection<Tuple<Tuple<GuiComponent, InputNodeComponent, Ellipse, Point>, Tuple<GuiComponent, InputNodeComponent, Ellipse, Point>, LineContainer>> componentList)
+        internal Task SaveComponent(ICollection<Tuple<Tuple<GuiComponent, InputNodeComponent, Ellipse, Point>, Tuple<GuiComponent, InputNodeComponent, Ellipse, Point>, LineContainer>> componentList, System.Windows.Threading.Dispatcher disp)
         {
-            var saveTask = new Task(async () => {
-                await logic.SaveComponent(await this.GenerateComponent(componentList));
+            this.disp = disp;
+            var saveTask = new Task(() => {
+                this.disp.Invoke(async() =>
+                {
+                    await logic.SaveComponent(await this.GenerateComponent(componentList));
+                });
             });
 
             saveTask.Start();
@@ -95,15 +99,25 @@ namespace GuiClientWPF
 
         private async Task<NetworkComponent> GenerateComponent(ICollection<Tuple<Tuple<GuiComponent, InputNodeComponent, Ellipse, Point>, Tuple<GuiComponent, InputNodeComponent, Ellipse, Point>, LineContainer>> componentList)
         {
+           var list = await ParsingTask(componentList);
+           foreach (var entry in list)
+           {
+               MessageBox.Show(entry.Item1.FriendlyName.Text);
+           }
            await NetworkGenerator(await ParsingTask(componentList));
-           return this.currentGui;
+          
+           MessageBox.Show(this.currentGui.Edges.ToString());
+            return this.currentGui;
         }
 
         private Task<ICollection<Tuple<GuiComponent, GuiComponent, LineContainer>>> ParsingTask(ICollection<Tuple<Tuple<GuiComponent, InputNodeComponent, Ellipse, Point>, Tuple<GuiComponent, InputNodeComponent, Ellipse, Point>, LineContainer>> componentList)
         {
             var parsingTask = new Task<ICollection<Tuple<GuiComponent, GuiComponent, LineContainer>>>(() => 
             {
+               return this.disp.Invoke(() =>
+                {
                 return componentList.Select(tuple => new Tuple<GuiComponent, GuiComponent, LineContainer>(tuple.Item1.Item1, tuple.Item2.Item1, tuple.Item3)).ToList();
+                    });
             });
 
             parsingTask.Start();
@@ -151,11 +165,12 @@ namespace GuiClientWPF
                             edge.InputValueID = (uint)entry.Item1.InputNodesList.IndexOf(connection);
                             edge.InternalInputComponentGuid = Guid.Empty;
                             edge.InternalOutputComponentGuid = entry.Item1.Id;
+                            edgeList.Add(edge);
                         }
                     }
                     if(entry.Item2.FreeInputNodes >0)
                     {
-                        foreach (var connection in entry.Item1.FreeInputNodesList)
+                        foreach (var connection in entry.Item2.FreeInputNodesList)
                         {
                             var edge = new Core.Network.ComponentEdge();
                             edge.OutputComponentGuid = id;
@@ -164,6 +179,7 @@ namespace GuiClientWPF
                             edge.InputValueID = (uint)entry.Item2.InputNodesList.IndexOf(connection);
                             edge.InternalInputComponentGuid = Guid.Empty;
                             edge.InternalOutputComponentGuid = entry.Item2.Id;
+                            edgeList.Add(edge);
                         }
                     }
                     if(entry.Item1.FreeOutputNodes > 0)
@@ -177,11 +193,12 @@ namespace GuiClientWPF
                             edge.InputValueID = ++componentOutputport;
                             edge.InternalInputComponentGuid = entry.Item1.Id;
                             edge.InternalOutputComponentGuid = Guid.Empty;
+                            edgeList.Add(edge);
                         }
                     }
                     if (entry.Item2.FreeOutputNodes > 0)
                     {
-                        foreach (var connection in entry.Item1.FreeOutputNodesList)
+                        foreach (var connection in entry.Item2.FreeOutputNodesList)
                         {
                             var edge = new Core.Network.ComponentEdge();
                             edge.OutputComponentGuid = entry.Item2.Component.Entry.UniqueID;
@@ -190,6 +207,7 @@ namespace GuiClientWPF
                             edge.InputValueID = ++componentOutputport;
                             edge.InternalInputComponentGuid = entry.Item2.Id;
                             edge.InternalOutputComponentGuid = Guid.Empty;
+                            edgeList.Add(edge);
                         }
                     }                   
                 }
@@ -213,8 +231,8 @@ namespace GuiClientWPF
                         OutputComponentGuid = entry.From.Entry.UniqueID,
                         InternalInputComponentGuid = entry.To.Id,
                         InternalOutputComponentGuid = entry.From.Id,
-                        InputValueID = (uint)entry.To.InputNodesList.IndexOf(entry.Line.To),
-                        OutputValueID = (uint)entry.From.OutputNodesList.IndexOf(entry.Line.From),
+                        OutputValueID = (uint)entry.To.InputNodesList.IndexOf(entry.Line.To),
+                        InputValueID = (uint)entry.From.OutputNodesList.IndexOf(entry.Line.From),
                     });
             }
         }
