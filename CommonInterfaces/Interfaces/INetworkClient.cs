@@ -23,5 +23,13 @@ namespace CommonRessources
         void Connect(string ip);
 
         void Disconnect();
+
+        /// <summary>
+        /// Uplpoads the component to the server which sends it to the logic for storing propuses.
+        /// </summary>
+        /// <param name="dynamit">The component</param>
+        /// <returns>True if uploaded</returns>
+        bool uploadComponent(Core.Network.Component bomb);
+        bool sendFinalResult(Guid id, IEnumerable<object> result);
     }
 }
