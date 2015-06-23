@@ -30,9 +30,7 @@ namespace AppLogic.ServerLogic
             this.innerGraph = null;
             this.processingServer = processingServer;
             this.processingServer.OnResultReceived += ProcessingServer_OnResultReceived;
-
-            Thread t = new Thread(new ThreadStart(ProcessIncomingData));
-            t.Start();
+            this.workerThread = new Thread(new ThreadStart(this.ProcessIncomingData));
         }
 
         public ComponentWorker(INetworkServer processingServer, Guid componentId, IEnumerable<Core.Network.ComponentEdge> graph)
