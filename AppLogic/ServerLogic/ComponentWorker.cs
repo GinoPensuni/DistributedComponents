@@ -10,18 +10,20 @@ namespace AppLogic.ServerLogic
 {
     public class ComponentWorker
     {
+        public readonly Dictionary<uint, DataGate> InputGates;
+        public readonly Dictionary<uint, DataGate> OutputGates;
+
         private readonly Guid jobId;
         private readonly Guid componentGuid;
         private readonly byte[] assemblyBytes;
         private readonly IEnumerable<Core.Network.ComponentEdge> innerGraph;
-        private readonly IList<DataGate> inputGates;
-        private readonly IList<DataGate> outputGates;
         private readonly INetworkServer processingServer;
+        private readonly Thread workerThread;
 
-        public ComponentWorker(INetworkServer processingServer, IList<DataGate> inputGates, IList<DataGate> outputGates, Guid componentId, byte[] assembly)
+        public ComponentWorker(INetworkServer processingServer, Guid componentId, byte[] assembly)
         {
-            this.inputGates = inputGates;
-            this.outputGates = outputGates;
+            this.InputGates = new Dictionary<uint, DataGate>();
+            this.OutputGates = new Dictionary<uint, DataGate>();
             this.jobId = Guid.NewGuid();
             this.componentGuid = componentId;
             this.assemblyBytes = assembly;
@@ -33,10 +35,10 @@ namespace AppLogic.ServerLogic
             t.Start();
         }
 
-        public ComponentWorker(INetworkServer processingServer, IList<DataGate> inputGates, IList<DataGate> outputGates, Guid componentId, IEnumerable<Core.Network.ComponentEdge> graph)
+        public ComponentWorker(INetworkServer processingServer, Guid componentId, IEnumerable<Core.Network.ComponentEdge> graph)
         {
-            this.inputGates = inputGates;
-            this.outputGates = outputGates;
+            this.InputGates = new Dictionary<uint, DataGate>();
+            this.OutputGates = new Dictionary<uint, DataGate>();
             this.jobId = Guid.NewGuid();
             this.componentGuid = componentId;
             this.assemblyBytes = null;
@@ -45,11 +47,16 @@ namespace AppLogic.ServerLogic
             this.processingServer.OnResultReceived += ProcessingServer_OnResultReceived;
         }
 
+        public void Start()
+        {
+            this.workerThread.Start();
+        }
+
         private void ProcessIncomingData()
         {
             IList<object> args = new List<object>();
 
-            foreach (var datGate in this.inputGates)
+            foreach (var datGate in this.InputGates.OrderBy(kvp => kvp.Key).Select(kvp => kvp.Value))
             {
                 var arg = datGate.ReceiveData();
                 args.Add(arg);
@@ -67,7 +74,7 @@ namespace AppLogic.ServerLogic
 
                 for (int i = 0; i < result.Count; i++)
                 {
-                    this.outputGates[i].SendData(result[i]);
+                    this.OutputGates[(uint)i].SendData(result[i]);
                 }
             }
         }
