@@ -128,6 +128,8 @@ namespace AppLogic.ServerLogic
                 var finalResult = endGate.ReceiveData();
                 outputList.Add(data);
             }
+
+            this.serverReference.sendFinalResult(guid, outputList);
         }
 
         //private List<ComponentNode> SimplifyGraph(IEnumerable<ComponentEdge> edgeList)
