@@ -161,7 +161,10 @@ namespace AppLogic.ClientLogic
 
         public Task SaveComponent(Core.Network.Component component)
         {
-            throw new NotImplementedException();
+            var saveTask = new Task(() => 
+            {
+                this.NetworkClient.
+            });
         }
     }
 }

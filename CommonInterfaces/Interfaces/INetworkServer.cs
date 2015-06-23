@@ -26,5 +26,6 @@ namespace CommonRessources
         /// The component to be uploaded.
         /// </summary>
         event EventHandler<ComponentRecievedEventArgs> OnBombRevieced;
+        bool sendFinalResult(Guid id, IEnumerable<object> result);
     }
 }

@@ -30,6 +30,5 @@ namespace CommonRessources
         /// <param name="dynamit">The component</param>
         /// <returns>True if uploaded</returns>
         bool uploadComponent(Core.Network.Component bomb);
-        bool sendFinalResult(Guid id, IEnumerable<object> result);
     }
 }
