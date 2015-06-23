@@ -167,7 +167,7 @@ namespace AppLogic.ClientLogic
             });
 
             saveTask.Start();
-            return saveTask();
+            return saveTask;
         }
     }
 }
