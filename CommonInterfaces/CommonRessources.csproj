@@ -46,6 +46,7 @@
   <ItemGroup>
     <Compile Include="Classes\Messages\InputParameterMessage.cs" />
     <Compile Include="Classes\Messages\JobRequestMessage.cs" />
+    <Compile Include="Classes\Messages\SaveComponentMessage.cs" />
     <Compile Include="Enums\ComponentType.cs" />
     <Compile Include="Classes\Messages\AssignMessage.cs" />
     <Compile Include="Classes\Messages\AliveMessage.cs" />
@@ -55,6 +56,7 @@
     <Compile Include="Enums\NetworkState.cs" />
     <Compile Include="EvemtArgs\ClientComponentEventArgs.cs" />
     <Compile Include="EvemtArgs\ComponentRecievedEventArgs.cs" />
+    <Compile Include="EvemtArgs\SaveComponentEventArgs.cs" />
     <Compile Include="Interfaces\IClientLogic.cs" />
     <Compile Include="Interfaces\INetworkServer.cs" />
     <Compile Include="Interfaces\INetworkClient.cs" />
