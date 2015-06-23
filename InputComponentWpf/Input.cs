@@ -56,17 +56,19 @@ namespace InputComponentWpf
 
         public IEnumerable<object> Evaluate(IEnumerable<object> values)
         {
-            var t = new Thread(new ThreadStart(Instantiate));
+            var t = new Thread(new ParameterizedThreadStart(Instantiate));
             t.SetApartmentState(ApartmentState.STA);
-            t.Start();
+            var x = values.Any() ? values.First() : "no Parameter";
+            t.Start(x);
             t.IsBackground = true;    
             t.Join();
             return integer;
         }
 
-        private void Instantiate()
+        private void Instantiate(object obj)
         {
-            inputBox = new MainWindow();
+            string info = (string)obj;
+            inputBox = new MainWindow(info);
             inputBox.OnSubmitted += inputBox_OnSubmitted;
             System.Windows.Application application = new System.Windows.Application();
             application.Run(inputBox);      

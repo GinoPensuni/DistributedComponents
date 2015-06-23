@@ -3,11 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using CommonRessources;
 
-namespace ToStringComponent
+namespace MatrixInputComponent
 {
-    public class ToString : IComponent
+    public class MatrixInput
     {
         private Guid componentGuid;
 
@@ -17,22 +16,32 @@ namespace ToStringComponent
 
         private IEnumerable<string> outputHints;
 
-        public ToString()
+        public MatrixInput()
         {
-            this.componentGuid = new Guid("F3C0DF08-BECA-4B88-8083-B868D7E0C90D");
+            this.componentGuid = new Guid("5B37BFAB-413C-4F02-91E7-E34B982CA059");
 
-            this.friendlyName = "ToString";
+            this.friendlyName = "Matrix Input";
 
-            this.inputHints = new List<string>();
+            
+            List<string> inputhints = new List<string>() { typeof(Int32).ToString(), typeof(Int32).ToString() };
+            this.inputHints = inputhints;
+
+            
+
+            List<string> outputhint = new List<string>() { typeof(Int32).ToString() };
+
+            this.outputHints = outputhint;
+                                                          
         }
+
         public Guid ComponentGuid
         {
-            get { return this.componentGuid; }
+            get { return this.componentGuid;  } 
         }
 
         public string FriendlyName
         {
-            get { return this.friendlyName; }
+            get { return this.friendlyName;  }
         }
 
         public IEnumerable<string> InputHints

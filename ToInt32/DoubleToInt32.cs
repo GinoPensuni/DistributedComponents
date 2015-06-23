@@ -7,7 +7,7 @@ using CommonRessources;
 
 namespace ToInt32
 {
-    public class ToInt32 : IComponent
+    public class DoubleToInt32 : IComponent
     {
         private Guid componentGuid;
 
@@ -17,7 +17,7 @@ namespace ToInt32
 
         private IEnumerable<string> outputHints;
 
-        public ToInt32()
+        public DoubleToInt32()
         {
             this.componentGuid =  new Guid("80FC8BEC-E213-4DF2-8129-F70197CA4210");
 

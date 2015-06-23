@@ -76,6 +76,7 @@ namespace AddComponent
             else
             { throw new ArgumentException("The inputs must be the same as described in the input hints."); }
         }
+
         private bool CheckIfAllowedValues(IEnumerable<object> values)
         {
             var array = values.ToArray();

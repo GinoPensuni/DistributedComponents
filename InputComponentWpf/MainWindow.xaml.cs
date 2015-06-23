@@ -37,11 +37,16 @@ namespace InputComponentWpf
             }
         }
 
-        public MainWindow()
+        public MainWindow()          
         {
+            InitializeComponent();
+        }
 
-                InitializeComponent();
-            
+
+        public MainWindow(string info = "no parameter")
+            :this()
+        {
+            this.InputBox.Text = info;   
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)

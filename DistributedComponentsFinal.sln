@@ -29,15 +29,25 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SubtractComponent", "Subtra
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DivideComponent", "DivideComponent\DivideComponent.csproj", "{C0763F24-33B3-47B8-BF36-A7878C1A5227}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ToInt32", "ToInt32\ToInt32.csproj", "{47831B78-823F-431D-AC24-A76953EB1A85}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "InputComponent", "InputComponent\InputComponent.csproj", "{3949711A-3846-48D1-BCAA-389C1A8F98ED}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DoubleToInt32Component", "ToInt32\DoubleToInt32Component.csproj", "{47831B78-823F-431D-AC24-A76953EB1A85}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "InputComponentWpf", "InputComponentWpf\InputComponentWpf.csproj", "{D8ACF8AB-40AD-4B6A-9997-6862556B33E9}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StringInputComponent", "StringInputComponent\StringInputComponent.csproj", "{EDC5C909-BB82-4C6D-B10E-8F1968395BE7}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ToStringComponent", "ToStringComponent\ToStringComponent.csproj", "{193FD222-3ADE-410A-80E5-4C862D3A4BE7}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DoubleToStringComponent", "ToStringComponent\DoubleToStringComponent.csproj", "{193FD222-3ADE-410A-80E5-4C862D3A4BE7}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Int32ToStringComponent", "Int32ToStringComponent\Int32ToStringComponent.csproj", "{098656D5-C10E-481A-A51A-BF7F63516367}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LongToStringComponent", "LongToStringComponent\LongToStringComponent.csproj", "{0C6D06C0-92C3-4AB6-B83A-172873D7B798}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Int16ToStringComponent", "Int16ToStringComponent\Int16ToStringComponent.csproj", "{0925B12F-51C8-4A68-8285-21D5D408DD77}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ReverseListComponent", "ReverseListComponent\ReverseListComponent.csproj", "{70671B25-BA59-48CA-925E-F175F718A02A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AddTwoMatricesComponent", "AddTwoMatricesComponent\AddTwoMatricesComponent.csproj", "{3EC25A7A-5F9E-479C-AE42-4686AF9D587C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MatrixInputComponentWPF", "MatrixInputComponentWPF\MatrixInputComponentWPF.csproj", "{A5A4AA22-48C9-4BE3-B896-329E69B19D1F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -101,10 +111,6 @@ Global
 		{47831B78-823F-431D-AC24-A76953EB1A85}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{47831B78-823F-431D-AC24-A76953EB1A85}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{47831B78-823F-431D-AC24-A76953EB1A85}.Release|Any CPU.Build.0 = Release|Any CPU
-		{3949711A-3846-48D1-BCAA-389C1A8F98ED}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{3949711A-3846-48D1-BCAA-389C1A8F98ED}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{3949711A-3846-48D1-BCAA-389C1A8F98ED}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{3949711A-3846-48D1-BCAA-389C1A8F98ED}.Release|Any CPU.Build.0 = Release|Any CPU
 		{D8ACF8AB-40AD-4B6A-9997-6862556B33E9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{D8ACF8AB-40AD-4B6A-9997-6862556B33E9}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D8ACF8AB-40AD-4B6A-9997-6862556B33E9}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -117,6 +123,30 @@ Global
 		{193FD222-3ADE-410A-80E5-4C862D3A4BE7}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{193FD222-3ADE-410A-80E5-4C862D3A4BE7}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{193FD222-3ADE-410A-80E5-4C862D3A4BE7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{098656D5-C10E-481A-A51A-BF7F63516367}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{098656D5-C10E-481A-A51A-BF7F63516367}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{098656D5-C10E-481A-A51A-BF7F63516367}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{098656D5-C10E-481A-A51A-BF7F63516367}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0C6D06C0-92C3-4AB6-B83A-172873D7B798}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0C6D06C0-92C3-4AB6-B83A-172873D7B798}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0C6D06C0-92C3-4AB6-B83A-172873D7B798}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0C6D06C0-92C3-4AB6-B83A-172873D7B798}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0925B12F-51C8-4A68-8285-21D5D408DD77}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0925B12F-51C8-4A68-8285-21D5D408DD77}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0925B12F-51C8-4A68-8285-21D5D408DD77}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0925B12F-51C8-4A68-8285-21D5D408DD77}.Release|Any CPU.Build.0 = Release|Any CPU
+		{70671B25-BA59-48CA-925E-F175F718A02A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{70671B25-BA59-48CA-925E-F175F718A02A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{70671B25-BA59-48CA-925E-F175F718A02A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{70671B25-BA59-48CA-925E-F175F718A02A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3EC25A7A-5F9E-479C-AE42-4686AF9D587C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3EC25A7A-5F9E-479C-AE42-4686AF9D587C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3EC25A7A-5F9E-479C-AE42-4686AF9D587C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3EC25A7A-5F9E-479C-AE42-4686AF9D587C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A5A4AA22-48C9-4BE3-B896-329E69B19D1F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A5A4AA22-48C9-4BE3-B896-329E69B19D1F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A5A4AA22-48C9-4BE3-B896-329E69B19D1F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A5A4AA22-48C9-4BE3-B896-329E69B19D1F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -33,22 +33,22 @@ namespace DivideComponent
         }
         public Guid ComponentGuid
         {
-            get { throw new NotImplementedException(); }
+            get { return this.componentGuid; }
         }
 
         public string FriendlyName
         {
-            get { throw new NotImplementedException(); }
+            get { return this.friendlyName; }
         }
 
         public IEnumerable<string> InputHints
         {
-            get { throw new NotImplementedException(); }
+            get { return this.inputHints; }
         }
 
         public IEnumerable<string> OutputHints
         {
-            get { throw new NotImplementedException(); }
+            get { return this.outputHints; }
         }
 
         public IEnumerable<object> Evaluate(IEnumerable<object> values)

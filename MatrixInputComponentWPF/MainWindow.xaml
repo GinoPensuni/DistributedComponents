@@ -1,0 +1,44 @@
+﻿<Window x:Class="MatrixInputComponentWPF.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="MainWindow" Height="350" Width="525">
+    <Window.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="Assets/Ressources/ImageDictionary.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </Window.Resources>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="107*"/>
+            <RowDefinition Height="104*"/>
+            <RowDefinition Height="112*"/>
+        </Grid.RowDefinitions>
+        <Image Source="{DynamicResource LogicalAdd}" Grid.Row="2" Margin="-154,3,154,1">
+            <Image.RenderTransform>
+                <ScaleTransform x:Name="scale" ScaleX="2.5" ScaleY="1"
+                            CenterX="0.5" CenterY="0.5" />
+            </Image.RenderTransform>
+        </Image>
+        <Label Grid.Row="0" IsEnabled="False" HorizontalAlignment="Center" FontWeight="ExtraBold" Foreground="BurlyWood" FontSize="25" Margin="160,0" Width="197">
+            <TextBlock  TextDecorations="Underline" >"Matrix-Input"</TextBlock>
+        </Label>
+        <TextBox  VerticalAlignment="Top" Grid.Row="1"  Name="InputBox" KeyUp="InputBox_KeyUp" HorizontalAlignment="Stretch" Height="25"></TextBox>
+        <TextBlock  VerticalAlignment="Center" Grid.Row="1" Text="Plese Click Neo to submit" TextAlignment="Center" IsEnabled="False" HorizontalAlignment="Stretch" Height="25"></TextBlock>
+
+        <Grid Grid.Row ="2">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="156*"/>
+                <ColumnDefinition Width="102*"/>
+                <ColumnDefinition Width="259*"/>
+            </Grid.ColumnDefinitions>
+            <!--<Button Click="Button_Click" BorderThickness="0" BorderBrush="Transparent" >
+            <Button.Background>
+                <ImageBrush ImageSource ="{DynamicResource Neo}"  ></ImageBrush>
+            </Button.Background>
+         </Button>-->
+            <Image Source="{DynamicResource Neo}" MouseLeftButtonDown="Image_MouseLeftButtonDown" Height="103" Grid.ColumnSpan="2"/>
+        </Grid>
+    </Grid>
+</Window>
