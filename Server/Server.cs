@@ -212,9 +212,17 @@ namespace Server
 
             res.Result = result;
 
-            Slave slave = this.ExecutionCustomers[id];
+            try
+            {
+                Slave slave = this.ExecutionCustomers[id];
 
-            return slave.SendFinalResult(res);
+                return slave.SendFinalResult(res);
+            }
+            catch (Exception)
+            {
+                return false;
+            }
+
         }
     }
 }
