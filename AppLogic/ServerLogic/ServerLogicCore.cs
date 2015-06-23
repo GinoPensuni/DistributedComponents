@@ -10,6 +10,7 @@ using System.Runtime.Serialization.Formatters.Binary;
 using System.Text;
 using System.Threading.Tasks;
 using System.Collections.Concurrent;
+using System.Threading;
 
 namespace AppLogic.ServerLogic
 {
@@ -49,12 +50,84 @@ namespace AppLogic.ServerLogic
 
         private void ServerReference_RequestEvent(object sender, ComponentRecievedEventArgs e)
         {
-            this.ExecuteGraph(e.Component, e.Input);
+            Thread t = new Thread(new ParameterizedThreadStart(ExecuteGraph));
+            t.Start(e);
         }
 
-        private void ExecuteGraph(Core.Network.Component comp, IEnumerable<object> args)
+        private void ExecuteGraph(object incomingEventArgs)
         {
+            ComponentRecievedEventArgs data = incomingEventArgs as ComponentRecievedEventArgs;
+            var component = data.Component;
+            var guid = data.ToBeExceuted;
+            var args = data.Input;
+            var edges = data.Component.Edges;
+            Dictionary<Guid, ComponentWorker> workerMap = new Dictionary<Guid, ComponentWorker>();
 
+            foreach (var edge in edges.Where(e => e.InternalInputComponentGuid != Guid.Empty && e.InternalOutputComponentGuid != Guid.Empty))
+            { 
+                ComponentWorker destinationWorker;
+                ComponentWorker sourceWorker;
+                Dictionary<uint, DataGate> inputGates = new Dictionary<uint, DataGate>();
+                
+                if (!workerMap.ContainsKey(edge.InternalInputComponentGuid))
+                {
+                    destinationWorker = new ComponentWorker(this.serverReference, edge.InputComponentGuid, this.store[edge.InputComponentGuid].Item1);
+                    workerMap[edge.InternalInputComponentGuid] = destinationWorker;
+                }
+                else
+                {
+                    destinationWorker = workerMap[edge.InternalInputComponentGuid];
+                }
+
+                if (!workerMap.ContainsKey(edge.InternalOutputComponentGuid))
+                {
+                    sourceWorker = new ComponentWorker(this.serverReference, edge.OutputComponentGuid, this.store[edge.OutputComponentGuid].Item1);
+                    workerMap[edge.InternalInputComponentGuid] = sourceWorker;
+                }
+                else
+                {
+                    sourceWorker = workerMap[edge.InternalOutputComponentGuid];
+                }
+
+                DataGate edgeConnector = new DataGate();
+                destinationWorker.InputGates[edge.InputValueID] = edgeConnector;
+                sourceWorker.OutputGates[edge.OutputValueID] = edgeConnector;
+            }
+
+            Dictionary<uint, DataGate> inputDataGates = new Dictionary<uint, DataGate>();
+
+            foreach (var edge in edges.Where(e => e.InternalOutputComponentGuid == Guid.Empty))
+            {
+                var destinationWorker = workerMap[edge.InternalInputComponentGuid];
+                DataGate externalConnector = new DataGate();
+                destinationWorker.InputGates[edge.InputValueID] = externalConnector;
+                inputDataGates[edge.OutputValueID] = externalConnector;
+            }
+
+            Dictionary<uint, DataGate> outputDataGates = new Dictionary<uint, DataGate>();
+
+            foreach (var edge in edges.Where(e => e.InternalInputComponentGuid == Guid.Empty))
+            {
+                var sourceWorker = workerMap[edge.InternalOutputComponentGuid];
+                DataGate externalConnector = new DataGate();
+                sourceWorker.OutputGates[edge.OutputValueID] = externalConnector;
+                outputDataGates[edge.InputValueID] = externalConnector;
+            }
+
+            var inputList = data.Input.ToList();
+
+            for (int i = 0; i < inputList.Count; i++)
+            {
+                inputDataGates[(uint)i].SendData(inputList[i]);
+            }
+
+            var outputList = new List<object>();
+
+            foreach (var endGate in outputDataGates.OrderBy(kvp => kvp.Key).Select(kvp => kvp.Value))
+            {
+                var finalResult = endGate.ReceiveData();
+                outputList.Add(data);
+            }
         }
 
         //private List<ComponentNode> SimplifyGraph(IEnumerable<ComponentEdge> edgeList)
