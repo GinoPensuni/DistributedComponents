@@ -208,7 +208,13 @@ namespace Server
 
         public bool sendFinalResult(Guid id, IEnumerable<object> result)
         {
-            throw new NotImplementedException();
+            ResultMessage res = new ResultMessage(ResultStatusCode.Successful, id);
+
+            res.Result = result;
+
+            Slave slave = this.ExecutionCustomers[id];
+
+            return slave.SendFinalResult(res);
         }
     }
 }

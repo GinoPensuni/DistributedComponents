@@ -26,6 +26,10 @@ namespace Client
 
         private bool isListening;
 
+        public delegate void ResultReceived(List<object> result);
+
+        public event ResultReceived OnResultReceived;
+
         // work work
 
         private List<WorkTask> workTasks; // A list of currently running tasks, which get executed by the client.
@@ -130,6 +134,15 @@ namespace Client
                 if (foundTask.Count > 0)
                 {
                     foundTask[0].SetParameter(ipM.Value, ipM.Index);
+                }
+            }
+            else if (ma is ResultMessage)
+            {
+                ResultMessage resMsg = (ResultMessage)ma;
+
+                if (this.OnResultReceived != null)
+                {
+                    this.OnResultReceived(resMsg.Result.ToList());
                 }
             }
         }
@@ -291,7 +304,10 @@ namespace Client
 
         public bool uploadComponent(Core.Network.Component bomb)
         {
-            throw new NotImplementedException();
+            SaveComponentMessage saveMess = new SaveComponentMessage(Guid.NewGuid());
+            saveMess.Component = bomb;
+
+            return this.SendMessage(saveMess);
         }
     }
 }
