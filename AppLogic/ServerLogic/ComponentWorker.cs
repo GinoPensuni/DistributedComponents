@@ -13,6 +13,8 @@ namespace AppLogic.ServerLogic
         public readonly Dictionary<uint, DataGate> InputGates;
         public readonly Dictionary<uint, DataGate> OutputGates;
 
+        private static object syncRoot = new object();
+
         private readonly Guid jobId;
         private readonly Guid componentGuid;
         private readonly byte[] assemblyBytes;
@@ -29,7 +31,6 @@ namespace AppLogic.ServerLogic
             this.assemblyBytes = assembly;
             this.innerGraph = null;
             this.processingServer = processingServer;
-            this.processingServer.OnResultReceived += ProcessingServer_OnResultReceived;
             this.workerThread = new Thread(new ThreadStart(this.ProcessIncomingData));
         }
 
@@ -47,6 +48,11 @@ namespace AppLogic.ServerLogic
 
         public void Start()
         {
+            lock (syncRoot)
+            {
+                this.processingServer.OnResultReceived += ProcessingServer_OnResultReceived; 
+            }
+
             this.workerThread.Start();
         }
 
@@ -62,6 +68,11 @@ namespace AppLogic.ServerLogic
 
             // Can be replaced by throw new ThreadingException();
             processingServer.SendCalculatedResult(this.jobId, new Tuple<Guid, IEnumerable<object>, byte[]>(this.componentGuid, args, this.assemblyBytes));
+
+            lock (syncRoot)
+            {
+                processingServer.OnResultReceived -= this.ProcessingServer_OnResultReceived; 
+            }
         }
 
         private void ProcessingServer_OnResultReceived(object sender, ResultReceivedEventArgs e)
