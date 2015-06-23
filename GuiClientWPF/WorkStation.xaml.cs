@@ -122,20 +122,31 @@ namespace GuiClientWPF
                     double.IsNaN(x2) ? 1 : x2,
                     double.IsNaN(y2) ? 1 : y2);
 
-                Polyline line;
+                LineContainer line;
 
                 // TODO Don't hardcode this shit
 
                 if (this.selectedComponent.Item4.X > secondSelectedComponent.Item4.X)
                 {
                     line = this.DrawPolyLine(p1, p2, 90);
+                    line.From = this.selectedComponent.Item2;
+                    line.To = secondSelectedComponent.Item2;
+                    secondSelectedComponent.Item1.FreeInputNodes--;
+                    this.selectedComponent.Item1.FreeOutputNodes--;
+                    this.selectedComponent.Item1.FreeOutputNodesList.Remove(this.selectedComponent.Item2);
+                    secondSelectedComponent.Item1.FreeInputNodesList.Remove(secondSelectedComponent.Item2);
                     this.connections.Add(new Tuple<Tuple<GuiComponent, InputNodeComponent, Ellipse, Point>, Tuple<GuiComponent, InputNodeComponent, Ellipse, Point>, LineContainer>
                     (this.selectedComponent, secondSelectedComponent, line));
                 }
                 else
                 {
                     line = this.DrawPolyLine(p2, p1, 90);
-
+                    line.From = secondSelectedComponent.Item2;
+                    line.To = this.selectedComponent.Item2;
+                    secondSelectedComponent.Item1.FreeOutputNodes--;
+                    this.selectedComponent.Item1.FreeInputNodes--;
+                    this.selectedComponent.Item1.FreeInputNodesList.Remove(this.selectedComponent.Item2);
+                    secondSelectedComponent.Item1.FreeOutputNodesList.Remove(secondSelectedComponent.Item2);
                     this.connections.Add(new Tuple<Tuple<GuiComponent, InputNodeComponent, Ellipse, Point>, Tuple<GuiComponent, InputNodeComponent, Ellipse, Point>, LineContainer>
                     (secondSelectedComponent,this.selectedComponent, line));
                 }
@@ -143,49 +154,9 @@ namespace GuiClientWPF
                
                 Canvas.SetZIndex(line, -100);
                 this.ComponentBuilder.Children.Add(line);
-                //this.selectedComponent.Background = Brushes.White;
                 this.selectedComponent = null;
             }
         }
-
-        //void comp_MouseRightButtonDown(object sender, MouseButtonEventArgs e)
-        //{
-        //    if (this.selectedComponent == null)
-        //    {
-        //        this.selectedComponent = sender as GuiComponent;
-        //        this.selectedComponent.Background = Brushes.Red;
-        //    }
-        //    else if (this.selectedComponent == sender)
-        //    {
-        //        this.selectedComponent.Background = Brushes.White;
-        //        this.selectedComponent = null;
-        //    }
-        //    else
-        //    {
-        //        var secondSelectedComponent = sender as GuiComponent;
-        //        if(sender == null) return;
-
-
-        //        line.X1 = double.IsNaN(Canvas.GetLeft(this.selectedComponent)) ? 1 : Canvas.GetLeft(this.selectedComponent);
-        //        line.Y1 = double.IsNaN(Canvas.GetTop(this.selectedComponent)) ? 1 : Canvas.GetTop(this.selectedComponent);
-        //        line.X2 = double.IsNaN(Canvas.GetLeft(secondSelectedComponent)) ? 1 : Canvas.GetLeft(secondSelectedComponent);
-        //        line.Y2 = double.IsNaN(Canvas.GetTop(secondSelectedComponent)) ? 1 : Canvas.GetTop(secondSelectedComponent);
-
-        //        Point p1 = new Point(
-        //            double.IsNaN(Canvas.GetLeft(this.selectedComponent)) ? 1 : Canvas.GetLeft(this.selectedComponent),
-        //            double.IsNaN(Canvas.GetTop(this.selectedComponent)) ? 1 : Canvas.GetTop(this.selectedComponent));
-        //        Point p2 = new Point(
-        //            double.IsNaN(Canvas.GetLeft(secondSelectedComponent)) ? 1 : Canvas.GetLeft(secondSelectedComponent),
-        //            double.IsNaN(Canvas.GetTop(secondSelectedComponent)) ? 1 : Canvas.GetTop(secondSelectedComponent));
-
-        //        var line = this.DrawPolyLine(p1, p2);
-        //        this.connections.Add(new Tuple<GuiComponent, GuiComponent, LineContainer>(this.selectedComponent, secondSelectedComponent, line));
-        //        Canvas.SetZIndex(line, -100);
-        //        this.ComponentBuilder.Children.Add(line);
-        //        this.selectedComponent.Background = Brushes.White;
-        //        this.selectedComponent = null;
-        //    }
-        //}
 
         void comp_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
         {
@@ -310,15 +281,6 @@ namespace GuiClientWPF
                 p2.X = input.X - deltaX / 4;
                 p2.Y = input.Y;
                 complex = false;
-
-                //p1.X = output.X - deltaX / 4;
-                //p1.Y = output.Y;
-                //p2.X = output.X - deltaX / 4;
-                //p2.Y = output.Y - yComponentSize;
-                //p3.X = input.X + deltaX / 4;
-                //p3.Y = input.Y +  yComponentSize;
-                //p4.X = input.X + deltaX / 4;
-                //p4.Y = input.Y;
             }
 
             var polyline = new Polyline();
