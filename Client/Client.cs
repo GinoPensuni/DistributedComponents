@@ -287,5 +287,11 @@ namespace Client
             this.client.Close();
             this.state = NetworkState.Stopped;
         }
+
+
+        public bool uploadComponent(Core.Network.Component bomb)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

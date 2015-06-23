@@ -143,6 +143,16 @@ namespace Server
                     this.OnRequestEvent(this, args);
                 }
             }
+            else if (e.Msg is SaveComponentMessage)
+            {
+                ComponentRecievedEventArgs args = new ComponentRecievedEventArgs();
+                args.Component = ((SaveComponentMessage)e.Msg).Component;
+                
+                if (this.OnBombRevieced != null)
+                {
+                  //  this.OnBombRevieced(this, )
+                }
+            }
         }
 
         public void Stop()
@@ -192,6 +202,14 @@ namespace Server
         }
 
         public event EventHandler<CommonRessources.ResultReceivedEventArgs> OnResultReceived;
+
+
+        public event EventHandler<ComponentRecievedEventArgs> OnBombRevieced;
+
+        public bool sendFinalResult(Guid id, IEnumerable<object> result)
+        {
+            throw new NotImplementedException();
+        }
     }
 }
 
