@@ -58,7 +58,7 @@ namespace CreateVectorOfPointsComponent
 
                Point p2 = new Point(points[1]);
 
-               Vector result = Vector.Add(first, second);
+               Vector result = Vector.CreateVector(p1, p2);
 
                return new List<object>() { result.Vector };
            }
