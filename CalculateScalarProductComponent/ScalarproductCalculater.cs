@@ -17,6 +17,10 @@ namespace CalculateScalarProductComponent
 
         private IEnumerable<string> outputHints;
 
+        private IEnumerable<string> inputDescriptions;
+
+        private IEnumerable<string> outputDescriptions;
+
         public ScalarproductCalculater()
         {
             this.componentGuid = new Guid("DC1D9659-4AB4-4A83-A1E0-B1C9F41C96D7");
@@ -25,7 +29,12 @@ namespace CalculateScalarProductComponent
 
             this.inputHints = new List<string>() { typeof(int[]).ToString(), typeof(int[]).ToString() };
             
-            this.outputHints = new List<string>() { typeof(int[]).ToString() };    
+            this.outputHints = new List<string>() { typeof(int[]).ToString() };
+
+            this.inputDescriptions = new List<string>() {"First Parameter: one dimensional integer array int[] representing a vector",
+                                                         "Second Parameter: one dimensional integer array int[] representing the vector which should be added to the first parameter"};
+
+            this.outputDescriptions = new List<string>() { "Output: A number representing the scalar product of the two vectors." };
         }
 
         public Guid ComponentGuid
@@ -93,11 +102,11 @@ namespace CalculateScalarProductComponent
         {
             get
             {
-                throw new NotImplementedException();
+                return this.inputDescriptions;
             }
             set
             {
-                throw new NotImplementedException();
+                this.inputDescriptions = value;
             }
         }
 
@@ -105,11 +114,11 @@ namespace CalculateScalarProductComponent
         {
             get
             {
-                throw new NotImplementedException();
+                return this.outputDescriptions;
             }
             set
             {
-                throw new NotImplementedException();
+                this.outputDescriptions = value;
             }
         }
     }

@@ -39,7 +39,7 @@ namespace MatrixInputComponentWPF
 
         private bool testRegEx(string eval)
         {
-            string query = "(\\[([0-9]+(,[0-9]+)*;)+\\])";
+            string query = "(\\[([0-9]+(,[0-9]+)*;)*([0-9]+(,[0-9]+)*\\]))";
             string query1 = "([[]])";
             if(Regex.IsMatch(eval.Trim(), query1))
                 return true;

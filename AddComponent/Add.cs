@@ -17,22 +17,25 @@ namespace AddComponent
 
         private IEnumerable<string> outputHints;
 
+        private IEnumerable<string> inputDescription;
+
+        private IEnumerable<string> outputDescription;
         public Add()
         {
             this.componentGuid = new Guid("82870640-2A79-4FE5-8F34-6075C0C4863F");
 
             this.friendlyName = "Addition";
 
-            //List<string> inputhints = new List<string>() { "System.Int32", "System.Int32" };
-
             List<string> inputhints = new List<string>() { typeof(Int32).ToString(), typeof(Int32).ToString() };
             this.inputHints = inputhints;
-
-            //List<string> outputhint = new List<string>() { "System.Int32" };
 
             List<string> outputhint = new List<string>() { typeof(Int32).ToString() };
 
             this.outputHints = outputhint;
+
+            this.inputDescription = new List<string>() { "First parameter = number", "Second parameter = number" };
+
+            this.outputDescription = new List<string> { "Number representing the sum of the two parameters" };
                                                           
         }
 
@@ -100,5 +103,30 @@ namespace AddComponent
             return true;
         }
 
+
+
+        public IEnumerable<string> InputDescriptions
+        {
+            get
+            {
+                return this.inputDescription;
+            }
+            set
+            {
+                this.inputDescription = value;
+            }
+        }
+
+        public IEnumerable<string> OutputDescriptions
+        {
+            get
+            {
+                return this.outputDescription;
+            }
+            set
+            {
+                this.outputDescription = value;
+            }
+        }
     }
 }

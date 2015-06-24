@@ -17,6 +17,10 @@ namespace CreateVectorOfPointsComponent
 
         private IEnumerable<string> outputHints;
 
+        private IEnumerable<string> inputDescriptions;
+
+        private IEnumerable<string> outputDescriptions;
+
         public CreateVectorOfTwoPoints()
         {
             this.componentGuid = new Guid("1478A605-8261-4E19-A178-D6A1BD4606C0");
@@ -25,7 +29,11 @@ namespace CreateVectorOfPointsComponent
 
             this.inputHints = new List<string>() { typeof(int[]).ToString(), typeof(int[]).ToString() };
             
-            this.outputHints = new List<string>() { typeof(int[]).ToString() };    
+            this.outputHints = new List<string>() { typeof(int[]).ToString() };
+
+            this.inputDescriptions = new List<string>() { "First Parameter: Integer array int[] representing a point", "Second Parameter: Integer array int[] representing a point" };
+
+            this.outputDescriptions = new List<string>() { "Second Parameter: Integer array int[] representing the vector build of the two points." };
         }
 
         public Guid ComponentGuid
@@ -93,11 +101,11 @@ namespace CreateVectorOfPointsComponent
         {
             get
             {
-                throw new NotImplementedException();
+                return this.inputDescriptions;
             }
             set
             {
-                throw new NotImplementedException();
+                this.inputDescriptions = value;
             }
         }
 
@@ -105,11 +113,11 @@ namespace CreateVectorOfPointsComponent
         {
             get
             {
-                throw new NotImplementedException();
+                return this.outputDescriptions;
             }
             set
             {
-                throw new NotImplementedException();
+                this.outputDescriptions = value;
             }
         }
     }
