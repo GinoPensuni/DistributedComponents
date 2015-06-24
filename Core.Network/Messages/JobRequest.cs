@@ -18,6 +18,7 @@ namespace Core.Network
     /// <summary>
     /// Sent when a job should be executed.
     /// </summary>
+    [Serializable]
     public class JobRequest
     {
         /// <summary>
@@ -25,6 +26,12 @@ namespace Core.Network
         /// </summary>
         /// <value>A unique identifier.</value>
         public Guid JobRequestGuid { get; set; }
+
+        /// <summary>
+        /// Gets or sets the unique identifier of the job.
+        /// </summary>
+        /// <value>A unique identifier.</value>
+        public Guid JobGuid { get; set; }
 
         /// <summary>
         /// Gets or sets the display name of the job.

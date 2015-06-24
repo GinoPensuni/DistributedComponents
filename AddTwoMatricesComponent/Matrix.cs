@@ -66,7 +66,7 @@ namespace AddTwoMatricesComponent
             {
                 return this.matrix;
             }
-           
+
         }
 
         public static Matrix AddMatrices(Matrix matrixOne, Matrix matrixTwo)
@@ -74,17 +74,17 @@ namespace AddTwoMatricesComponent
             if (CheckDimensions(matrixOne, matrixTwo))
             {
 
-                int [,] result = new int[matrixOne.RowCount, matrixTwo.ColumnCount];
+                int[,] result = new int[matrixOne.RowCount, matrixTwo.ColumnCount];
 
                 for (int i = 0; i < matrixOne.RowCount; i++)
                 {
                     for (int j = 0; j < matrixTwo.ColumnCount; j++)
-			        {
-			            result[i,j] = matrixOne._Matrix[i,j] + matrixTwo._Matrix[i,j];
-			        }
+                    {
+                        result[i, j] = matrixOne._Matrix[i, j] + matrixTwo._Matrix[i, j];
+                    }
                 }
 
-			  return new Matrix(result);
+                return new Matrix(result);
             }
             else
             {
@@ -105,4 +105,3 @@ namespace AddTwoMatricesComponent
         }
     }
 }
-
