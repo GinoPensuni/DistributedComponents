@@ -44,6 +44,30 @@ namespace AppLogic
             get { return this.InstanceOfComponent.OutputHints; }
         }
 
+        public IEnumerable<string> InputDescriptions
+        {
+            get
+            {
+                return Activator.CreateInstance<Core.Component.IComponent>().InputDescriptions;
+            }
+            set
+            {
+                throw new InvalidOperationException();
+            }
+        }
+
+        public IEnumerable<string> OutputDescriptions
+        {
+            get
+            {
+                return Activator.CreateInstance<Core.Component.IComponent>().OutputDescriptions;
+            }
+            set
+            {
+                throw new InvalidOperationException();
+            }
+        }
+
         private Core.Component.IComponent InstanceOfComponent
         {
             get
@@ -51,7 +75,6 @@ namespace AppLogic
                 return Activator.CreateInstance<Core.Component.IComponent>();
             }
         }
-
 
         public IEnumerable<object> Evaluate(IEnumerable<object> values)
         {
