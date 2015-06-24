@@ -196,7 +196,7 @@ namespace Server
 
             compMsg.ComponentGuid = job.Item1;
 
-            Random rand = new Random(42);
+            Random rand = new Random();
 
             return this.Slaves[rand.Next(0, this.Slaves.Count)].SendComponent(compMsg);
         }
