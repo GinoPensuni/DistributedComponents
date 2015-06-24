@@ -67,7 +67,7 @@ namespace Server
                 if (this.OnBroadcastReceived != null && !Host.AddressList.Contains(groupEP.Address))
                 {
                     Console.WriteLine("  > Broadcast received.");
-
+                    Console.WriteLine(groupEP);
                     BroadcastReceivedEventArgs args = new BroadcastReceivedEventArgs();
                     args.ReceivedData = Encoding.UTF8.GetString(receivedData);
                     args.SenderEndPoint = groupEP;
