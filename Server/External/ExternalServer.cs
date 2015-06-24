@@ -832,11 +832,19 @@ namespace Server
                 {
                     byte[] messBuff = new byte[BitConverter.ToInt32(buffer, 1)];
 
-                    stream.Read(messBuff, 0, messBuff.Length);
+                    // Length is 0 means that the message could not be processed
+                    if (messBuff.Length == 0)
+                    {
+                        return new Tuple<byte, string>(Protocol.CouldNotBeProcessedMessageCode, string.Empty);
+                    }
+                    else
+                    {
+                        stream.Read(messBuff, 0, messBuff.Length);
 
-                    string message = Encoding.UTF8.GetString(messBuff);
+                        string message = Encoding.UTF8.GetString(messBuff);
 
-                    return new Tuple<byte, string>(buffer[0], message);
+                        return new Tuple<byte, string>(buffer[0], message);
+                    }
                 }
             }
             catch (Exception)
