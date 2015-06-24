@@ -55,7 +55,7 @@ namespace CalculateScalarProductComponent
 
                 for (int i = 0; i < first.RowCount; i++)
                 {
-                    sum = sum + (first.vector[i] * second.vector.[i]);
+                    sum = sum + (first.vector[i] * second.vector[i]);
                 }
 
                 return sum;

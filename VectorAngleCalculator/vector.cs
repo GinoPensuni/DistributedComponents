@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace CreateVectorOfPointsComponent
+namespace VectorAngleCalculator
 {
-    class Vector
+    public class Vector
     {
         private int rowCount;
 
@@ -47,22 +47,34 @@ namespace CreateVectorOfPointsComponent
             }
         }
 
-        /// <summary>
-        /// Creates a vector of two points.
-        /// </summary>
-        /// <param name="p1">First Point</param>
-        /// <param name="p2">Second Point</param>
-        /// <returns></returns>
-        public static Vector CreateVector(Point p1, Point p2)
+        public static Vector CalcAngle(Vector first, Vector second)
         {
-            int[] result = new int[p1.Point.Length];
+            if (CheckDimensions(first, second))
+            {
+                int numerator = 0;
 
-            for (int i = 0; i < p1.Point.Length; i++)
-			{
-                result[i] = p2.Point[i] - p1.Point[i];
-			}
+                int denumerator = 0;
 
-            return new Vector(result);
+                //numerator = first
+
+                return null;
+            }
+            else
+            {
+                throw new ArgumentException("The number of rows of the two vectors must be the same!");
+            }
+        }
+
+        public static bool CheckDimensions(Vector first, Vector second)
+        {
+            if (first.RowCount == second.RowCount)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
         }
     }
 }
