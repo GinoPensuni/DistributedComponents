@@ -36,5 +36,7 @@ namespace Server
         /// Otherwise Result.
         /// </value>
         public IEnumerable<object> OutputData { get; set; }
+
+        public bool Processed { get; set; }
     }
 }

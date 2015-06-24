@@ -19,5 +19,11 @@ namespace Server
             get;
             set;
         }
+
+        public bool Processed
+        {
+            get;
+            set;
+        }
     }
 }

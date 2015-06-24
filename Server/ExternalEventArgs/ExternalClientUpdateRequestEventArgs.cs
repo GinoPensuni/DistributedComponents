@@ -27,5 +27,7 @@ namespace Server
         /// </summary>
         /// <value>A ClientState.</value>
         public ClientState ClientState { get; set; }
+
+        public bool Processed { get; set; }
     }
 }
