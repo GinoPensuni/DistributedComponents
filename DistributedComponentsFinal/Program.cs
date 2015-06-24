@@ -39,6 +39,7 @@ namespace DistributedComponentsFinal
             esm.StartListening();
 
             esm.OnExternalServerLoggedOn += esm_OnExternalServerLoggedOn;
+            esm.OnExternalServerTerminated += esm_OnExternalServerTerminated;
 
             Console.WriteLine(uint.MaxValue);
 
@@ -47,10 +48,16 @@ namespace DistributedComponentsFinal
             Console.ReadLine();
         }
 
+        static void esm_OnExternalServerTerminated(ExternalServer extServer)
+        {
+            Console.WriteLine("external server died :-( " + extServer.FriendlyName);
+        }
+
         static void esm_OnExternalServerLoggedOn(ExternalServer extServer)
         {
             Console.WriteLine("external server logged on " + extServer.FriendlyName);
             extServer.OnExternalComponentSubmitRequestReceived += extServer_OnExternalComponentSubmitRequestReceived;
+            extServer.SendAssemblyRequest(Guid.NewGuid(), Guid.NewGuid());
         }
 
         static void extServer_OnExternalComponentSubmitRequestReceived(object sender, ExternalComponentSubmittedEventArgs e)

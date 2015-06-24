@@ -67,6 +67,7 @@ namespace Server
             if (!this.ExternalServers.ContainsKey(address))
             {
                 ExternalServer extServer = new ExternalServer(address, masterServer);
+                extServer.SendLogonRequest();
 
                 extServer.OnLogonCompleted += extServer_OnLogonCompleted;
                 extServer.OnTerminated += extServer_OnDied;
