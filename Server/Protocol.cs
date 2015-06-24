@@ -25,7 +25,9 @@ namespace Server
 
         public const int ExternalKeepAliveTimeout = 2000; // milli
 
-        public const int ExternalDefaultTimeout = 2000; 
+        public const int ExternalDefaultTimeout = 2000;
+
+        public const byte CouldNotBeProcessedMessageCode = 100;
 
         public static byte[] GetByteArrayFromMessage(Message msg)
         {

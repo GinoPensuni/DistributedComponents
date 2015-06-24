@@ -73,9 +73,9 @@ namespace Server
         /// <summary>
         /// The binary content must be delivered by setting the property BinaryContent of the event args e.
         /// </summary>
-        public event EventHandler<ExternalServerAssemblyRequestedEventArgs> OnAssemblyRequested;
+        public event EventHandler<ExternalServerAssemblyRequestedEventArgs> OnAssemblyRequestReceived;
 
-        public event EventHandler<ExternalServerAssemblyRequestedEventArgs> OnAssemblyReceived;
+        public event EventHandler<ExternalServerAssemblyRequestedEventArgs> OnAssemblyResponseReceived;
 
         // 7. events for client update handling. 
 
@@ -477,9 +477,9 @@ namespace Server
                     args.ComponentGuid = request.ComponentGuid;
                     args.BinaryContent = binaryContent;
 
-                    if (this.OnAssemblyReceived != null)
+                    if (this.OnAssemblyResponseReceived != null)
                     {
-                        this.OnAssemblyReceived(this, args);
+                        this.OnAssemblyResponseReceived(this, args);
                     }
                 }
             }
@@ -781,9 +781,9 @@ namespace Server
             args.ComponentGuid = request.ComponentGuid;
             args.BinaryContent = new byte[] { }; // empty
 
-            if (this.OnAssemblyRequested != null)
+            if (this.OnAssemblyRequestReceived != null)
             {
-                this.OnAssemblyRequested(this, args);
+                this.OnAssemblyRequestReceived(this, args);
             }
 
             return args.BinaryContent;
@@ -832,11 +832,19 @@ namespace Server
                 {
                     byte[] messBuff = new byte[BitConverter.ToInt32(buffer, 1)];
 
-                    stream.Read(messBuff, 0, messBuff.Length);
+                    // Length is 0 means that the message could not be processed
+                    if (messBuff.Length == 0)
+                    {
+                        return new Tuple<byte, string>(Protocol.CouldNotBeProcessedMessageCode, string.Empty);
+                    }
+                    else
+                    {
+                        stream.Read(messBuff, 0, messBuff.Length);
 
-                    string message = Encoding.UTF8.GetString(messBuff);
+                        string message = Encoding.UTF8.GetString(messBuff);
 
-                    return new Tuple<byte, string>(buffer[0], message);
+                        return new Tuple<byte, string>(buffer[0], message);
+                    }
                 }
             }
             catch (Exception)
