@@ -1,24 +1,14 @@
-﻿// ----------------------------------------------------------------------- 
-// <copyright file="JobResultRequest.cs" company="FHWN"> 
-// Copyright (c) FHWN. All rights reserved. 
-// </copyright> 
-// <summary>Contains the JobResultRequest class.</summary> 
-// <author>Michael Sabransky</author> 
-// -----------------------------------------------------------------------
-namespace Core.Network
-{
-    using System;
-    using System.Collections.Generic;
-    using System.Linq;
-    using System.Runtime.Serialization;
-    using System.Text;
-    using System.Threading.Tasks;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using Core.Network;
+using Core.Component;
 
-    /// <summary>
-    /// Sent when a job was completed, failed or could not be executed.
-    /// </summary>
-    [Serializable]
-    public class JobResultRequest
+namespace Server
+{
+    public class ExternalJobResultRequestEventArgs : EventArgs
     {
         /// <summary>
         /// Gets or sets the unique id for this message.

@@ -1,37 +1,20 @@
-﻿// ----------------------------------------------------------------------- 
-// <copyright file="JobRequest.cs" company="FHWN"> 
-// Copyright (c) FHWN. All rights reserved. 
-// </copyright> 
-// <summary>Contains the JobRequest class.</summary> 
-// <author>Michael Sabransky</author> 
-// -----------------------------------------------------------------------
-namespace Core.Network
-{
-    using System;
-    using System.Collections.Generic;
-    using System.Linq;
-    using System.Net;
-    using System.Runtime.Serialization;
-    using System.Text;
-    using System.Threading.Tasks;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using Core.Network;
+using Core.Component;
 
-    /// <summary>
-    /// Sent when a job should be executed.
-    /// </summary>
-    [Serializable]
-    public class JobRequest
+namespace Server
+{
+    public class ExternalJobRequestEventArgs : System.EventArgs
     {
         /// <summary>
         /// Gets or sets the unique id for this message.
         /// </summary>
         /// <value>A unique identifier.</value>
         public Guid JobRequestGuid { get; set; }
-
-        /// <summary>
-        /// Gets or sets the unique identifier of the job.
-        /// </summary>
-        /// <value>A unique identifier.</value>
-        public Guid JobGuid { get; set; }
 
         /// <summary>
         /// Gets or sets the display name of the job.
@@ -74,5 +57,10 @@ namespace Core.Network
         /// </summary>
         /// <value>An unsigned integer.</value>
         public uint HopCount { get; set; }
+
+        /// <summary>
+        /// This property will be sent back to the request sender by the response.
+        /// </summary>
+        public bool IsAccepted { get; set; }
     }
 }

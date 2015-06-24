@@ -17,19 +17,14 @@ namespace Core.Network
     /// <summary>
     /// Send frequently to all other servers to update them on the server state.
     /// </summary>
-    public class KeepAliveRequest 
+    [Serializable]
+    public class KeepAliveRequest
     {
         /// <summary>
         /// Gets or sets the unique id for this message.
         /// </summary>
         /// <value>A unique identifier.</value>
         public Guid KeepAliveRequestGuid { get; set; }
-
-        /// <summary>
-        /// Gets or sets the identifier of this server.
-        /// </summary>
-        /// <value>A unique identifier.</value>
-        public Guid ServerGuid { get; set; }
 
         /// <summary>
         /// Gets or sets the current CPU load in percent.

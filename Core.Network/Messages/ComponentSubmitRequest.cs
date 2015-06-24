@@ -18,7 +18,8 @@ namespace Core.Network
     /// <summary>
     /// Notify the other servers about a new component.
     /// </summary>
-    public class ComponentSubmitRequest 
+    [Serializable]
+    public class ComponentSubmitRequest
     {
         /// <summary>
         /// Gets or sets the unique id for this message.

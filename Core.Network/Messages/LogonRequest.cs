@@ -17,7 +17,8 @@ namespace Core.Network
     /// <summary>
     /// Sent when a server goes online to inform the other server about me.
     /// </summary>
-    public class LogonRequest 
+    [Serializable]
+    public class LogonRequest
     {
         /// <summary>
         /// Gets or sets the unique id for this message.
