@@ -34,6 +34,10 @@ namespace SubtractComponent
             this.inputHints = new List<string>() { typeof(double).ToString(), typeof(double).ToString() };
 
             this.outputHints = new List<string>() { typeof(double).ToString() };
+
+            this.inputDescriptions = new List<string>() { "A double - data type, which represents the first value.", "A double - data type, which represents the second value." };
+
+            this.outputDescriptions = new List<string>() { "A double - data type, which represents the difference of the two values." };   
         }
         public Guid ComponentGuid
         {
