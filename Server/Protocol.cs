@@ -7,6 +7,7 @@ using CommonRessources;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.IO;
 using Newtonsoft.Json;
+using Core.Network;
 
 namespace Server
 {
@@ -61,11 +62,11 @@ namespace Server
             return Encoding.UTF8.GetBytes(Protocol.BroadcastText);
         }
 
-        public static byte[] GetBytesFromMessage(object msg, byte statusCode)
+        public static byte[] GetBytesFromMessage(object msg, MessageCode messageCode)
         {
             List<byte> message = new List<byte>();
 
-            message.Add(statusCode); // logon message code
+            message.Add((byte)messageCode); // logon message code
 
             byte[] buff;
             string serialized = JsonConvert.SerializeObject(msg);
@@ -93,13 +94,13 @@ namespace Server
         // msg must be a object of logonresponse or request
         public static byte[] GetBytesFromLogonMessage(object msg)
         {
-            return Protocol.GetBytesFromMessage(msg, 1);
+            return Protocol.GetBytesFromMessage(msg, MessageCode.Logon);
         }
 
         // msg must be a object of keepaliverequest or response
         public static byte[] GetBytesFromKeepAliveMessage(object msg)
         {
-            return Protocol.GetBytesFromMessage(msg, 2);
+            return Protocol.GetBytesFromMessage(msg, MessageCode.KeepAlive);
         }
 
         public static T DeserializeStringToMessage<T>(string s)

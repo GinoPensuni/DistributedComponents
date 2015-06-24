@@ -177,7 +177,7 @@ namespace Server
 
             client.Close();
 
-            if (message != null && message.Item1 == 1)
+            if (message != null && message.Item1 == (int)MessageCode.Logon)
             {
                 LogonResponse response = Protocol.DeserializeStringToMessage<LogonResponse>(message.Item2);
 
@@ -244,7 +244,7 @@ namespace Server
 
             Console.WriteLine("finished waiting.");
 
-            if (message != null && message.Item1 == 2)
+            if (message != null && message.Item1 == (int)MessageCode.KeepAlive)
             {
                 KeepAliveResponse response = Protocol.DeserializeStringToMessage<KeepAliveResponse>(message.Item2);
 
@@ -293,7 +293,7 @@ namespace Server
             request.ComponentSubmitRequestGuid = componentSubmitRequestGuid;
             request.Component = component;
 
-            byte[] buff = Protocol.GetBytesFromMessage(request, 3);
+            byte[] buff = Protocol.GetBytesFromMessage(request, MessageCode.ComponentSubmit);
 
             stream.Write(buff, 0, buff.Length);
 
@@ -301,7 +301,7 @@ namespace Server
 
             Tuple<byte, string> message = this.ReadSpecifiedDataFromStream(stream);
 
-            if (message != null && message.Item1 == 3)
+            if (message != null && message.Item1 == (int)MessageCode.ComponentSubmit)
             {
                 ComponentSubmitResponse response = Protocol.DeserializeStringToMessage<ComponentSubmitResponse>(message.Item2);
 
@@ -346,7 +346,7 @@ namespace Server
             NetworkStream stream = client.GetStream();
             stream.ReadTimeout = Protocol.ExternalDefaultTimeout;
 
-            byte[] buff = Protocol.GetBytesFromMessage(request, 4);
+            byte[] buff = Protocol.GetBytesFromMessage(request, MessageCode.JobRequest);
 
             stream.Write(buff, 0, buff.Length);
 
@@ -354,7 +354,7 @@ namespace Server
 
             Tuple<byte, string> message = this.ReadSpecifiedDataFromStream(stream);
 
-            if (message != null && message.Item1 == 4)
+            if (message != null && message.Item1 == (int)MessageCode.JobRequest)
             {
                 JobResponse response = Protocol.DeserializeStringToMessage<JobResponse>(message.Item2);
 
@@ -398,7 +398,7 @@ namespace Server
             NetworkStream stream = client.GetStream();
             stream.ReadTimeout = Protocol.ExternalDefaultTimeout;
 
-            byte[] buff = Protocol.GetBytesFromMessage(request, 5);
+            byte[] buff = Protocol.GetBytesFromMessage(request, MessageCode.JobResult);
 
             stream.Write(buff, 0, buff.Length);
 
@@ -406,7 +406,7 @@ namespace Server
 
             Tuple<byte, string> message = this.ReadSpecifiedDataFromStream(stream);
 
-            if (message != null && message.Item1 == 5)
+            if (message != null && message.Item1 == (int)MessageCode.JobResult)
             {
                 JobResultResponse response = Protocol.DeserializeStringToMessage<JobResultResponse>(message.Item2);
 
@@ -453,7 +453,7 @@ namespace Server
             request.AssemblyRequestGuid = tData.Item1;
             request.ComponentGuid = tData.Item2;
 
-            byte[] buff = Protocol.GetBytesFromMessage(request, 6);
+            byte[] buff = Protocol.GetBytesFromMessage(request, MessageCode.RequestAssembly);
 
             stream.Write(buff, 0, buff.Length);
 
@@ -463,7 +463,7 @@ namespace Server
 
             if (stream.Read(begin, 0, begin.Length) == 5)
             {
-                if (begin[0] == 6)
+                if (begin[0] == (int)MessageCode.RequestAssembly)
                 {
                     byte[] binaryContent = new byte[BitConverter.ToInt32(begin, 1)];
 
@@ -512,7 +512,7 @@ namespace Server
 
             ClientUpdateRequest request = tData.Item1;
 
-            byte[] buff = Protocol.GetBytesFromMessage(request, 7);
+            byte[] buff = Protocol.GetBytesFromMessage(request, MessageCode.ClientUpdate);
 
             stream.Write(buff, 0, buff.Length);
 
@@ -520,7 +520,7 @@ namespace Server
 
             Tuple<byte, string> message = this.ReadSpecifiedDataFromStream(stream);
 
-            if (message != null && message.Item1 == 7)
+            if (message != null && message.Item1 == (int)MessageCode.ClientUpdate)
             {
                 ClientUpdateResponse response = Protocol.DeserializeStringToMessage<ClientUpdateResponse>(message.Item2);
 
@@ -571,13 +571,13 @@ namespace Server
             {
                 byte[] buff;
 
-                if (message.Item1 == 6)
+                if (message.Item1 == (int)MessageCode.RequestAssembly)
                 {
                     buff = Protocol.GetBytesFromAssemblyResponse((byte[])GetHandledMessage(message.Item1, message.Item2, stream));
                 }
                 else
                 {
-                    buff = Protocol.GetBytesFromMessage(GetHandledMessage(message.Item1, message.Item2, stream), message.Item1);
+                    buff = Protocol.GetBytesFromMessage(GetHandledMessage(message.Item1, message.Item2, stream), (MessageCode)((int)message.Item1));
                 }
 
                 stream.Write(buff, 0, buff.Length);
@@ -594,7 +594,7 @@ namespace Server
 
             switch (code)
             {
-                case 1:
+                case (int)MessageCode.Logon:
                     {
                         LogonRequest request = Protocol.DeserializeStringToMessage<LogonRequest>(message);
 
@@ -605,7 +605,7 @@ namespace Server
 
                         break;
                     }
-                case 2:
+                case (int)MessageCode.KeepAlive:
                     {
                         KeepAliveRequest request = Protocol.DeserializeStringToMessage<KeepAliveRequest>(message);
 
@@ -616,7 +616,7 @@ namespace Server
 
                         break;
                     }
-                case 3:
+                case (int)MessageCode.ComponentSubmit:
                     {
                         ComponentSubmitRequest request = Protocol.DeserializeStringToMessage<ComponentSubmitRequest>(message);
 
@@ -627,7 +627,7 @@ namespace Server
 
                         break;
                     }
-                case 4:
+                case (int)MessageCode.JobRequest:
                     {
                         JobRequest request = Protocol.DeserializeStringToMessage<JobRequest>(message);
 
@@ -638,7 +638,7 @@ namespace Server
 
                         break;
                     }
-                case 5:
+                case (int)MessageCode.JobResult:
                     {
                         JobResultRequest request = Protocol.DeserializeStringToMessage<JobResultRequest>(message);
 
@@ -649,7 +649,7 @@ namespace Server
 
                         break;
                     }
-                case 6:
+                case (int)MessageCode.RequestAssembly:
                     {
                         AssemblyRequest request = Protocol.DeserializeStringToMessage<AssemblyRequest>(message);
 
@@ -660,7 +660,7 @@ namespace Server
 
                         break;
                     }
-                case 7:
+                case (int)MessageCode.ClientUpdate:
                     {
                         ClientUpdateRequest request = Protocol.DeserializeStringToMessage<ClientUpdateRequest>(message);
 
@@ -779,7 +779,7 @@ namespace Server
             ExternalServerAssemblyRequestedEventArgs args = new ExternalServerAssemblyRequestedEventArgs();
             args.AssemblyRequestGuid = request.AssemblyRequestGuid;
             args.ComponentGuid = request.ComponentGuid;
-            args.BinaryContent = new byte[] { 8, 2 };
+            args.BinaryContent = new byte[] { }; // empty
 
             if (this.OnAssemblyRequested != null)
             {
