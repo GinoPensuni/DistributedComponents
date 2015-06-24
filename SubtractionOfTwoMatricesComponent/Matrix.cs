@@ -12,12 +12,10 @@ namespace SubtractionOfTwoMatricesComponent
 
         private int columnCount;
 
-        private int[,] matrix;
-
         public Matrix(int[,] matrix)
         {
             this.RowCount = matrix.GetLength(0);
-
+            this._Matrix = matrix;
             this.ColumnCount = matrix.GetLength(1);
         }
 
@@ -62,11 +60,8 @@ namespace SubtractionOfTwoMatricesComponent
 
         public int[,] _Matrix
         {
-            get
-            {
-                return this.matrix;
-            }
-
+            get;
+            private set;
         }
 
         public static Matrix SubtractMatrices(Matrix matrixOne, Matrix matrixTwo)
