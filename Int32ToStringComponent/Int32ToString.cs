@@ -89,6 +89,31 @@ namespace Int32ToStringComponent
 
             return true;
         }
+
+
+        public IEnumerable<string> InputDescriptions
+        {
+            get
+            {
+                throw new NotImplementedException();
+            }
+            set
+            {
+                throw new NotImplementedException();
+            }
+        }
+
+        public IEnumerable<string> OutputDescriptions
+        {
+            get
+            {
+                throw new NotImplementedException();
+            }
+            set
+            {
+                throw new NotImplementedException();
+            }
+        }
     }
 }
 

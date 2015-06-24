@@ -3,10 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using CommonRessources;
 
 namespace Int16ToStringComponent
 {
-    public class Int16ToString
+    public class Int16ToString : IComponent
     {
         private Guid componentGuid;
 
@@ -87,6 +88,31 @@ namespace Int16ToStringComponent
             }
 
             return true;
+        }
+
+
+        public IEnumerable<string> InputDescriptions
+        {
+            get
+            {
+                throw new NotImplementedException();
+            }
+            set
+            {
+                throw new NotImplementedException();
+            }
+        }
+
+        public IEnumerable<string> OutputDescriptions
+        {
+            get
+            {
+                throw new NotImplementedException();
+            }
+            set
+            {
+                throw new NotImplementedException();
+            }
         }
     }
 }
