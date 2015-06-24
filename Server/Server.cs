@@ -16,7 +16,7 @@ namespace Server
     /// This class represents a server which only manages all internal clients (slaves).
     /// For external management, see ExternalServersManager
     /// </summary>
-    public class Server : INetworkServer
+    public class Server : CommonServer, INetworkServer
     {
         private Thread listenThread;
         private TcpListener tcpListener;
