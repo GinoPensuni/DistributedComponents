@@ -39,7 +39,7 @@ namespace MultiplyVectorWithScalarComponent
             }
         }
 
-        public int[] Vector
+        public int[] _Vector
         {
             get
             {
@@ -49,9 +49,9 @@ namespace MultiplyVectorWithScalarComponent
 
         public static Vector MultiplyWithScalar(Vector first, int scalar)
         {
-            int[] result = new int[first.Vector.Length];
+            int[] result = new int[first._Vector.Length];
 
-            for (int i = 0; i < first.Vector.Length; i++)
+            for (int i = 0; i < first._Vector.Length; i++)
             {
                 result[i] = first.vector[i] * scalar;
             }

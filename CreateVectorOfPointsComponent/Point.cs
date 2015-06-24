@@ -15,7 +15,7 @@ namespace CreateVectorOfPointsComponent
            this.point = point;
         }
 
-        public int[] Point
+        public int[] _Point
         {
             get
             {

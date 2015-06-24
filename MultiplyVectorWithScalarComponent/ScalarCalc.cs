@@ -60,7 +60,7 @@ namespace MultiplyVectorWithScalarComponent
 
                Vector result = Vector.MultiplyWithScalar(vector, scalar);
 
-               return new List<object>() { result.Vector };
+               return new List<object>() { result._Vector };
            }
            else
            {

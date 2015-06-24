@@ -5,9 +5,9 @@ using System.Text;
 using System.Threading.Tasks;
 using CommonRessources;
 
-namespace VectorCrossProductCalculaterComponent
+namespace VectorAngleCalculator
 {
-    class CrossProductCalculater : IComponent
+    class AngleCalculator
     {
         private Guid componentGuid;
 
@@ -17,15 +17,15 @@ namespace VectorCrossProductCalculaterComponent
 
         private IEnumerable<string> outputHints;
 
-        public CrossProductCalculater()
+        public AngleCalculator()
         {
-            this.componentGuid = new Guid("CC64D913-FC9E-4419-920F-B03CA6FF0142");
+            this.componentGuid = new Guid("1417062F-4D3E-472F-97B7-F7E260F4BAA4");
 
-            this.friendlyName = "Cross Product Calculater";
+            this.friendlyName = "Calculate Angle of two vectors";
 
             this.inputHints = new List<string>() { typeof(int[]).ToString(), typeof(int[]).ToString() };
             
-            this.outputHints = new List<string>() { typeof(int[]).ToString() };    
+            this.outputHints = new List<string>() { typeof(double).ToString() };    
         }
 
         public Guid ComponentGuid
@@ -58,9 +58,11 @@ namespace VectorCrossProductCalculaterComponent
 
                Vector second = new Vector(vectors[1]);
 
-               Vector result = Vector.CrossProduct(first, second);
+               double rad = Vector.CalcAngle(first, second);
 
-               return new List<object>() { result._Vector };
+               double degree = rad * (180 / Math.PI);
+
+               return new List<object>() { degree };
            }
            else
            {

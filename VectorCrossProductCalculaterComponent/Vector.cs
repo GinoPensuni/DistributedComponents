@@ -39,7 +39,7 @@ namespace VectorCrossProductCalculaterComponent
             }
         }
 
-        public int[] Vector
+        public int[] _Vector
         {
             get
             {
@@ -53,11 +53,11 @@ namespace VectorCrossProductCalculaterComponent
             {
                 int[] result = new int[first.RowCount];
 
-                int firstNumber = first.Vector[1] * second.Vector[2] - first.Vector[2] * second.Vector[1];
+                int firstNumber = first._Vector[1] * second._Vector[2] - first._Vector[2] * second._Vector[1];
 
-                int secondNumber = first.Vector[3] * second.Vector[0] - first.Vector[0] * second.Vector[2];
+                int secondNumber = first._Vector[3] * second._Vector[0] - first._Vector[0] * second._Vector[2];
 
-                int thirdNumber = first.Vector[0] * second.Vector[1] - first.Vector[1] * second.Vector[0];
+                int thirdNumber = first._Vector[0] * second._Vector[1] - first._Vector[1] * second._Vector[0];
 
                 result[0] = firstNumber;
                 result[1] = secondNumber;

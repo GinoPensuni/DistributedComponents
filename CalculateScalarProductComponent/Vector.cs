@@ -39,7 +39,7 @@ namespace CalculateScalarProductComponent
             }
         }
 
-        public int[] Vector
+        public int[] _Vector
         {
             get
             {

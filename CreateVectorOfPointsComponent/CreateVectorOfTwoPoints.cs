@@ -60,7 +60,7 @@ namespace CreateVectorOfPointsComponent
 
                Vector result = Vector.CreateVector(p1, p2);
 
-               return new List<object>() { result.Vector };
+               return new List<object>() { result._Vector };
            }
            else
            {

@@ -39,7 +39,7 @@ namespace VectorAdditionComponent
             }
         }
 
-        public int [] Vector
+        public int [] _Vector
         {
             get
             {
@@ -55,7 +55,7 @@ namespace VectorAdditionComponent
 
                 for (int i = 0; i < first.RowCount; i++)
                 {
-                    result[i] = first.Vector[i] + second.Vector[i];
+                    result[i] = first._Vector[i] + second._Vector[i];
                 }
 
                 return new Vector(result);

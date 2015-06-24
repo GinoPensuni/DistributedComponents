@@ -39,7 +39,7 @@ namespace CreateVectorOfPointsComponent
             }
         }
 
-        public int[] Vector
+        public int[] _Vector
         {
             get
             {
@@ -55,11 +55,11 @@ namespace CreateVectorOfPointsComponent
         /// <returns></returns>
         public static Vector CreateVector(Point p1, Point p2)
         {
-            int[] result = new int[p1.Point.Length];
+            int[] result = new int[p1._Point.Length];
 
-            for (int i = 0; i < p1.Point.Length; i++)
+            for (int i = 0; i < p1._Point.Length; i++)
 			{
-                result[i] = p2.Point[i] - p1.Point[i];
+                result[i] = p2._Point[i] - p1._Point[i];
 			}
 
             return new Vector(result);

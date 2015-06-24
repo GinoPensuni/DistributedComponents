@@ -39,7 +39,7 @@ namespace VectorAngleCalculator
             }
         }
 
-        public int[] Vector
+        public int[] _Vector
         {
             get
             {
@@ -47,17 +47,36 @@ namespace VectorAngleCalculator
             }
         }
 
-        public static Vector CalcAngle(Vector first, Vector second)
+        public static double CalcAngle(Vector first, Vector second)
         {
             if (CheckDimensions(first, second))
             {
-                int numerator = 0;
+                double denumerator = CalculateAbsoluteValue(first) * CalculateAbsoluteValue(second);
 
-                int denumerator = 0;
+                double numerator = Convert.ToDouble(CalculateScalar(first, second));
 
-                //numerator = first
+                double cos = numerator / denumerator;
 
-                return null;
+                return Math.Acos(cos);
+            }
+            else
+            {
+                throw new ArgumentException("The number of rows of the two vectors must be the same!");
+            }
+        }
+
+        public static int CalculateScalar(Vector first, Vector second)
+        {
+            if (CheckDimensions(first, second))
+            {
+                int sum = 0;
+
+                for (int i = 0; i < first.RowCount; i++)
+                {
+                    sum = sum + (first.vector[i] * second.vector[i]);
+                }
+
+                return sum;
             }
             else
             {
@@ -75,6 +94,18 @@ namespace VectorAngleCalculator
             {
                 return false;
             }
+        }
+
+        public static double CalculateAbsoluteValue(Vector vector)
+        {
+            double square = 0;
+
+            for (int i = 0; i < vector._Vector.Length; i++)
+            {
+                square = square + (Math.Pow(vector._Vector[i], 2));
+            }
+
+            return Math.Sqrt(square);
         }
     }
 }

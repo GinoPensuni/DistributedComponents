@@ -60,7 +60,7 @@ namespace VectorAdditionComponent
 
                Vector result = Vector.Add(first, second);
 
-               return new List<object>() { result.Vector };
+               return new List<object>() { result._Vector };
            }
            else
            {

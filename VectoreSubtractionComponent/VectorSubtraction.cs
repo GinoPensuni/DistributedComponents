@@ -59,7 +59,7 @@ namespace VectorSubtractionComponent
 
                Vector result = Vector.Subtract(first, second);
 
-               return new List<object>() { result.Vector };
+               return new List<object>() { result._Vector };
            }
            else
            {
