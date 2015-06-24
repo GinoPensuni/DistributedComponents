@@ -17,6 +17,10 @@ namespace DivideComponent
 
         private IEnumerable<string> outputHints;
 
+        private IEnumerable<string> inputDescriptions;
+
+        private IEnumerable<string> outputDescriptions;
+
         public Divide()
         {
             this.componentGuid = new Guid("EAC5C086-8745-4E2A-A931-41A176CBFC57");
@@ -102,11 +106,11 @@ namespace DivideComponent
         {
             get
             {
-                throw new NotImplementedException();
+                return this.inputDescriptions;
             }
             set
             {
-                throw new NotImplementedException();
+                this.inputDescriptions = value;
             }
         }
 
@@ -114,11 +118,11 @@ namespace DivideComponent
         {
             get
             {
-                throw new NotImplementedException();
+                return this.outputDescriptions;
             }
             set
             {
-                throw new NotImplementedException();
+                this.outputDescriptions = value;
             }
         }
     }

@@ -17,6 +17,10 @@ namespace VectorAngleCalculator
 
         private IEnumerable<string> outputHints;
 
+        private IEnumerable<string> inputDescriptions;
+
+        private IEnumerable<string> outputDescriptions;
+
         public AngleCalculator()
         {
             this.componentGuid = new Guid("1417062F-4D3E-472F-97B7-F7E260F4BAA4");
@@ -90,16 +94,15 @@ namespace VectorAngleCalculator
             }
         }
 
-
         public IEnumerable<string> InputDescriptions
         {
             get
             {
-                throw new NotImplementedException();
+                return this.inputDescriptions;
             }
             set
             {
-                throw new NotImplementedException();
+                this.inputDescriptions = value;
             }
         }
 
@@ -107,11 +110,11 @@ namespace VectorAngleCalculator
         {
             get
             {
-                throw new NotImplementedException();
+                return this.outputDescriptions;
             }
             set
             {
-                throw new NotImplementedException();
+                this.outputDescriptions = value;
             }
         }
     }

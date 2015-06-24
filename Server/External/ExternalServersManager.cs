@@ -79,6 +79,8 @@ namespace Server
 
         private void extServer_OnDied(object sender, ExternalServerDiedEventArgs e)
         {
+            this.ExternalServers.Remove(e.ExternalServer.Address);
+
             if (this.OnExternalServerTerminated != null)
             {
                 this.OnExternalServerTerminated(e.ExternalServer);
