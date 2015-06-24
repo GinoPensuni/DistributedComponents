@@ -29,7 +29,10 @@ namespace MultiplicationMatricesComponent
 
             this.inputHints= new List<string>() { typeof(int[,]).ToString(), typeof(int[,]).ToString() };
 
-            this.outputHints = new List<string>() { typeof(int[,]).ToString() };                                                       
+            this.outputHints = new List<string>() { typeof(int[,]).ToString() };
+
+            this.inputDescriptions = new List<string>() { "First parameter: A matrix as 2 dimensional integer array", "Second parameter: A matrix as 2 dimensional integer array" };
+            this.outputDescriptions = new List<string>() { "Output: The two input matrices multiplied." };                          
         }
 
         public Guid ComponentGuid
