@@ -73,56 +73,24 @@ namespace AppLogic.ServerLogic
             var edges = data.Component.Edges;
             Dictionary<Guid, ComponentWorker> workerMap = new Dictionary<Guid, ComponentWorker>();
 
-            foreach (var edge in edges.Where(e => e.InternalInputComponentGuid != Guid.Empty && e.InternalOutputComponentGuid != Guid.Empty))
-            { 
-                ComponentWorker destinationWorker;
-                ComponentWorker sourceWorker;
-                Dictionary<uint, DataGate> inputGates = new Dictionary<uint, DataGate>();
-                
-                if (!workerMap.ContainsKey(edge.InternalInputComponentGuid))
-                {
-                    destinationWorker = new ComponentWorker(this.serverReference, edge.InputComponentGuid, this.store[edge.InputComponentGuid].Item1);
-                    workerMap[edge.InternalInputComponentGuid] = destinationWorker;
-                }
-                else
-                {
-                    destinationWorker = workerMap[edge.InternalInputComponentGuid];
-                }
+            ComponentGraphTools.ExtractNodes(edges, workerMap, new BinaryFormatter(), this.serverReference, this.store);
 
-                if (!workerMap.ContainsKey(edge.InternalOutputComponentGuid))
-                {
-                    sourceWorker = new ComponentWorker(this.serverReference, edge.OutputComponentGuid, this.store[edge.OutputComponentGuid].Item1);
-                    workerMap[edge.InternalInputComponentGuid] = sourceWorker;
-                }
-                else
-                {
-                    sourceWorker = workerMap[edge.InternalOutputComponentGuid];
-                }
+            ComponentGraphTools.ExtractInnerEdges(edges, workerMap);
 
-                DataGate edgeConnector = new DataGate();
-                destinationWorker.InputGates[edge.InputValueID] = edgeConnector;
-                sourceWorker.OutputGates[edge.OutputValueID] = edgeConnector;
-            }
+            Dictionary<uint, DataGate> inputDataGates = new Dictionary<uint,DataGate>();
+            Dictionary<uint, DataGate> outputDataGates = new Dictionary<uint,DataGate>();
 
-            Dictionary<uint, DataGate> inputDataGates = new Dictionary<uint, DataGate>();
-
-            foreach (var edge in edges.Where(e => e.InternalOutputComponentGuid == Guid.Empty))
+            foreach (var inPort in edges.Select(e => new Tuple<Guid, uint>(e.InternalOutputComponentGuid, e.OutputValueID)).Where(t => t.Item1 == Guid.Empty).Select(t => t.Item2))
             {
-                var destinationWorker = workerMap[edge.InternalInputComponentGuid];
-                DataGate externalConnector = new DataGate();
-                destinationWorker.InputGates[edge.InputValueID] = externalConnector;
-                inputDataGates[edge.OutputValueID] = externalConnector;
+                inputDataGates[inPort] = new DataGate();
             }
 
-            Dictionary<uint, DataGate> outputDataGates = new Dictionary<uint, DataGate>();
-
-            foreach (var edge in edges.Where(e => e.InternalInputComponentGuid == Guid.Empty))
+            foreach (var outPort in edges.Select(e => new Tuple<Guid, uint>(e.InternalInputComponentGuid, e.InputValueID)).Where(t => t.Item1 == Guid.Empty).Select(t => t.Item2))
             {
-                var sourceWorker = workerMap[edge.InternalOutputComponentGuid];
-                DataGate externalConnector = new DataGate();
-                sourceWorker.OutputGates[edge.OutputValueID] = externalConnector;
-                outputDataGates[edge.InputValueID] = externalConnector;
+                outputDataGates[outPort] = new DataGate();
             }
+
+            ComponentGraphTools.ExtractOuterEdges(edges, workerMap, inputDataGates, outputDataGates);
 
             var inputList = data.Input.ToList();
 
