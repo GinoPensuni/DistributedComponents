@@ -73,7 +73,7 @@ namespace Server
             this.SendMessage(assignmsg);
         }
 
-        public bool SendComponent(Component comp, IEnumerable<object> values)
+        public bool SendComponent(IComponent comp, IEnumerable<object> values)
         {
             ComponentMessage compmsg = new ComponentMessage(Guid.NewGuid());
             compmsg.Component = comp;
@@ -83,8 +83,6 @@ namespace Server
             Console.WriteLine(compmsg.ID);
 
             return this.SendComponent(compmsg);
-
-            //return this.SendMessage(compmsg);
         }
 
         public bool SendComponent(ComponentMessage compMessage)
