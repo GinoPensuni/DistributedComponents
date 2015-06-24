@@ -31,9 +31,9 @@ namespace ReverseListComponent
 
             this.outputHints = new List<string>() { typeof(List<object>).ToString() };
 
-            this.inputDescriptions = new List<string>() { "A list of string values, which represents the original list." };
+            this.inputDescriptions = new List<string>() { "A list of object values, which represents the original list." };
 
-            this.outputDescriptions = new List<string>() { "A list of string values, which represents the reversed list." };           
+            this.outputDescriptions = new List<string>() { "A list of object values, which represents the reversed list." };           
         }
         public Guid ComponentGuid
         {
