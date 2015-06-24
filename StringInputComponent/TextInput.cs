@@ -35,6 +35,10 @@ namespace StringInputComponent
             this.inputHints = new List<string>() { typeof(String).ToString() };
 
             this.outputHints = new List<string>() { typeof(String).ToString() };
+
+            this.inputDescriptions = new List<string>() { "A string, which describes the input." };
+
+            this.outputDescriptions = new List<string>() { "A string, which has been entered by the user." };
         }
 
         public Guid ComponentGuid

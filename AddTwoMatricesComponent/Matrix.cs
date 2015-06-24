@@ -6,18 +6,17 @@ using System.Threading.Tasks;
 
 namespace AddTwoMatricesComponent
 {
-    class Matrix
+    public class Matrix
     {
         private int rowCount;
 
         private int columnCount;
 
-        private int[,] matrix;
 
         public Matrix(int[,] matrix)
         {
             this.RowCount = matrix.GetLength(0);
-
+            this._Matrix = matrix;
             this.ColumnCount = matrix.GetLength(1);
         }
 
@@ -62,11 +61,8 @@ namespace AddTwoMatricesComponent
 
         public int[,] _Matrix
         {
-            get
-            {
-                return this.matrix;
-            }
-
+            get;
+            private set;
         }
 
         public static Matrix AddMatrices(Matrix matrixOne, Matrix matrixTwo)

@@ -30,6 +30,9 @@ namespace Int32ToStringComponent
             this.inputHints = new List<string>() { typeof(Int32).ToString() };
 
             this.outputHints = new List<string>() { typeof(String).ToString() };
+
+            this.inputDescriptions = new List<string>() { "Parameter: A number with datatype int32." };
+            this.outputDescriptions = new List<string>() { "Output: The int32 number converted to a string." };
         }
         public Guid ComponentGuid
         {

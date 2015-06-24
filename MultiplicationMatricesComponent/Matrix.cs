@@ -12,12 +12,11 @@ namespace MultiplicationMatricesComponent
 
         private int columnCount;
 
-        private int[,] matrix;
 
         public Matrix(int[,] matrix)
         {
             this.RowCount = matrix.GetLength(0);
-
+            this._Matrix = matrix;
             this.ColumnCount = matrix.GetLength(1);
         }
 
@@ -62,11 +61,8 @@ namespace MultiplicationMatricesComponent
 
         public int[,] _Matrix
         {
-            get
-            {
-                return this.matrix;
-            }
-           
+            get;
+            private set;
         }
 
         public static Matrix Multiply(Matrix matrixOne, Matrix matrixTwo)
