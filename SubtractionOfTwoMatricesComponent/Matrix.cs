@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace AddTwoMatricesComponent
+namespace SubtractionOfTwoMatricesComponent
 {
-    class Matrix
+    public class Matrix
     {
         private int rowCount;
 
@@ -69,7 +69,7 @@ namespace AddTwoMatricesComponent
 
         }
 
-        public static Matrix AddMatrices(Matrix matrixOne, Matrix matrixTwo)
+        public static Matrix SubtractMatrices(Matrix matrixOne, Matrix matrixTwo)
         {
             if (CheckDimensions(matrixOne, matrixTwo))
             {
@@ -80,7 +80,7 @@ namespace AddTwoMatricesComponent
                 {
                     for (int j = 0; j < matrixTwo.ColumnCount; j++)
                     {
-                        result[i, j] = matrixOne._Matrix[i, j] + matrixTwo._Matrix[i, j];
+                        result[i, j] = matrixOne._Matrix[i, j] - matrixTwo._Matrix[i, j];
                     }
                 }
 
