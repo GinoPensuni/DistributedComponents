@@ -65,5 +65,30 @@ namespace CommonRessources
 
             return d.AsEnumerable();
         }
+
+
+        public IEnumerable<string> InputDescriptions
+        {
+            get
+            {
+                return new List<string>();
+            }
+            set
+            {
+
+            }
+        }
+
+        public IEnumerable<string> OutputDescriptions
+        {
+            get
+            {
+                return new List<string>();
+            }
+            set
+            {
+
+            }
+        }
     }
 }

@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using Client;
 using InputComponentWpf;
 using StringInputComponent;
+using Server;
 
 namespace DistributedComponentsFinal
 {
@@ -32,11 +33,29 @@ namespace DistributedComponentsFinal
 
             // e.Evaluate(new List<object>() { });
 
+            CommonServer cm = new CommonServer(2);
+
+            ExternalServersManager esm = new ExternalServersManager(cm);
+            esm.StartListening();
+
+            esm.OnExternalServerLoggedOn += esm_OnExternalServerLoggedOn;
+
             Console.WriteLine(uint.MaxValue);
 
             Console.WriteLine((uint)0);
 
             Console.ReadLine();
+        }
+
+        static void esm_OnExternalServerLoggedOn(ExternalServer extServer)
+        {
+            Console.WriteLine("external server logged on " + extServer.FriendlyName);
+            extServer.OnExternalComponentSubmitRequestReceived += extServer_OnExternalComponentSubmitRequestReceived;
+        }
+
+        static void extServer_OnExternalComponentSubmitRequestReceived(object sender, ExternalComponentSubmittedEventArgs e)
+        {
+            Console.WriteLine("external component submitted ");
         }
     }
 }

@@ -61,12 +61,13 @@ namespace Server
                 Console.WriteLine("  > Waiting for broadcasts!");
 
                 receivedData = this.client.Receive(ref groupEP);
-                Console.WriteLine("  > Broadcast received.");
 
                 IPHostEntry Host = Dns.GetHostEntry(Dns.GetHostName());
 
                 if (this.OnBroadcastReceived != null && !Host.AddressList.Contains(groupEP.Address))
                 {
+                    Console.WriteLine("  > Broadcast received.");
+
                     BroadcastReceivedEventArgs args = new BroadcastReceivedEventArgs();
                     args.ReceivedData = Encoding.UTF8.GetString(receivedData);
                     args.SenderEndPoint = groupEP;

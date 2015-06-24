@@ -64,6 +64,10 @@
       <Project>{d8acf8ab-40ad-4b6a-9997-6862556b33e9}</Project>
       <Name>InputComponentWpf</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Server\Server.csproj">
+      <Project>{86ad65b2-2b9c-4e3e-b5b2-85377ffa6ba2}</Project>
+      <Name>Server</Name>
+    </ProjectReference>
     <ProjectReference Include="..\StringInputComponent\StringInputComponent.csproj">
       <Project>{edc5c909-bb82-4c6d-b10e-8f1968395be7}</Project>
       <Name>StringInputComponent</Name>

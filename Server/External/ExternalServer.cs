@@ -737,6 +737,7 @@ namespace Server
             args.InputData = request.InputData;
             args.JobComponent = request.JobComponent;
             args.JobSourceClientGuid = request.JobSourceClientGuid;
+            args.JobGuid = request.JobGuid;
 
             args.TargetDisplayClient = request.TargetDisplayClient;
             args.TargetCalcClientGuid = request.TargetCalcClientGuid;
