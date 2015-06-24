@@ -17,6 +17,10 @@ namespace LongToStringComponent
 
         private IEnumerable<string> outputHints;
 
+        private IEnumerable<string> inputDescriptions;
+
+        private IEnumerable<string> outputDescriptions;
+
         public Int64ToString()
         {
             this.componentGuid = new Guid("D2D0B295-A4C9-4E8B-991A-5CAD0A0CE660");
@@ -96,11 +100,11 @@ namespace LongToStringComponent
         {
             get
             {
-                throw new NotImplementedException();
+                return this.inputDescriptions;
             }
             set
             {
-                throw new NotImplementedException();
+                this.inputDescriptions = value;
             }
         }
 
@@ -108,11 +112,11 @@ namespace LongToStringComponent
         {
             get
             {
-                throw new NotImplementedException();
+                return this.outputDescriptions;
             }
             set
             {
-                throw new NotImplementedException();
+                this.outputDescriptions = value;
             }
         }
     }

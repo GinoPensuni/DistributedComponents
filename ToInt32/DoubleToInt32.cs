@@ -17,6 +17,10 @@ namespace ToInt32
 
         private IEnumerable<string> outputHints;
 
+        private IEnumerable<string> inputDescriptions;
+
+        private IEnumerable<string> outputDescriptions;
+
         public DoubleToInt32()
         {
             this.componentGuid =  new Guid("80FC8BEC-E213-4DF2-8129-F70197CA4210");
@@ -107,11 +111,11 @@ namespace ToInt32
         {
             get
             {
-                throw new NotImplementedException();
+                return this.inputDescriptions;
             }
             set
             {
-                throw new NotImplementedException();
+                this.inputDescriptions = value;
             }
         }
 
@@ -119,11 +123,11 @@ namespace ToInt32
         {
             get
             {
-                throw new NotImplementedException();
+                return this.outputDescriptions;
             }
             set
             {
-                throw new NotImplementedException();
+                this.outputDescriptions = value;
             }
         }
     }

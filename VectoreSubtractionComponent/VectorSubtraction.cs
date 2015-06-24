@@ -17,6 +17,10 @@ namespace VectorSubtractionComponent
 
         private IEnumerable<string> outputHints;
 
+        private IEnumerable<string> inputDescriptions;
+
+        private IEnumerable<string> outputDescriptions;
+
         public VectorSubtraction()
         {
             this.componentGuid = new Guid("73F6F176-5518-4C31-A4BB-F2ECCD4C8C63");
@@ -93,11 +97,11 @@ namespace VectorSubtractionComponent
         {
             get
             {
-                throw new NotImplementedException();
+                return this.inputDescriptions;
             }
             set
             {
-                throw new NotImplementedException();
+                this.inputDescriptions = value;
             }
         }
 
@@ -105,11 +109,11 @@ namespace VectorSubtractionComponent
         {
             get
             {
-                throw new NotImplementedException();
+                return this.outputDescriptions;
             }
             set
             {
-                throw new NotImplementedException();
+                this.outputDescriptions = value;
             }
         }
     }

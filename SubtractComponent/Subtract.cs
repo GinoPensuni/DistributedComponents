@@ -17,6 +17,10 @@ namespace SubtractComponent
 
         private IEnumerable<string> outputHints;
 
+        private IEnumerable<string> inputDescriptions;
+
+        private IEnumerable<string> outputDescriptions;
+
         public Subtract()
         {
             this.componentGuid = new Guid("8129E40D-40D3-461E-86E6-A02AF74211F6");
@@ -116,11 +120,11 @@ namespace SubtractComponent
         {
             get
             {
-                throw new NotImplementedException();
+                return this.inputDescriptions;
             }
             set
             {
-                throw new NotImplementedException();
+                this.inputDescriptions = value;
             }
         }
 
@@ -128,11 +132,11 @@ namespace SubtractComponent
         {
             get
             {
-                throw new NotImplementedException();
+                return this.outputDescriptions;
             }
             set
             {
-                throw new NotImplementedException();
+                this.outputDescriptions = value;
             }
         }
     }

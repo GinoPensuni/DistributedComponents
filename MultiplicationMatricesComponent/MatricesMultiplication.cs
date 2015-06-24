@@ -17,6 +17,10 @@ namespace MultiplicationMatricesComponent
 
         private IEnumerable<string> outputHints;
 
+        private IEnumerable<string> inputDescriptions;
+
+        private IEnumerable<string> outputDescriptions;
+
         public MatricesMultiplication()
         {
             this.componentGuid = new Guid("60E37598-2570-4DBA-83F2-30096D45212E");
@@ -93,11 +97,11 @@ namespace MultiplicationMatricesComponent
         {
             get
             {
-                throw new NotImplementedException();
+                return this.inputDescriptions;
             }
             set
             {
-                throw new NotImplementedException();
+                this.inputDescriptions = value;
             }
         }
 
@@ -105,11 +109,11 @@ namespace MultiplicationMatricesComponent
         {
             get
             {
-                throw new NotImplementedException();
+                return this.outputDescriptions;
             }
             set
             {
-                throw new NotImplementedException();
+                this.outputDescriptions = value;
             }
         }
     }

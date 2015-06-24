@@ -17,6 +17,10 @@ namespace MultiplyVectorWithScalarComponent
 
         private IEnumerable<string> outputHints;
 
+        private IEnumerable<string> inputDescriptions;
+
+        private IEnumerable<string> outputDescriptions;
+
         public ScalarCalc()
         {
             this.componentGuid = new Guid("414B1977-70D8-4275-88AC-E722DBD416A9");
@@ -94,11 +98,11 @@ namespace MultiplyVectorWithScalarComponent
         {
             get
             {
-                throw new NotImplementedException();
+                return this.inputDescriptions;
             }
             set
             {
-                throw new NotImplementedException();
+                this.inputDescriptions = value;
             }
         }
 
@@ -106,11 +110,11 @@ namespace MultiplyVectorWithScalarComponent
         {
             get
             {
-                throw new NotImplementedException();
+                return this.outputDescriptions;
             }
             set
             {
-                throw new NotImplementedException();
+                this.outputDescriptions = value;
             }
         }
     }

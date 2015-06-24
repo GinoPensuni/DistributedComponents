@@ -17,6 +17,10 @@ namespace VectorAdditionComponent
 
         private IEnumerable<string> outputHints;
 
+        private IEnumerable<string> inputDescriptions;
+
+        private IEnumerable<string> outputDescriptions;
+
         public VectorAddition()
         {
             this.componentGuid = new Guid("7304A275-8341-4D37-A6CD-4FD66286A822");
@@ -93,11 +97,11 @@ namespace VectorAdditionComponent
         {
             get
             {
-                throw new NotImplementedException();
+                return this.inputDescriptions;
             }
             set
             {
-                throw new NotImplementedException();
+                this.inputDescriptions = value;
             }
         }
 
@@ -105,11 +109,11 @@ namespace VectorAdditionComponent
         {
             get
             {
-                throw new NotImplementedException();
+                return this.outputDescriptions;
             }
             set
             {
-                throw new NotImplementedException();
+                this.outputDescriptions = value;
             }
         }
     }

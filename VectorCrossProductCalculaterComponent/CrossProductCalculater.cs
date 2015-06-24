@@ -17,6 +17,10 @@ namespace VectorCrossProductCalculaterComponent
 
         private IEnumerable<string> outputHints;
 
+        private IEnumerable<string> inputDescriptions;
+
+        private IEnumerable<string> outputDescriptions;
+
         public CrossProductCalculater()
         {
             this.componentGuid = new Guid("CC64D913-FC9E-4419-920F-B03CA6FF0142");
@@ -93,11 +97,11 @@ namespace VectorCrossProductCalculaterComponent
         {
             get
             {
-                throw new NotImplementedException();
+                return this.inputDescriptions;
             }
             set
             {
-                throw new NotImplementedException();
+                this.inputDescriptions = value;
             }
         }
 
@@ -105,11 +109,11 @@ namespace VectorCrossProductCalculaterComponent
         {
             get
             {
-                throw new NotImplementedException();
+                return this.outputDescriptions;
             }
             set
             {
-                throw new NotImplementedException();
+                this.outputDescriptions = value;
             }
         }
     }

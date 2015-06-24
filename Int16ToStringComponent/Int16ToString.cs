@@ -16,6 +16,10 @@ namespace Int16ToStringComponent
         private IEnumerable<string> inputHints;
 
         private IEnumerable<string> outputHints;
+        
+        private IEnumerable<string> inputDescriptions;
+
+        private IEnumerable<string> outputDescriptions;
 
         public Int16ToString()
         {
@@ -95,11 +99,11 @@ namespace Int16ToStringComponent
         {
             get
             {
-                throw new NotImplementedException();
+                return this.inputDescriptions;
             }
             set
             {
-                throw new NotImplementedException();
+                this.inputDescriptions = value;
             }
         }
 
@@ -107,11 +111,11 @@ namespace Int16ToStringComponent
         {
             get
             {
-                throw new NotImplementedException();
+                return this.outputDescriptions;
             }
             set
             {
-                throw new NotImplementedException();
+                this.outputDescriptions = value;
             }
         }
     }

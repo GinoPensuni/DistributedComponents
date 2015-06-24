@@ -17,6 +17,10 @@ namespace Int32ToStringComponent
 
         private IEnumerable<string> outputHints;
 
+        private IEnumerable<string> inputDescriptions;
+
+        private IEnumerable<string> outputDescriptions;
+
         public Int32ToString()
         {
             this.componentGuid = new Guid("A73C0B22-B8CB-44BC-8AE9-C4B7F060F67A");
@@ -95,11 +99,11 @@ namespace Int32ToStringComponent
         {
             get
             {
-                throw new NotImplementedException();
+                return this.inputDescriptions;
             }
             set
             {
-                throw new NotImplementedException();
+                this.inputDescriptions = value;
             }
         }
 
@@ -107,11 +111,11 @@ namespace Int32ToStringComponent
         {
             get
             {
-                throw new NotImplementedException();
+                return this.outputDescriptions;
             }
             set
             {
-                throw new NotImplementedException();
+                this.outputDescriptions = value;
             }
         }
     }
