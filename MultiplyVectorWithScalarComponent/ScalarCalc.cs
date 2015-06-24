@@ -29,7 +29,10 @@ namespace MultiplyVectorWithScalarComponent
 
             this.inputHints = new List<string>() { typeof(int[]).ToString(), typeof(int).ToString() };
             
-            this.outputHints = new List<string>() { typeof(int[]).ToString() };    
+            this.outputHints = new List<string>() { typeof(int[]).ToString() };
+
+            this.inputDescriptions = new List<string>() { "First parameter: A vector represented as integer array.", "Second parameter: An integer number with which the vector shall be multiplied." };
+            this.outputDescriptions = new List<string>() { "Output: The resulting vector as integer array." };    
         }
 
         public Guid ComponentGuid
