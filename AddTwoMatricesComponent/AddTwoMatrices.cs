@@ -17,6 +17,11 @@ namespace AddTwoMatricesComponent
 
         private IEnumerable<string> outputHints;
 
+        private IEnumerable<string> inputDescriptions;
+
+        private IEnumerable<string> outputDescriptions;
+
+
         public AddTwoMatrices()
         {
             this.componentGuid = new Guid("99F3B8AC-EEAB-4587-B55C-57B0C0D75B5E");
@@ -26,6 +31,11 @@ namespace AddTwoMatricesComponent
             this.inputHints = new List<string>() { typeof(int[,]).ToString(), typeof(int[,]).ToString() };
 
             this.outputHints = new List<string>() { typeof(int[,]).ToString() };
+
+            this.inputDescriptions = new List<string>() {"Fist Parameter: Two dimensional integer array int[,] representing a matrix",
+                                                         "Second Parameter: Two dimensional integer array int[,] representing a matrix"};
+
+            this.outputDescriptions = new List<string>() { "Output: Two dimensional integer array int[,] representin the sum of the two matrices (input parameters) " };
         }
         public Guid ComponentGuid
         {
@@ -95,11 +105,11 @@ namespace AddTwoMatricesComponent
         {
             get
             {
-                throw new NotImplementedException();
+                return this.inputDescriptions;
             }
             set
             {
-                throw new NotImplementedException();
+                this.inputDescriptions = value;
             }
         }
 
@@ -107,11 +117,11 @@ namespace AddTwoMatricesComponent
         {
             get
             {
-                throw new NotImplementedException();
+                return this.outputDescriptions;
             }
             set
             {
-                throw new NotImplementedException();
+                this.outputDescriptions = value;
             }
         }
     }

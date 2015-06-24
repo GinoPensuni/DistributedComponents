@@ -27,13 +27,13 @@ namespace DivideComponent
 
             this.friendlyName = "Division";
 
-            //this.inputHints = new List<string> { "System.Double", "System.Double" };
-
-            //this.outputHints = new List<string> { "System.Double" };
-
             this.inputHints = new List<string> { typeof(double).ToString(), typeof(double).ToString() };
 
             this.outputHints = new List<string> { typeof(double).ToString() };
+
+            this.inputDescriptions = new List<string> { "First Parameter: A number representing the dividend", "Second Parameter: A number representing the divisor" };
+
+            this.outputDescriptions = new List<string> { "Output: A number representing the result of the division" };
         }
         public Guid ComponentGuid
         {
