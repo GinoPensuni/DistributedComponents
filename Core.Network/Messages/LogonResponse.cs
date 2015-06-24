@@ -17,7 +17,8 @@ namespace Core.Network
     /// <summary>
     /// Sent when a logon request message was received.
     /// </summary>
-    public class LogonResponse 
+    [Serializable]
+    public class LogonResponse
     {
         /// <summary>
         /// Gets or sets the unique id of the received message.

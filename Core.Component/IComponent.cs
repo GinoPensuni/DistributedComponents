@@ -18,7 +18,7 @@ namespace Core.Component
     /// <summary>
     /// An atomic component assembly has to implement this interface.
     /// </summary>
-    public interface IComponent 
+    public interface IComponent
     {
         /// <summary>
         /// Gets the unique component id.
@@ -26,25 +26,37 @@ namespace Core.Component
         /// DO NOT REUSE GUIDS.
         /// </summary>
         /// <value>A unique identifier.</value>
-        Guid ComponentGuid { get;  }
+        Guid ComponentGuid { get; }
 
         /// <summary>
         /// Gets the display name for the component.
         /// </summary>
         /// <value>A name string.</value>
-        string FriendlyName { get;  }
+        string FriendlyName { get; }
 
         /// <summary>
         /// Gets the collection of types that describe the input arguments.
         /// </summary>
         /// <value>Collection of strings.</value>
-        IEnumerable<string> InputHints { get;  }
+        IEnumerable<string> InputHints { get; }
 
         /// <summary>
         /// Gets the collection of types that describe the output arguments.
         /// </summary>
         /// <value>Collection of strings.</value>
-        IEnumerable<string> OutputHints { get;  }
+        IEnumerable<string> OutputHints { get; }
+
+        /// <summary>
+        /// Gets or sets the collection of strings that describe the input arguments.
+        /// </summary>
+        /// <value>Collection of strings.</value>
+        IEnumerable<string> InputDescriptions { get; set; }
+
+        /// <summary>
+        /// Gets or sets the collection of strings that describe the output arguments.
+        /// </summary>
+        /// <value>Collection of strings.</value>
+        IEnumerable<string> OutputDescriptions { get; set; }
 
         /// <summary>
         /// Executes the implementation of the component.
