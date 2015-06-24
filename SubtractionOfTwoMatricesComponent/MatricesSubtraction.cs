@@ -30,6 +30,10 @@ namespace SubtractionOfTwoMatricesComponent
             this.inputHints = new List<string>() { typeof(int[,]).ToString(), typeof(int[,]).ToString() };
 
             this.outputHints = new List<string>() { typeof(int[,]).ToString() };
+
+            this.inputDescriptions = new List<string>() { "An two-dimensional integer array, which represents the first matrix.", "An two-dimensional integer array, which represents the second matrix." };
+
+            this.outputDescriptions = new List<string>() { "An two-dimensional integer array, which represents the difference of the two matrix." };   
         }
         public Guid ComponentGuid
         {
