@@ -27,5 +27,7 @@ namespace CommonRessources
         /// </summary>
         event EventHandler<SaveComponentEventArgs> OnBombRevieced;
         bool sendFinalResult(Guid id, IEnumerable<object> result);
+
+        void Run();
     }
 }

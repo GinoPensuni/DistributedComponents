@@ -11,7 +11,7 @@ using System.IO;
 
 namespace AppLogic.ClientLogic
 {
-    public class ClientLogic  : ILogic, IClientLogic
+    public class ClientLogic : ILogic, IClientLogic
     {
         private static readonly IClientLogic instance = new ClientLogic();
         private static readonly INetworkClient client = new NetworkClient();
@@ -37,7 +37,7 @@ namespace AppLogic.ClientLogic
                 return componentStore;
             }
             set
-            { 
+            {
 
             }
         }
@@ -62,7 +62,7 @@ namespace AppLogic.ClientLogic
             }
             set
             {
-                
+
             }
         }
 
@@ -95,25 +95,25 @@ namespace AppLogic.ClientLogic
         {
             var loadingTask = new Task<List<Tuple<ComponentType, Core.Network.Component>>>(() =>
             {
-               var assemblyData = this.ComponentStore.LoadAssemblies();
-               foreach(var entry in assemblyData)
+                var assemblyData = this.ComponentStore.LoadAssemblies();
+                foreach (var entry in assemblyData)
                 {
                     this.ComponentManager.LoadAssemblyContents(entry);
                 }
 
                 // TODO Make this shit work
 
-               //return this.ComponentManager.LoadedComponents.Select(
-               //    comp =>
-               //    {
-               //        return new Core.Network.Component()
-               //        {
-               //            ComponentGuid = comp.Item2.ComponentGuid,
-               //            Edges = comp.Item1 == ComponentType.Complex ? comp.Item2.
-               //        };
-               //    });
+                //return this.ComponentManager.LoadedComponents.Select(
+                //    comp =>
+                //    {
+                //        return new Core.Network.Component()
+                //        {
+                //            ComponentGuid = comp.Item2.ComponentGuid,
+                //            Edges = comp.Item1 == ComponentType.Complex ? comp.Item2.
+                //        };
+                //    });
 
-               return new List<Tuple<ComponentType, Core.Network.Component>>();
+                return new List<Tuple<ComponentType, Core.Network.Component>>();
             });
 
             loadingTask.Start();
@@ -161,7 +161,7 @@ namespace AppLogic.ClientLogic
 
         public Task SaveComponent(Core.Network.Component component)
         {
-            var saveTask = new Task(() => 
+            var saveTask = new Task(() =>
             {
                 this.NetworkClient.uploadComponent(component);
             });

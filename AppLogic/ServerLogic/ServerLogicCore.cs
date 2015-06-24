@@ -11,18 +11,20 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Collections.Concurrent;
 using System.Threading;
+using Server;
 
 namespace AppLogic.ServerLogic
 {
     public class ServerLogicCore : IServerLogic, ILogic
     {
-        private INetworkServer serverReference;
-        private IStore store;
+        private readonly Server.Server master;
+        private readonly ExternalServersManager serverManager;
+        private readonly IStore store;
 
         private static readonly Object syncRoot = new Object();
         private static bool isInstantiated = false;
 
-        public ServerLogicCore(INetworkServer server)
+        public ServerLogicCore()
         {
             lock (ServerLogicCore.syncRoot)
             {
@@ -32,12 +34,180 @@ namespace AppLogic.ServerLogic
                 }
                 else
                 {
-                    ServerLogicCore.isInstantiated = true;
-                    this.serverReference = server;
-                    this.serverReference.OnRequestEvent += ServerReference_RequestEvent;
-                    this.serverReference.OnBombRevieced += ServerReference_OnBombRevieced;
+                    this.master = new Server.Server();
+                    this.master.OnRequestEvent += ServerReference_RequestEvent;
+                    this.master.OnBombRevieced += ServerReference_OnBombRevieced;
+                    this.master.Run();
+
+                    this.serverManager = new ExternalServersManager((Server.Server)this.master);
+                    this.serverManager.OnExternalServerLoggedOn += ServerManager_OnExternalServerLoggedOn;
+                    this.serverManager.OnExternalServerTerminated += ServerManager_OnExternalServerTerminated;
+                    this.serverManager.StartListening();
+
                     this.store = new ComponentStore();
+
+                    isInstantiated = true;
                 }
+            }
+        }
+
+        private void ServerManager_OnExternalServerTerminated(ExternalServer extServer)
+        {
+            extServer.OnAssemblyRequestReceived -= OnAssemblyRequestReceived;
+            extServer.OnAssemblyResponseReceived -= OnAssemblyResponseReceived;
+            extServer.OnExternalClientUpdated -= OnExternalClientUpdated;
+            extServer.OnExternalComponentSubmitRequestReceived -= OnExternalComponentSubmitRequestReceived;
+            extServer.OnInternalClientUpdatedResponseReceived -= OnInternalClientUpdatedResponseReceived;
+            extServer.OnInternalComponentSubmitResponseReceived -= OnInternalComponentSubmitResponseReceived;
+            extServer.OnJobRequestReceived -= OnJobRequestReceived;
+            extServer.OnJobResponseReceived -= OnJobResponseReceived;
+            extServer.OnJobResultRequestReceived -= OnJobResultRequestReceived;
+            extServer.OnJobResultResponseReceived -= OnJobResultResponseReceived;
+            extServer.OnLogonCompleted -= OnLogonCompleted;
+            extServer.OnTerminated -= OnTerminated;
+        }
+
+        private void ServerManager_OnExternalServerLoggedOn(ExternalServer extServer)
+        {
+            extServer.OnAssemblyRequestReceived += OnAssemblyRequestReceived;
+            extServer.OnAssemblyResponseReceived += OnAssemblyResponseReceived;
+            extServer.OnExternalClientUpdated += OnExternalClientUpdated;
+            extServer.OnExternalComponentSubmitRequestReceived += OnExternalComponentSubmitRequestReceived;
+            extServer.OnInternalClientUpdatedResponseReceived += OnInternalClientUpdatedResponseReceived;
+            extServer.OnInternalComponentSubmitResponseReceived += OnInternalComponentSubmitResponseReceived;
+            extServer.OnJobRequestReceived += OnJobRequestReceived;
+            extServer.OnJobResponseReceived += OnJobResponseReceived;
+            extServer.OnJobResultRequestReceived += OnJobResultRequestReceived;
+            extServer.OnJobResultResponseReceived += OnJobResultResponseReceived;
+            extServer.OnLogonCompleted += OnLogonCompleted;
+            extServer.OnTerminated += OnTerminated;
+        }
+
+        private void OnTerminated(object sender, ExternalServerDiedEventArgs e)
+        {
+            var extServer = e.ExternalServer;
+            extServer.OnAssemblyRequestReceived -= OnAssemblyRequestReceived;
+            extServer.OnAssemblyResponseReceived -= OnAssemblyResponseReceived;
+            extServer.OnExternalClientUpdated -= OnExternalClientUpdated;
+            extServer.OnExternalComponentSubmitRequestReceived -= OnExternalComponentSubmitRequestReceived;
+            extServer.OnInternalClientUpdatedResponseReceived -= OnInternalClientUpdatedResponseReceived;
+            extServer.OnInternalComponentSubmitResponseReceived -= OnInternalComponentSubmitResponseReceived;
+            extServer.OnJobRequestReceived -= OnJobRequestReceived;
+            extServer.OnJobResponseReceived -= OnJobResponseReceived;
+            extServer.OnJobResultRequestReceived -= OnJobResultRequestReceived;
+            extServer.OnJobResultResponseReceived -= OnJobResultResponseReceived;
+            extServer.OnLogonCompleted -= OnLogonCompleted;
+            extServer.OnTerminated -= OnTerminated;
+        }
+
+        private void OnLogonCompleted(object sender, ExternalServerLogonCompletedEventArgs e)
+        {
+
+        }
+
+        private void OnJobResultResponseReceived(object sender, ExternalJobResultResponseEventArgs e)
+        {
+            
+        }
+
+        private void OnJobResultRequestReceived(object sender, ExternalJobResultRequestEventArgs e)
+        {
+
+        }
+
+        private void OnJobResponseReceived(object sender, ExternalJobResponseEventArgs e)
+        {
+
+        }
+
+        private void OnJobRequestReceived(object sender, ExternalJobRequestEventArgs e)
+        {
+            var jobGuid = e.JobGuid;
+            var component = e.JobComponent;
+            var input = e.InputData;
+            var hopCount = e.HopCount + 1;
+            var server = sender as ExternalServer;
+
+            if (hopCount > this.serverManager.ExternalServers.Count)
+            {
+                e.Processed = true;
+                e.IsAccepted = false;
+            }
+            else if (server == null)
+            {
+                e.Processed = true;
+                e.IsAccepted = false;
+            }
+            else if (!this.serverManager.ExternalServers.ContainsValue(server))
+            {
+                e.Processed = true;
+                e.IsAccepted = false;
+            }
+            else
+            {
+                GraphExecutionSet data = new GraphExecutionSet()
+                    {
+                        Component = component,
+                        Input = input.ToList(),
+                        JobGuid = jobGuid,
+                        Server = server,
+                    };
+
+                Thread t = new Thread(new ParameterizedThreadStart(ExecuteGraph));
+                t.Start(data);
+                e.Processed = true;
+                e.IsAccepted = true;
+            }
+        }
+
+        private void OnInternalComponentSubmitResponseReceived(object sender, InternalComponentSubmitResponseEventArgs e)
+        {
+
+        }
+
+        private void OnInternalClientUpdatedResponseReceived(object sender, InternalClientUpdateResponseEventArgs e)
+        {
+            
+        }
+
+        private void OnExternalComponentSubmitRequestReceived(object sender, ExternalComponentSubmittedEventArgs e)
+        {
+            
+        }
+
+        private void OnExternalClientUpdated(object sender, ExternalClientUpdateRequestEventArgs e)
+        {
+            
+        }
+
+        private void OnAssemblyResponseReceived(object sender, ExternalServerAssemblyRequestedEventArgs e)
+        {
+            
+        }
+
+        private void OnAssemblyRequestReceived(object sender, ExternalServerAssemblyRequestedEventArgs e)
+        {
+            var componentGuid = e.ComponentGuid;
+
+            try
+            {
+                var componentTuple = this.store[componentGuid];
+                var binaryData = componentTuple.Item1;
+                var isAtomic = componentTuple.Item2;
+
+                if (isAtomic)
+                {
+                    e.Processed = false;
+                }
+                else
+                {
+                    e.BinaryContent = binaryData;
+                    e.Processed = true;
+                }
+            }
+            catch (Exception)
+            {
+                e.Processed = false;
             }
         }
 
@@ -61,55 +231,100 @@ namespace AppLogic.ServerLogic
         private void ServerReference_RequestEvent(object sender, ComponentRecievedEventArgs e)
         {
             Thread t = new Thread(new ParameterizedThreadStart(ExecuteGraph));
-            t.Start(e);
+
+            t.Start(new GraphExecutionSet()
+            {
+                Component = e.Component,
+                Input = e.Input,
+                JobGuid = e.ToBeExceuted,
+                Server = this.master,
+            });
         }
 
         private void ExecuteGraph(object incomingEventArgs)
-        {
-            ComponentRecievedEventArgs data = incomingEventArgs as ComponentRecievedEventArgs;
+        {   
+            GraphExecutionSet data = incomingEventArgs as GraphExecutionSet;
             var component = data.Component;
-            var guid = data.ToBeExceuted;
+            var guid = data.JobGuid;
             var args = data.Input;
             var edges = data.Component.Edges;
+            var server = data.Server;
             Dictionary<Guid, ComponentWorker> workerMap = new Dictionary<Guid, ComponentWorker>();
 
-            ComponentGraphTools.ExtractNodes(edges, workerMap, new BinaryFormatter(), this.serverReference, this.store);
-
-            ComponentGraphTools.ExtractInnerEdges(edges, workerMap);
-
-            Dictionary<uint, DataGate> inputDataGates = new Dictionary<uint,DataGate>();
-            Dictionary<uint, DataGate> outputDataGates = new Dictionary<uint,DataGate>();
-
-            foreach (var inPort in edges.Select(e => new Tuple<Guid, uint>(e.InternalOutputComponentGuid, e.OutputValueID)).Where(t => t.Item1 == Guid.Empty).Select(t => t.Item2))
+            try
             {
-                inputDataGates[inPort] = new DataGate();
-            }
+                
 
-            foreach (var outPort in edges.Select(e => new Tuple<Guid, uint>(e.InternalInputComponentGuid, e.InputValueID)).Where(t => t.Item1 == Guid.Empty).Select(t => t.Item2))
+                ComponentGraphTools.ExtractNodes(edges, workerMap, new BinaryFormatter(), this.master, this.store);
+
+                ComponentGraphTools.ExtractInnerEdges(edges, workerMap);
+
+                Dictionary<uint, DataGate> inputDataGates = new Dictionary<uint, DataGate>();
+                Dictionary<uint, DataGate> outputDataGates = new Dictionary<uint, DataGate>();
+
+                foreach (var inPort in edges.Select(e => new Tuple<Guid, uint>(e.InternalOutputComponentGuid, e.OutputValueID)).Where(t => t.Item1 == Guid.Empty).Select(t => t.Item2))
+                {
+                    inputDataGates[inPort] = new DataGate();
+                }
+
+                foreach (var outPort in edges.Select(e => new Tuple<Guid, uint>(e.InternalInputComponentGuid, e.InputValueID)).Where(t => t.Item1 == Guid.Empty).Select(t => t.Item2))
+                {
+                    outputDataGates[outPort] = new DataGate();
+                }
+
+                ComponentGraphTools.ExtractOuterEdges(edges, workerMap, inputDataGates, outputDataGates);
+
+                var inputList = data.Input.ToList();
+
+                for (int i = 0; i < inputList.Count; i++)
+                {
+                    inputDataGates[(uint)i].SendData(inputList[i]);
+                }
+
+                workerMap.ToList().ForEach(threadEntry => threadEntry.Value.Start());
+
+                var outputList = new List<object>();
+
+                foreach (var endGate in outputDataGates.OrderBy(kvp => kvp.Key).Select(kvp => kvp.Value))
+                {
+                    var finalResult = endGate.ReceiveData();
+                    outputList.Add(data);
+                }
+
+                if (server == this.master)
+                {
+                    this.master.sendFinalResult(guid, outputList);
+                }
+                else
+                {
+                    var extServer = server as ExternalServer;
+                    extServer.SendJobResultRequest(new JobResultRequest()
+                    {
+                        JobGuid = guid,
+                        JobResultGuid = Guid.NewGuid(),
+                        OutputData = outputList,
+                        State = JobState.ComponentCompleted,
+                    });
+                }
+            }
+            catch (Exception ex)
             {
-                outputDataGates[outPort] = new DataGate();
+                if (server == this.master)
+                {
+                    this.master.sendFinalResult(guid, new List<object>() { ex });
+                }
+                else
+                {
+                    var extServer = server as ExternalServer;
+                    extServer.SendJobResultRequest(new JobResultRequest()
+                    {
+                        JobGuid = guid,
+                        JobResultGuid = Guid.NewGuid(),
+                        OutputData = new List<object>() { ex },
+                        State = JobState.Exception,
+                    });
+                }
             }
-
-            ComponentGraphTools.ExtractOuterEdges(edges, workerMap, inputDataGates, outputDataGates);
-
-            var inputList = data.Input.ToList();
-
-            for (int i = 0; i < inputList.Count; i++)
-            {
-                inputDataGates[(uint)i].SendData(inputList[i]);
-            }
-
-            workerMap.ToList().ForEach(threadEntry => threadEntry.Value.Start());
-
-            var outputList = new List<object>();
-
-            foreach (var endGate in outputDataGates.OrderBy(kvp => kvp.Key).Select(kvp => kvp.Value))
-            {
-                var finalResult = endGate.ReceiveData();
-                outputList.Add(data);
-            }
-
-            this.serverReference.sendFinalResult(guid, outputList);
         }
 
         //private List<ComponentNode> SimplifyGraph(IEnumerable<ComponentEdge> edgeList)

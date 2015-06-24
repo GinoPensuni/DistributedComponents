@@ -47,6 +47,7 @@
     <Compile Include="ServerLogic\ComponentNode.cs" />
     <Compile Include="ServerLogic\ComponentWorker.cs" />
     <Compile Include="ServerLogic\DataGate.cs" />
+    <Compile Include="ServerLogic\GraphExecutionSet.cs" />
     <Compile Include="ServerLogic\ServerLogicCore.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -69,6 +70,10 @@
     <ProjectReference Include="..\DataStore\DataStore.csproj">
       <Project>{deac972d-e853-4d12-a41b-1fd4f29e98ec}</Project>
       <Name>DataStore</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Server\Server.csproj">
+      <Project>{86ad65b2-2b9c-4e3e-b5b2-85377ffa6ba2}</Project>
+      <Name>Server</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
