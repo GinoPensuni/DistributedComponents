@@ -37,6 +37,9 @@ namespace InputComponentWpf
             this.inputHints = new List<string>() { typeof(String).ToString() };
 
             this.outputHints = new List<string>() { typeof(Int32).ToString() };
+
+            this.inputDescriptions = new List<string>() { "Parameter: A number typed in as string." };
+            this.outputDescriptions = new List<string>() { "Output: The input string converted to an integer." };
         }
         public Guid ComponentGuid
         {
