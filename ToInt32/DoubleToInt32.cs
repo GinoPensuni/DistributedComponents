@@ -29,7 +29,11 @@ namespace ToInt32
 
             this.inputHints = new List<string>() { typeof(System.Double).ToString() };
 
-            this.outputHints = new List<string>() { typeof(System.Int32).ToString() };            
+            this.outputHints = new List<string>() { typeof(System.Int32).ToString() };
+
+            this.inputDescriptions = new List<string>() { "Parameter: A number representing a number of datatype double." };
+
+            this.outputDescriptions = new List<string>() { "Output: A number of the datatype Int32" };
         }
         public Guid ComponentGuid
         {

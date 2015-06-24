@@ -30,6 +30,8 @@ namespace ToStringComponent
             this.inputHints = new List<string>() { typeof(Double).ToString() };
 
             this.outputHints = new List<string>() { typeof(String).ToString() };
+
+            this.inputDescriptions = new List<string>() {""}
         }
         public Guid ComponentGuid
         {
