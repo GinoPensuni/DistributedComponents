@@ -12,6 +12,8 @@ namespace Server
 
         public Guid ComponentGuid { get; set; }
 
-        public byte[] BinaryContent { get; set; } 
+        public byte[] BinaryContent { get; set; }
+
+        public bool Processed { get; set; }
     }
 }

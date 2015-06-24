@@ -13,5 +13,7 @@ namespace Server
         /// </summary>
         /// <value>A unique identifier.</value>
         public Guid JobResultGuid { get; set; }
+
+        public bool Processed { get; set; }
     }
 }

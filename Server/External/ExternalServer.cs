@@ -177,15 +177,25 @@ namespace Server
 
             client.Close();
 
-            if (message != null && message.Item1 == (int)MessageCode.Logon)
-            {
-                LogonResponse response = Protocol.DeserializeStringToMessage<LogonResponse>(message.Item2);
+            // handle message
 
-                if (response != null)
+            if (message != null)
+            {
+                // Terminate the external server if he is not able to send valid data
+                if (message.Item2.Equals(string.Empty))
                 {
-                    if (response.LogonRequestGuid.Equals(logRequest.LogonRequestGuid))
+                    this.TerminateExternalServer();
+                }
+                else if (message.Item1 == (int)MessageCode.Logon)
+                {
+                    LogonResponse response = Protocol.DeserializeStringToMessage<LogonResponse>(message.Item2);
+
+                    if (response != null)
                     {
-                        this.Logon(response.ServerGuid, response.FriendlyName, response.AvailableComponents.ToList(), response.AvailableClients.ToList());
+                        if (response.LogonRequestGuid.Equals(logRequest.LogonRequestGuid))
+                        {
+                            this.Logon(response.ServerGuid, response.FriendlyName, response.AvailableComponents.ToList(), response.AvailableClients.ToList());
+                        }
                     }
                 }
             }
@@ -242,19 +252,29 @@ namespace Server
 
             client.Close();
 
+            // handle message
+
             Console.WriteLine("finished waiting.");
 
-            if (message != null && message.Item1 == (int)MessageCode.KeepAlive)
+            if (message != null)
             {
-                KeepAliveResponse response = Protocol.DeserializeStringToMessage<KeepAliveResponse>(message.Item2);
-
-                if (response != null && response.KeepAliveRequestGuid.Equals(request.KeepAliveRequestGuid))
-                {
-                    // success
-                }
-                else
+                // Terminate the external server if he is not able to send valid data
+                if (message.Item2.Equals(string.Empty))
                 {
                     this.TerminateExternalServer();
+                }
+                else if (message.Item1 == (int)MessageCode.KeepAlive)
+                {
+                    KeepAliveResponse response = Protocol.DeserializeStringToMessage<KeepAliveResponse>(message.Item2);
+
+                    if (response != null && response.KeepAliveRequestGuid.Equals(request.KeepAliveRequestGuid))
+                    {
+                        // success
+                    }
+                    else
+                    {
+                        this.TerminateExternalServer();
+                    }
                 }
             }
         }
@@ -301,18 +321,34 @@ namespace Server
 
             Tuple<byte, string> message = this.ReadSpecifiedDataFromStream(stream);
 
-            if (message != null && message.Item1 == (int)MessageCode.ComponentSubmit)
-            {
-                ComponentSubmitResponse response = Protocol.DeserializeStringToMessage<ComponentSubmitResponse>(message.Item2);
+            client.Close();
 
-                if (response != null && response.ComponentSubmitRequestGuid.Equals(request.ComponentSubmitRequestGuid))
+            // handle message
+
+            if (message != null)
+            {
+                // same message code?
+                if (message.Item1 == (int)MessageCode.ComponentSubmit)
                 {
+                    InternalComponentSubmitResponseEventArgs args = new InternalComponentSubmitResponseEventArgs();
+                    args.ComponentSubmitRequestGuid = request.ComponentSubmitRequestGuid;
+
+                    // is it a empty message?
+                    if (!message.Item2.Equals(string.Empty))
+                    {
+                        ComponentSubmitResponse response = Protocol.DeserializeStringToMessage<ComponentSubmitResponse>(message.Item2);
+
+                        if (response != null && response.ComponentSubmitRequestGuid.Equals(request.ComponentSubmitRequestGuid))
+                        {
+                            args.ComponentSubmitRequestGuid = response.ComponentSubmitRequestGuid;
+                            args.IsAccepted = response.IsAccepted;
+                            args.Processed = true;
+                        }
+                    }
+
+                    // fire event
                     if (this.OnInternalComponentSubmitResponseReceived != null)
                     {
-                        InternalComponentSubmitResponseEventArgs args = new InternalComponentSubmitResponseEventArgs();
-                        args.ComponentSubmitRequestGuid = response.ComponentSubmitRequestGuid;
-                        args.IsAccepted = response.IsAccepted;
-
                         this.OnInternalComponentSubmitResponseReceived(this, args);
                     }
                 }
@@ -354,18 +390,31 @@ namespace Server
 
             Tuple<byte, string> message = this.ReadSpecifiedDataFromStream(stream);
 
-            if (message != null && message.Item1 == (int)MessageCode.JobRequest)
-            {
-                JobResponse response = Protocol.DeserializeStringToMessage<JobResponse>(message.Item2);
+            client.Close();
 
-                if (response != null && response.JobRequestGuid.Equals(request.JobRequestGuid))
+            // handle message
+
+            if (message != null)
+            {
+                if (message.Item1 == (int)MessageCode.JobRequest)
                 {
+                    ExternalJobResponseEventArgs args = new ExternalJobResponseEventArgs();
+                    args.JobRequestGuid = request.JobRequestGuid;
+
+                    if (!message.Item2.Equals(string.Empty))
+                    {
+                        JobResponse response = Protocol.DeserializeStringToMessage<JobResponse>(message.Item2);
+
+                        if (response != null && response.JobRequestGuid.Equals(request.JobRequestGuid))
+                        {
+                            args.JobRequestGuid = response.JobRequestGuid;
+                            args.IsAccepted = response.IsAccepted;
+                            args.Processed = true;
+                        }
+                    }
+
                     if (this.OnJobResponseReceived != null)
                     {
-                        ExternalJobResponseEventArgs args = new ExternalJobResponseEventArgs();
-                        args.JobRequestGuid = response.JobRequestGuid;
-                        args.IsAccepted = response.IsAccepted;
-
                         this.OnJobResponseReceived(this, args);
                     }
                 }
@@ -406,17 +455,30 @@ namespace Server
 
             Tuple<byte, string> message = this.ReadSpecifiedDataFromStream(stream);
 
-            if (message != null && message.Item1 == (int)MessageCode.JobResult)
-            {
-                JobResultResponse response = Protocol.DeserializeStringToMessage<JobResultResponse>(message.Item2);
+            client.Close();
 
-                if (response != null && response.JobResultGuid.Equals(request.JobResultGuid))
+            // handle message
+
+            if (message != null)
+            {
+                if (message.Item1 == (int)MessageCode.JobResult)
                 {
+                    ExternalJobResultResponseEventArgs args = new ExternalJobResultResponseEventArgs();
+                    args.JobResultGuid = request.JobResultGuid;
+
+                    if (!message.Item2.Equals(string.Empty))
+                    {
+                        JobResultResponse response = Protocol.DeserializeStringToMessage<JobResultResponse>(message.Item2);
+
+                        if (response != null && response.JobResultGuid.Equals(request.JobResultGuid))
+                        {
+                            args.JobResultGuid = response.JobResultGuid;
+                            args.Processed = true;
+                        }
+                    }
+
                     if (this.OnJobResultResponseReceived != null)
                     {
-                        ExternalJobResultResponseEventArgs args = new ExternalJobResultResponseEventArgs();
-                        args.JobResultGuid = response.JobResultGuid;
-
                         this.OnJobResultResponseReceived(this, args);
                     }
                 }
@@ -459,6 +521,8 @@ namespace Server
 
             byte[] begin = new byte[5];
 
+            // wait for response
+
             // wait for binary content (special case!!)
 
             if (stream.Read(begin, 0, begin.Length) == 5)
@@ -467,22 +531,29 @@ namespace Server
                 {
                     byte[] binaryContent = new byte[BitConverter.ToInt32(begin, 1)];
 
-                    stream.Read(binaryContent, 0, binaryContent.Length);
-
-                    // Handle binary content
-
-                    // fire event
                     ExternalServerAssemblyRequestedEventArgs args = new ExternalServerAssemblyRequestedEventArgs();
                     args.AssemblyRequestGuid = request.AssemblyRequestGuid;
                     args.ComponentGuid = request.ComponentGuid;
-                    args.BinaryContent = binaryContent;
 
+                    if (binaryContent.Length != 0)
+                    {
+                        stream.Read(binaryContent, 0, binaryContent.Length);
+
+                        // Handle binary content
+
+                        args.BinaryContent = binaryContent;
+                        args.Processed = true;
+                    }
+
+                    // fire event
                     if (this.OnAssemblyResponseReceived != null)
                     {
                         this.OnAssemblyResponseReceived(this, args);
                     }
                 }
             }
+
+            client.Close();
         }
 
         // --------------------------------------------------------------
@@ -520,17 +591,30 @@ namespace Server
 
             Tuple<byte, string> message = this.ReadSpecifiedDataFromStream(stream);
 
-            if (message != null && message.Item1 == (int)MessageCode.ClientUpdate)
-            {
-                ClientUpdateResponse response = Protocol.DeserializeStringToMessage<ClientUpdateResponse>(message.Item2);
+            client.Close();
 
-                if (response != null && response.ClientUpdateRequestGuid.Equals(request.ClientUpdateRequestGuid))
+            // handle message
+
+            if (message != null)
+            {
+                if (message.Item1 == (int)MessageCode.ClientUpdate)
                 {
+                    InternalClientUpdateResponseEventArgs args = new InternalClientUpdateResponseEventArgs();
+                    args.ClientUpdateRequestGuid = request.ClientUpdateRequestGuid;
+
+                    if (!message.Item2.Equals(string.Empty))
+                    {
+                        ClientUpdateResponse response = Protocol.DeserializeStringToMessage<ClientUpdateResponse>(message.Item2);
+
+                        if (response != null && response.ClientUpdateRequestGuid.Equals(request.ClientUpdateRequestGuid))
+                        {
+                            args.ClientUpdateRequestGuid = response.ClientUpdateRequestGuid;
+                            args.Processed = true;
+                        }
+                    }
+
                     if (this.OnInternalClientUpdatedResponseReceived != null)
                     {
-                        InternalClientUpdateResponseEventArgs args = new InternalClientUpdateResponseEventArgs();
-                        args.ClientUpdateRequestGuid = response.ClientUpdateRequestGuid;
-
                         this.OnInternalClientUpdatedResponseReceived(this, args);
                     }
                 }
@@ -567,10 +651,10 @@ namespace Server
 
             Tuple<byte, string> message = this.ReadSpecifiedDataFromStream(stream);
 
+            byte[] buff;
+
             if (message != null)
             {
-                byte[] buff;
-
                 if (message.Item1 == (int)MessageCode.RequestAssembly)
                 {
                     buff = Protocol.GetBytesFromAssemblyResponse((byte[])GetHandledMessage(message.Item1, message.Item2, stream));
@@ -579,9 +663,13 @@ namespace Server
                 {
                     buff = Protocol.GetBytesFromMessage(GetHandledMessage(message.Item1, message.Item2, stream), (MessageCode)((int)message.Item1));
                 }
-
-                stream.Write(buff, 0, buff.Length);
             }
+            else
+            {
+                buff = Protocol.GetBytesFromEmptyResponse((MessageCode)((int)message.Item1));
+            }
+
+            stream.Write(buff, 0, buff.Length);
 
             stream.Close();
             client.Close();
@@ -720,6 +808,11 @@ namespace Server
                 this.OnExternalComponentSubmitRequestReceived(this, args);
             }
 
+            if (!args.Processed)
+            {
+                return null;
+            }
+
             response.IsAccepted = args.IsAccepted;
 
             return response;
@@ -749,6 +842,11 @@ namespace Server
                 this.OnJobRequestReceived(this, args);
             }
 
+            if (!args.Processed)
+            {
+                return null;
+            }
+
             response.IsAccepted = args.IsAccepted;
 
             return response;
@@ -771,6 +869,11 @@ namespace Server
                 this.OnJobResultRequestReceived(this, args);
             }
 
+            if (!args.Processed)
+            {
+                return null;
+            }
+
             return response;
         }
 
@@ -784,6 +887,11 @@ namespace Server
             if (this.OnAssemblyRequestReceived != null)
             {
                 this.OnAssemblyRequestReceived(this, args);
+            }
+
+            if (!args.Processed)
+            {
+                return null;
             }
 
             return args.BinaryContent;
@@ -819,6 +927,11 @@ namespace Server
                 this.OnExternalClientUpdated(this, args);
             }
 
+            if (!args.Processed)
+            {
+                return null;
+            }
+
             return response;
         }
 
@@ -835,7 +948,7 @@ namespace Server
                     // Length is 0 means that the message could not be processed
                     if (messBuff.Length == 0)
                     {
-                        return new Tuple<byte, string>(Protocol.CouldNotBeProcessedMessageCode, string.Empty);
+                        return new Tuple<byte, string>(buffer[0], string.Empty);
                     }
                     else
                     {

@@ -11,5 +11,7 @@ namespace Server
         public Core.Network.Component Component { get; set; }
 
         public bool IsAccepted { get; set; }
+
+        public bool Processed { get; set; }
     }
 }

@@ -15,5 +15,7 @@ namespace Server
         /// </summary>
         /// <value>A unique identifier.</value>
         public Guid ClientUpdateRequestGuid { get; set; }
+
+        public bool Processed { get; set; }
     }
 }

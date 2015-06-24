@@ -68,5 +68,7 @@ namespace Server
         /// This property will be sent back to the request sender by the response.
         /// </summary>
         public bool IsAccepted { get; set; }
+
+        public bool Processed { get; set; }
     }
 }

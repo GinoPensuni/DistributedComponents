@@ -20,5 +20,7 @@ namespace Server
         /// </summary>
         /// <value>True if accepted.</value>
         public bool IsAccepted { get; set; }
+
+        public bool Processed { get; set; }
     }
 }

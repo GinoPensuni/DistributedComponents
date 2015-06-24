@@ -93,6 +93,17 @@ namespace Server
             return message.ToArray();
         }
 
+        public static byte[] GetBytesFromEmptyResponse(MessageCode messageCode)
+        {
+            List<byte> message = new List<byte>();
+
+            message.Add((byte)messageCode); // logon message code
+
+            message.AddRange(BitConverter.GetBytes((int)0));
+
+            return message.ToArray();
+        }
+
         // msg must be a object of logonresponse or request
         public static byte[] GetBytesFromLogonMessage(object msg)
         {
