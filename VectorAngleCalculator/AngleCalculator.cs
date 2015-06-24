@@ -28,8 +28,12 @@ namespace VectorAngleCalculator
             this.friendlyName = "Calculate Angle of two vectors";
 
             this.inputHints = new List<string>() { typeof(int[]).ToString(), typeof(int[]).ToString() };
-            
-            this.outputHints = new List<string>() { typeof(double).ToString() };    
+
+            this.outputHints = new List<string>() { typeof(double).ToString() };
+
+            this.inputDescriptions = new List<string>() { "An integer array, which represents the first vector.", "An integer array, which represents the second vector." };
+
+            this.outputDescriptions = new List<string>() { "A data type of type double, which represents the angle of the two vectors." };
         }
 
         public Guid ComponentGuid
