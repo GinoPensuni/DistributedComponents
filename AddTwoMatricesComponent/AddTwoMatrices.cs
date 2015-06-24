@@ -3,10 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using CommonRessources;
 
 namespace AddTwoMatricesComponent
 {
-    public class AddTwoMatrices
+    public class AddTwoMatrices : IComponent
     {
         private Guid componentGuid;
 
@@ -86,6 +87,31 @@ namespace AddTwoMatricesComponent
                 }
 
                 return false;
+            }
+        }
+
+
+        public IEnumerable<string> InputDescriptions
+        {
+            get
+            {
+                throw new NotImplementedException();
+            }
+            set
+            {
+                throw new NotImplementedException();
+            }
+        }
+
+        public IEnumerable<string> OutputDescriptions
+        {
+            get
+            {
+                throw new NotImplementedException();
+            }
+            set
+            {
+                throw new NotImplementedException();
             }
         }
     }
