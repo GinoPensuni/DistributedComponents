@@ -7,7 +7,7 @@ using CommonRessources;
 
 namespace VectorCrossProductCalculaterComponent
 {
-    class CrossProductCalculater : IComponent
+    public class CrossProductCalculater : IComponent
     {
         private Guid componentGuid;
 
@@ -85,6 +85,31 @@ namespace VectorCrossProductCalculaterComponent
                 }
 
                 return false;
+            }
+        }
+
+
+        public IEnumerable<string> InputDescriptions
+        {
+            get
+            {
+                throw new NotImplementedException();
+            }
+            set
+            {
+                throw new NotImplementedException();
+            }
+        }
+
+        public IEnumerable<string> OutputDescriptions
+        {
+            get
+            {
+                throw new NotImplementedException();
+            }
+            set
+            {
+                throw new NotImplementedException();
             }
         }
     }

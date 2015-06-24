@@ -3,10 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using CommonRessources;
 
 namespace VectorSubtractionComponent
 {
-    class VectorSubtraction
+    public class VectorSubtraction : IComponent
     {
         private Guid componentGuid;
 
@@ -84,6 +85,31 @@ namespace VectorSubtractionComponent
                 }
 
                 return false;
+            }
+        }
+
+
+        public IEnumerable<string> InputDescriptions
+        {
+            get
+            {
+                throw new NotImplementedException();
+            }
+            set
+            {
+                throw new NotImplementedException();
+            }
+        }
+
+        public IEnumerable<string> OutputDescriptions
+        {
+            get
+            {
+                throw new NotImplementedException();
+            }
+            set
+            {
+                throw new NotImplementedException();
             }
         }
     }

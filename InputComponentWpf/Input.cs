@@ -81,5 +81,30 @@ namespace InputComponentWpf
             integer = new List<object>();
             integer.Add(int.Parse(e.Message)    );
         }
+
+
+        public IEnumerable<string> InputDescriptions
+        {
+            get
+            {
+                throw new NotImplementedException();
+            }
+            set
+            {
+                throw new NotImplementedException();
+            }
+        }
+
+        public IEnumerable<string> OutputDescriptions
+        {
+            get
+            {
+                throw new NotImplementedException();
+            }
+            set
+            {
+                throw new NotImplementedException();
+            }
+        }
     }
 }
