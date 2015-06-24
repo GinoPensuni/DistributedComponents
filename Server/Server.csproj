@@ -76,10 +76,6 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\AppLogic\AppLogic.csproj">
-      <Project>{53daae9e-de74-4fce-848d-4c86d43a0362}</Project>
-      <Name>AppLogic</Name>
-    </ProjectReference>
     <ProjectReference Include="..\CommonInterfaces\CommonRessources.csproj">
       <Project>{3467a53a-21d2-4b8a-9928-7f5cc5f6cb2e}</Project>
       <Name>CommonRessources</Name>
