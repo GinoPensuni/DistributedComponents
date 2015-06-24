@@ -30,6 +30,9 @@ namespace LongToStringComponent
             this.inputHints = new List<string>() { typeof(Int64).ToString() };
 
             this.outputHints = new List<string>() { typeof(String).ToString() };
+
+            this.inputDescriptions = new List<string>() { "Parameter: A number with datatype long." };
+            this.outputDescriptions = new List<string>() { "Output: The long number converted to a string." };
         }
 
         public Guid ComponentGuid

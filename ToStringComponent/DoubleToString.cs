@@ -32,6 +32,7 @@ namespace ToStringComponent
             this.outputHints = new List<string>() { typeof(String).ToString() };
 
             this.inputDescriptions = new List<string>() { "Parameter: A number representing a number of datatype double."  };
+            this.outputDescriptions = new List<string>() { "Output: The input converted to a string." };
         }
         public Guid ComponentGuid
         {

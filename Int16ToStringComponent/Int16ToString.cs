@@ -30,6 +30,9 @@ namespace Int16ToStringComponent
             this.inputHints = new List<string>() { typeof(Int16).ToString() };
 
             this.outputHints = new List<string>() { typeof(String).ToString() };
+
+            this.inputDescriptions = new List<string>() { "Parameter: A number with datatype int16." };
+            this.outputDescriptions = new List<string>() { "Output: The int16 number converted to a string." };
         }
         public Guid ComponentGuid
         {
