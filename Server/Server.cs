@@ -12,6 +12,10 @@ using AppLogic.ServerLogic;
 
 namespace Server
 {
+    /// <summary>
+    /// This class represents a server which only manages all internal clients (slaves).
+    /// For external management, see ExternalServersManager
+    /// </summary>
     public class Server : INetworkServer
     {
         private Thread listenThread;

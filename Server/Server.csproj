@@ -35,6 +35,10 @@
     <StartupObject />
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Newtonsoft.Json, Version=7.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Newtonsoft.Json.7.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -44,9 +48,24 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="DiscoveryManager.cs" />
-    <Compile Include="SlaveDiedEventArgs.cs" />
-    <Compile Include="MessageReceivedEventArgs.cs" />
+    <Compile Include="CommonServer.cs" />
+    <Compile Include="ExternalEventArgs\BroadcastReceivedEventArgs.cs" />
+    <Compile Include="ExternalEventArgs\ExternalClientUpdateRequestEventArgs.cs" />
+    <Compile Include="ExternalEventArgs\ExternalComponentSubmittedEventArgs.cs" />
+    <Compile Include="ExternalEventArgs\ExternalJobRequestEventArgs.cs" />
+    <Compile Include="ExternalEventArgs\ExternalJobResponseEventArgs.cs" />
+    <Compile Include="ExternalEventArgs\ExternalJobResultRequestEventArgs.cs" />
+    <Compile Include="ExternalEventArgs\ExternalJobResultResponseEventArgs.cs" />
+    <Compile Include="ExternalEventArgs\ExternalServerAssemblyRequestedEventArgs.cs" />
+    <Compile Include="ExternalEventArgs\ExternalServerDiedEventArgs.cs" />
+    <Compile Include="ExternalEventArgs\ExternalServerLogonCompletedEventArgs.cs" />
+    <Compile Include="ExternalEventArgs\InternalClientUpdateResponseEventArgs.cs" />
+    <Compile Include="ExternalEventArgs\InternalComponentSubmitResponseEventArgs.cs" />
+    <Compile Include="External\DiscoveryManager.cs" />
+    <Compile Include="External\ExternalServer.cs" />
+    <Compile Include="External\ExternalServersManager.cs" />
+    <Compile Include="ExternalEventArgs\SlaveDiedEventArgs.cs" />
+    <Compile Include="ExternalEventArgs\MessageReceivedEventArgs.cs" />
     <Compile Include="Protocol.cs" />
     <Compile Include="Server.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -54,6 +73,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+    <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\AppLogic\AppLogic.csproj">
