@@ -43,6 +43,7 @@
     <Compile Include="ComponentManager.cs" />
     <Compile Include="LoadedComponent.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ServerLogic\ComponentGraphTools.cs" />
     <Compile Include="ServerLogic\ComponentNode.cs" />
     <Compile Include="ServerLogic\ComponentWorker.cs" />
     <Compile Include="ServerLogic\DataGate.cs" />
