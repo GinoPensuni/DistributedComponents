@@ -35,6 +35,9 @@ namespace MultiplyComponent
 
             List<string> outputHints = new List<string>() { typeof(double).ToString() };
 
+            this.inputDescriptions = new List<string>() { "First parameter: A number with datatype double.", "Second parameter: A number with datatype double." };
+            this.outputDescriptions = new List<string>() { "Output: The multiplied inputs, also a double value." };    
+
             this.inputHints = inputhints;
 
             this.outputHints = outputHints;
