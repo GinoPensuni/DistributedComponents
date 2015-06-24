@@ -8,7 +8,6 @@ using System.Net;
 using System.Net.Sockets;
 using System.IO;
 using CommonRessources;
-using AppLogic.ServerLogic;
 
 namespace Server
 {
@@ -36,12 +35,9 @@ namespace Server
 
         public Dictionary<Guid, Slave> ExecutionCustomers { get; private set; }
 
-        public IServerLogic ServerLogic { get; private set; }
 
         public void Run()
         {
-            this.ServerLogic = new ServerLogicCore(this);
-
             this.PendingComponentJobs = new List<Tuple<Guid, Slave, IComponent>>();
             this.ExecutionCustomers = new Dictionary<Guid, Slave>();
 
