@@ -7,7 +7,7 @@ using System.Text;
 
 namespace GuiClientWPF
 {
-    public class Components : CommonRessources.IComponent, INotifyPropertyChanged
+    public class Components : Core.Component.IComponent, INotifyPropertyChanged
     {
         private IEnumerable<string> inputHints;
         private string name;
@@ -87,6 +87,31 @@ namespace GuiClientWPF
         public Guid ComponentGuid
         {
             get { return this.UniqueID; }
+        }
+
+
+        public IEnumerable<string> InputDescriptions
+        {
+            get
+            {
+               return this.InputHints;
+            }
+            set
+            {
+                this.InputHints = value;
+            }
+        }
+
+        public IEnumerable<string> OutputDescriptions
+        {
+            get
+            {
+                return this.OutputHints;
+            }
+            set
+            {
+                this.OutputHints = value ;
+            }
         }
     }
 }
