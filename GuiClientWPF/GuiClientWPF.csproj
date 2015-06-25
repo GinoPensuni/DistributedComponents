@@ -61,14 +61,14 @@
     <Compile Include="ComponentTreeView.xaml.cs">
       <DependentUpon>ComponentTreeView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="ConnectionNodeClickedEventArgs.cs" />
+    <Compile Include="Assets\DataAccessLayer\ConnectionNodeClickedEventArgs.cs" />
     <Compile Include="InputOutputComponentNode.xaml.cs">
       <DependentUpon>InputOutputComponentNode.xaml</DependentUpon>
     </Compile>
     <Compile Include="GuiComponent.xaml.cs">
       <DependentUpon>GuiComponent.xaml</DependentUpon>
     </Compile>
-    <Compile Include="LineContainer.cs" />
+    <Compile Include="Assets\DataAccessLayer\LineContainer.cs" />
     <Compile Include="WorkStation.xaml.cs">
       <DependentUpon>WorkStation.xaml</DependentUpon>
     </Compile>

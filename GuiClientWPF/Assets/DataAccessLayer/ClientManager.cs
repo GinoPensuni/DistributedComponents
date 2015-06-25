@@ -50,6 +50,12 @@ namespace GuiClientWPF
             CathegoryCollection.Add(new Category() { Name = "Simple" });
             CathegoryCollection.Add(new Category() { Name = "Complex" });
             CathegoryCollection.Add(new Category() { Name = "Other" });
+            logic.OnComponentsLoaded += logic_OnComponentsLoaded;
+        }
+
+        void logic_OnComponentsLoaded(object sender, LoadedCompoentEventArgs e)
+        {
+            throw new NotImplementedException();
         }
 
         internal Task Disconnect()

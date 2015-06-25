@@ -152,5 +152,17 @@ namespace AppLogic.ClientLogic
 
 
         public event EventHandler<LoadedCompoentEventArgs> OnComponentsLoaded;
+
+        public Task RunComponent(Core.Network.Component component)
+        {
+            var runTask = new Task(() =>
+            {
+                this.NetworkClient.SendJobRequest(Guid.NewGuid(), component);
+            });
+
+            runTask.Start();
+            return runTask;
+
+        }
     }
 }
