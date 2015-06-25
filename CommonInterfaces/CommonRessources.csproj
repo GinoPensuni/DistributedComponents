@@ -44,6 +44,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Classes\Messages\ErrorMessage.cs" />
     <Compile Include="Classes\Messages\InputParameterMessage.cs" />
     <Compile Include="Classes\Messages\JobRequestMessage.cs" />
     <Compile Include="Classes\Messages\SaveComponentMessage.cs" />
