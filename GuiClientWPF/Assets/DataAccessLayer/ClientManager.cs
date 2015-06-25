@@ -116,7 +116,7 @@ namespace GuiClientWPF
             {
                return this.disp.Invoke(() =>
                 {
-                return componentList.Select(tuple => new Tuple<GuiComponent, GuiComponent, LineContainer>(tuple.Item1.Item1, tuple.Item2.Item1, tuple.Item3)).ToList().Distinct();
+                    return componentList.Select(tuple => new Tuple<GuiComponent, GuiComponent, LineContainer>(tuple.Item1.Item1, tuple.Item2.Item1, tuple.Item3)).Distinct().ToList();
                     });
             });
 
