@@ -54,7 +54,7 @@ namespace AppLogic.ClientLogic
             }
         }
 
-        static ClientLogic() : this()
+        static ClientLogic()
         {
             client = new NetworkClient();
             instance = new ClientLogic();
@@ -65,26 +65,47 @@ namespace AppLogic.ClientLogic
         private  ClientLogic()
         {
             client.OnAllAvailableComponentsResponseReceived += client_OnAllAvailableComponentsResponseReceived;
+            client.OnComponentExecutionRequestEvent += client_OnComponentExecutionRequestEvent;
         }
 
-        void client_OnAllAvailableComponentsResponseReceived(object sender, RequestForAllComponentsReceivedEventArgs e)
+        void client_OnComponentExecutionRequestEvent(object sender, ClientComponentEventArgs e)
         {
-            this.LoadedCompoents = new List<Tuple<ComponentType, Core.Component.IComponent>>();
-            foreach (var entry in e.AllAvailableComponents)
-            {
-                this.ComponentManager.LoadAssemblyContents(entry.Item2);
-            }
-
-            this.LoadedCompoents = this.ComponentManager.LoadedIComponents;
-            if (this.OnComponentsLoaded != null)
+            if (sender == this.NetworkClient)
             {
                 try
                 {
-                    this.OnComponentsLoaded(this, new LoadedCompoentEventArgs() { Components = this.LoadedCompoents });
+                    this.ComponentManager.LoadAssemblyContents(e.Assembly);
+                    this.evalResult =  this.ComponentManager.LoadedComponents.Single(comp => e.Component.ComponentGuid == comp.Item2.ComponentGuid).Item2.Evaluate(e.Input);
+                    this.NetworkClient.SendResult(this.evalResult.ToList(),e.ToBeExceuted);
                 }
                 catch
                 {
 
+                }
+            }
+        }
+
+        void client_OnAllAvailableComponentsResponseReceived(object sender, RequestForAllComponentsReceivedEventArgs e)
+        {
+            if (sender == this.NetworkClient)
+            {
+                this.LoadedCompoents = new List<Tuple<ComponentType, Core.Component.IComponent>>();
+                foreach (var entry in e.AllAvailableComponents)
+                {
+                    this.ComponentManager.LoadAssemblyContents(entry.Item2);
+                }
+
+                this.LoadedCompoents = this.ComponentManager.LoadedIComponents;
+                if (this.OnComponentsLoaded != null)
+                {
+                    try
+                    {
+                        this.OnComponentsLoaded(this, new LoadedCompoentEventArgs() { Components = this.LoadedCompoents });
+                    }
+                    catch
+                    {
+
+                    }
                 }
             }
         }
@@ -152,6 +173,7 @@ namespace AppLogic.ClientLogic
 
 
         public event EventHandler<LoadedCompoentEventArgs> OnComponentsLoaded;
+        private IEnumerable<object> evalResult;
 
         public Task RunComponent(Core.Network.Component component)
         {
