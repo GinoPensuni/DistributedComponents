@@ -198,7 +198,7 @@ namespace Server
 
         public bool SendCalculatedResult(Guid id, Tuple<Guid, IEnumerable<object>, byte[]> job)
         {
-            ComponentMessage compMsg = new ComponentMessage(id);
+            ComponentMessage compMsg = new ComponentMessage(Guid.NewGuid());
             compMsg.Values = job.Item2;
             compMsg.Assembly = job.Item3;
             compMsg.ComponentGuid = job.Item1;

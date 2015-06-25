@@ -21,17 +21,17 @@ namespace DistributedComponentsFinal
     {
         static void Main(string[] args)
         {
-        //    dynamic dd = (new Int32()).GetType();
+            //    dynamic dd = (new Int32()).GetType();
 
-        //    Console.WriteLine(dd.ToString());
+            //    Console.WriteLine(dd.ToString());
 
-        //    Console.WriteLine("hello world!");
+            //    Console.WriteLine("hello world!");
 
-        //    //Console.ReadLine();
-            
-        //    Client.Client c = new Client.Client();
+            //    //Console.ReadLine();
 
-        //    c.Connect(IPAddress.Parse("10.101.150.27"), 8081);
+            //    Client.Client c = new Client.Client();
+
+            //    c.Connect(IPAddress.Parse("10.101.150.27"), 8081);
 
             // StringInputComponent.TextInput e = new StringInputComponent.TextInput();
 
@@ -53,13 +53,20 @@ namespace DistributedComponentsFinal
             aaa.FriendlyName = "aaa";
 
             c.OnComponentExecutionRequestEvent += c_OnComponentExecutionRequestEvent;
+            c.OnFinalResultReceived += c_OnFinalResultReceived;
+            c.OnErrorReceived += c_OnErrorReceived;
+
+            if (c.UploadComponent(aaa))
+            {
+                Console.WriteLine("uploaded component!!!!!!!!!!!!!!!!!!");
+            }
 
             if (c.SendJobRequest(Guid.NewGuid(), aaa))
             {
                 Console.WriteLine("job request sent!!!!!!!!!!!!!!!!!!");
             }
-            
-            
+
+
             /*CommonServer cm = new CommonServer(2);
 
             ExternalServersManager esm = new ExternalServersManager(cm);
@@ -75,9 +82,23 @@ namespace DistributedComponentsFinal
             Console.ReadLine();
         }
 
+        static void c_OnErrorReceived(object sender, CommonRessources.ErrorReceivedEventArgs e)
+        {
+            Console.WriteLine("error received >:-((((");
+            int a = 45;
+        }
+
+        static void c_OnFinalResultReceived(object sender, CommonRessources.ResultReceivedEventArgs e)
+        {
+            Console.WriteLine("final result received!");
+            int a = 0;
+        }
+
         static void c_OnComponentExecutionRequestEvent(object sender, CommonRessources.ClientComponentEventArgs e)
         {
+            Console.WriteLine("i must execute a component :-(");
             int a = 22;
+            ((Client.Client)sender).SendResult(new List<object>() { "hallo", "jürgen" }, e.ToBeExceuted);
         }
 
         static void esm_OnExternalServerTerminated(ExternalServer extServer)

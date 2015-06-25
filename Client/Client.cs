@@ -39,7 +39,7 @@ namespace Client
             this.pendingExecutionWorkTasks = new List<Guid>();
         }
 
-        
+
         public bool Connect(IPAddress ip, int port)
         {
             IPEndPoint endPoint = new IPEndPoint(ip, port);
@@ -81,7 +81,7 @@ namespace Client
 
                     Message ma = Protocol.GetComponentMessageFromByteArray(message);
 
-                    this.HandleMessage(ma);   
+                    this.HandleMessage(ma);
                 }
                 else
                 {
@@ -166,8 +166,8 @@ namespace Client
         {
             ComponentMessage msg = (ComponentMessage)data;
 
-            this.pendingExecutionWorkTasks.Add(msg.ID);
-            
+            this.pendingExecutionWorkTasks.Add(msg.ToBeExecuted);
+
             /*WorkTask task = new WorkTask(msg.ID, msg.Component);
 
             this.workTasks.Add(task);
@@ -247,7 +247,7 @@ namespace Client
 
                 return true;
             }
-            catch(SocketException)
+            catch (SocketException)
             {
                 return false;
             }
@@ -309,7 +309,9 @@ namespace Client
             ResultMessage resMessage = new ResultMessage(ResultStatusCode.Successful, id);
             resMessage.Result = Result;
 
-            this.workTasks.Remove(this.workTasks.First(i => i.ID.Equals(id)));
+            //this.workTasks.Remove(this.workTasks.First(i => i.ID.Equals(id)));
+
+            this.pendingExecutionWorkTasks.Remove(id);
 
             return this.SendMessage(resMessage);
         }
