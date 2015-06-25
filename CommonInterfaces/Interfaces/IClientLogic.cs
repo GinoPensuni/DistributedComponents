@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using CommonRessources.Interfaces;
 
 namespace CommonRessources
 {
@@ -15,5 +16,7 @@ namespace CommonRessources
         Task ConnenctToServer(string ip);
 
         Task<List<Tuple<ComponentType, Core.Network.Component>>> LoadComponents();
+
+        public event EventHandler<LoadedCompoentEventArgs> OnComponentsLoaded;
     }
 }
