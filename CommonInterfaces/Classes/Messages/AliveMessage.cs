@@ -6,6 +6,9 @@ using System.Threading.Tasks;
 
 namespace CommonRessources
 {   
+    /// <summary>
+    /// This message will be used to check if the client is still alive.
+    /// </summary>
     [Serializable]
     public class AliveMessage : Message
     {

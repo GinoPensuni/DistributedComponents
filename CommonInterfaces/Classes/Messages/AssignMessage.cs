@@ -6,6 +6,9 @@ using System.Threading.Tasks;
 
 namespace CommonRessources
 {
+    /// <summary>
+    /// This message will be sent when the client connects to a server. It assigns the client a guid.
+    /// </summary>
     [Serializable] 
     public class AssignMessage : Message
     {

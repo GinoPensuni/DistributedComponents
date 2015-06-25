@@ -6,6 +6,10 @@ using System.Threading.Tasks;
 
 namespace CommonRessources
 {
+    /// <summary>
+    /// This message will be used when the client wants to send the result from a executed component.
+    /// It will also be used by the server for sending the final result.
+    /// </summary>
     [Serializable]
     public class ResultMessage : Message
     {
