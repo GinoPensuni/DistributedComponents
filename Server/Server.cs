@@ -153,6 +153,17 @@ namespace Server
                     this.OnUploadRequestReceived(this, args);
                 }
             }
+            else if (e.Msg is AvailableComponentsMessage)
+            {
+                RequestForAllComponentsReceivedEventArgs args = new RequestForAllComponentsReceivedEventArgs();
+                
+                if (this.OnAllAvailableComponentsRequestReceived != null)
+                {
+                    this.OnAllAvailableComponentsRequestReceived(this, args);
+                }
+
+
+            }
         }
 
         public void Stop()
@@ -177,6 +188,12 @@ namespace Server
         }
 
         public event EventHandler<ComponentRecievedEventArgs> OnJobRequestReceived;
+
+        public event EventHandler<CommonRessources.ResultReceivedEventArgs> OnResultReceived;
+
+        public event EventHandler<SaveComponentEventArgs> OnUploadRequestReceived;
+
+        public event EventHandler<RequestForAllComponentsReceivedEventArgs> OnAllAvailableComponentsRequestReceived;
 
         public bool SendError(Guid jobRequestGuid, Exception logicException)
         {
@@ -209,11 +226,6 @@ namespace Server
 
             return this.Slaves[rand.Next(0, this.Slaves.Count)].SendComponent(compMsg);
         }
-
-        public event EventHandler<CommonRessources.ResultReceivedEventArgs> OnResultReceived;
-
-
-        public event EventHandler<SaveComponentEventArgs> OnUploadRequestReceived;
 
         public bool SendFinalResult(Guid jobRequestGuid, IEnumerable<object> result)
         {
