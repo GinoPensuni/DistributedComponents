@@ -70,7 +70,7 @@ namespace GuiClientWPF
 
         internal Task ConnectAction()
         {
-            var connectionTask = new Task(() => { logic.ConnenctToServer("test"); });
+            var connectionTask = new Task(async () => { await logic.ConnenctToServer("10.101.150.10"); });
 
             connectionTask.Start();
             return connectionTask;
