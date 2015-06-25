@@ -93,18 +93,7 @@ namespace GuiClientWPF
         internal Task LoadComponents()
         {
            var loadingComponentTask = new Task(async ()=>{
-               var components = await logic.LoadComponents();
-               foreach (var entry in components)
-               {
-                   string name = entry.Item2.FriendlyName;
-                   var inputHints = entry.Item2.InputHints;
-                   var outputhints = entry.Item2.OutputHints;
-                   if (entry.Item1 == ComponentType.Simple)
-                   {
-                       this.CathegoryCollection[0].Components.Add(new Components() { ComponentGuid = entry.Item2.ComponentGuid, FriendlyName = name, InputHints = inputHints, OutputHints = outputhints });
-                   }
-
-               }
+               await logic.LoadComponents();
            });
 
            loadingComponentTask.Start();
