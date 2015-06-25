@@ -79,7 +79,19 @@ namespace AppLogic.ClientLogic
             {
                 this.ComponentManager.LoadAssemblyContents(entry.Item2);
             }
+
             this.LoadedCompoents = this.ComponentManager.LoadedIComponents;
+            if (this.OnComponentsLoaded != null)
+            {
+                try
+                {
+                    this.OnComponentsLoaded(this, new LoadedCompoentEventArgs() { Components = this.LoadedCompoents });
+                }
+                catch
+                {
+
+                }
+            }
         }
 
         public Task SaveComponent(IComponent component)
@@ -111,25 +123,7 @@ namespace AppLogic.ClientLogic
         {
             var loadingTask = new Task<List<Tuple<ComponentType, Core.Network.Component>>>(() =>
             {
-                var assemblyData = this.ComponentStore.LoadAssemblies();
-                foreach (var entry in assemblyData)
-                {
-                    this.ComponentManager.LoadAssemblyContents(entry.Assembly);
-                }
-
-                // TODO Make this shit work
-
-                //return this.ComponentManager.LoadedComponents.Select(
-                //    comp =>
-                //    {
-                //        return new Core.Network.Component()
-                //        {
-                //            ComponentGuid = comp.Item2.ComponentGuid,
-                //            Edges = comp.Item1 == ComponentType.Complex ? comp.Item2.
-                //        };
-                //    });
-
-                return new List<Tuple<ComponentType, Core.Network.Component>>();
+                this.NetworkClient.RequestAllAvailableComponents();
             });
 
             loadingTask.Start();
@@ -185,5 +179,8 @@ namespace AppLogic.ClientLogic
             saveTask.Start();
             return saveTask;
         }
+
+
+        public event EventHandler<LoadedCompoentEventArgs> OnComponentsLoaded;
     }
 }
