@@ -36,7 +36,7 @@ namespace GuiClientWPF
         public Guid UniqueID
         {
             get;
-            private set;
+            set;
         }
 
         public IEnumerable<string> InputHints
@@ -87,6 +87,10 @@ namespace GuiClientWPF
         public Guid ComponentGuid
         {
             get { return this.UniqueID; }
+            set
+            {
+                this.UniqueID = value;
+            }
         }
 
 
