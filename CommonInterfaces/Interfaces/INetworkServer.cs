@@ -23,6 +23,11 @@ namespace CommonRessources
 
         event EventHandler<ComponentRecievedEventArgs> OnJobRequestReceived;
 
+        /// <summary>
+        /// Set property AllAvailableComponents!!
+        /// </summary>
+        event EventHandler<RequestForAllComponentsReceivedEventArgs> OnAllAvailableComponentsRequestReceived;
+
         bool SendCalculatedResult(Guid id, Tuple<Guid, IEnumerable<object>, byte[]> job);
 
         bool SendFinalResult(Guid id, IEnumerable<object> result);

@@ -25,6 +25,8 @@ namespace CommonRessources
 
         bool SendJobRequest(Guid jobRequestGuid, Core.Network.Component component);
 
+        bool RequestAllAvailableComponents();
+
         event EventHandler<ClientComponentEventArgs> OnComponentExecutionRequestEvent;
 
         event EventHandler<ResultReceivedEventArgs> OnFinalResultReceived;

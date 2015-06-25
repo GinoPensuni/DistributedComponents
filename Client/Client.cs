@@ -316,6 +316,13 @@ namespace Client
             return this.SendMessage(resMessage);
         }
 
+        public bool RequestAllAvailableComponents()
+        {
+            AvailableComponentsMessage avMessage = new AvailableComponentsMessage(Guid.NewGuid());
+
+            return this.SendMessage(avMessage);
+        }
+
         public event EventHandler<ClientComponentEventArgs> OnComponentExecutionRequestEvent;
 
         public event EventHandler<ResultReceivedEventArgs> OnFinalResultReceived;

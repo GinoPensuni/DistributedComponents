@@ -44,6 +44,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Classes\Messages\AvailableComponentsMessage.cs" />
     <Compile Include="Classes\Messages\ErrorMessage.cs" />
     <Compile Include="Classes\Messages\InputParameterMessage.cs" />
     <Compile Include="Classes\Messages\JobRequestMessage.cs" />
@@ -58,6 +59,7 @@
     <Compile Include="EvemtArgs\ClientComponentEventArgs.cs" />
     <Compile Include="EvemtArgs\ComponentRecievedEventArgs.cs" />
     <Compile Include="EvemtArgs\ErrorReceivedEventArgs.cs" />
+    <Compile Include="EvemtArgs\RequestForAllComponentsReceivedEventArgs.cs" />
     <Compile Include="EvemtArgs\SaveComponentEventArgs.cs" />
     <Compile Include="Interfaces\IClientLogic.cs" />
     <Compile Include="Interfaces\INetworkServer.cs" />
