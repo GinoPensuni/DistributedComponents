@@ -1,5 +1,6 @@
 ﻿using CommonRessources;
 using Core.Network;
+using DataStore;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -12,7 +13,7 @@ namespace AppLogic.ServerLogic
 {
     public static class ComponentGraphTools
     {
-        public static void ExtractNodes(IEnumerable<ComponentEdge> edges, Dictionary<Guid, ComponentWorker> workerMap, BinaryFormatter bf, INetworkServer serverReference, IStore store)
+        public static void ExtractNodes(IEnumerable<ComponentEdge> edges, Dictionary<Guid, ComponentWorker> workerMap, BinaryFormatter bf, INetworkServer serverReference, ComponentStore store)
         {
             var nodeTuples = edges.SelectMany(
                 e => new[] 

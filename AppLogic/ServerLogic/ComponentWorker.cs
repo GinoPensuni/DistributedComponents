@@ -1,5 +1,6 @@
 ﻿using CommonRessources;
 using Core.Network;
+using DataStore;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -24,7 +25,7 @@ namespace AppLogic.ServerLogic
         private readonly IEnumerable<Core.Network.ComponentEdge> innerGraph;
         private readonly INetworkServer processingServer;
         private readonly Thread workerThread;
-        private readonly IStore store;
+        private readonly ComponentStore store;
 
         public ComponentWorker(INetworkServer processingServer, Guid componentId, byte[] assembly)
         {
@@ -38,7 +39,7 @@ namespace AppLogic.ServerLogic
             this.workerThread = new Thread(new ThreadStart(this.ProcessIncomingData));
         }
 
-        public ComponentWorker(INetworkServer processingServer, IStore componentStore, Guid componentId, IEnumerable<Core.Network.ComponentEdge> graph)
+        public ComponentWorker(INetworkServer processingServer, ComponentStore componentStore, Guid componentId, IEnumerable<Core.Network.ComponentEdge> graph)
         {
             this.InputGates = new Dictionary<uint, DataGate>();
             this.OutputGates = new Dictionary<uint, DataGate>();

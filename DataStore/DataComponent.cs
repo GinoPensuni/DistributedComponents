@@ -37,11 +37,5 @@ namespace DataStore
             set;
         }
 
-        public int HashCode
-        {
-            get;
-            set;
-        }
-
     }
 }

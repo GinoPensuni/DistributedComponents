@@ -19,7 +19,7 @@ namespace AppLogic.ServerLogic
     {
         private readonly Server.Server master;
         private readonly ExternalServersManager serverManager;
-        private readonly IStore store;
+        private readonly ComponentStore store;
 
         private static readonly Object syncRoot = new Object();
         private static bool isInstantiated = false;

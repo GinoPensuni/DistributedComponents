@@ -30,29 +30,27 @@ namespace DataStore
             }
         }
 
-        public byte[] this[int hash]
-        {
-            get
-            {
-                return DbContext.Components.Single(component => component.HashCode == hash).Assembly;
-            }
-        }
+        //public byte[] this[int hash]
+        //{
+        //    get
+        //    {
+        //        return DbContext.Components.Single(component => component.HashCode == hash).Assembly;
+        //    }
+        //}
 
         public bool Store(Guid componentGuid, string name, bool isAtomic, byte[] assemblyCode)
         {
-
-            int hash = assemblyCode.GetHashCode();
-            if (this.DbContext.Components.Any(component => component.HashCode.CompareTo(hash).Equals(0)))
+            if (this.DbContext.Components.Any(component => component.Id == componentGuid))
             {
                 throw new DuplicateNameException("Assemly hash already stored");
             }
 
             var datacomponent = new DataComponent();
-            datacomponent.HashCode = hash;
             datacomponent.Assembly = assemblyCode;
             datacomponent.Id = componentGuid;
             datacomponent.IsAtomic = isAtomic;
             datacomponent.Name = name;
+            this.DbContext.Components.Add(datacomponent);
             this.DbContext.SaveChanges();
             return true;
         }

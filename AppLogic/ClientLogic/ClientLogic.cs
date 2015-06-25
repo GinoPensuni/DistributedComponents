@@ -16,7 +16,7 @@ namespace AppLogic.ClientLogic
         private static readonly IClientLogic instance = new ClientLogic();
         private static readonly INetworkClient client = new NetworkClient();
         private static readonly ComponentManager componentManager = ComponentManager.Instance;
-        private static readonly IStore componentStore = new ComponentStore();
+        private static readonly ComponentStore componentStore = new ComponentStore();
 
         internal ComponentManager ComponentManager
         {
@@ -30,7 +30,7 @@ namespace AppLogic.ClientLogic
             }
         }
 
-        internal IStore ComponentStore
+        internal ComponentStore ComponentStore
         {
             get
             {
@@ -98,7 +98,7 @@ namespace AppLogic.ClientLogic
                 var assemblyData = this.ComponentStore.LoadAssemblies();
                 foreach (var entry in assemblyData)
                 {
-                    this.ComponentManager.LoadAssemblyContents(entry);
+                    this.ComponentManager.LoadAssemblyContents(entry.Assembly);
                 }
 
                 // TODO Make this shit work

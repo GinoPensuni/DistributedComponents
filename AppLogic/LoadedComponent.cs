@@ -19,9 +19,14 @@ namespace AppLogic
             {
                 throw new ArgumentNullException("component");
             }
+            else if (assemblyCode == null)
+            {
+                throw new ArgumentNullException("assemblyCode");
+            }
             else
             {
                 this.ComponentType = component;
+                this.AssemblyCode = assemblyCode;
             }
         }
 
