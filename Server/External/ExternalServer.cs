@@ -342,8 +342,11 @@ namespace Server
                         {
                             args.ComponentSubmitRequestGuid = response.ComponentSubmitRequestGuid;
                             args.IsAccepted = response.IsAccepted;
-                            args.Processed = true;
                         }
+                    }
+                    else
+                    {
+                        args.Processed = false;
                     }
 
                     // fire event
@@ -409,8 +412,11 @@ namespace Server
                         {
                             args.JobRequestGuid = response.JobRequestGuid;
                             args.IsAccepted = response.IsAccepted;
-                            args.Processed = true;
                         }
+                    }
+                    else
+                    {
+                        args.Processed = false;
                     }
 
                     if (this.OnJobResponseReceived != null)
@@ -473,8 +479,11 @@ namespace Server
                         if (response != null && response.JobResultGuid.Equals(request.JobResultGuid))
                         {
                             args.JobResultGuid = response.JobResultGuid;
-                            args.Processed = true;
                         }
+                    }
+                    else
+                    {
+                        args.Processed = false;
                     }
 
                     if (this.OnJobResultResponseReceived != null)
@@ -519,12 +528,47 @@ namespace Server
 
             stream.Write(buff, 0, buff.Length);
 
-            byte[] begin = new byte[5];
-
             // wait for response
 
             // wait for binary content (special case!!)
 
+            Tuple<byte, byte[]> message = this.ReadSpecifiedAssemblyFromStream(stream);
+
+            client.Close();
+
+            // handle message
+
+            if (message != null)
+            {
+                if (message.Item1 == (int)MessageCode.RequestAssembly)
+                {
+                    ExternalServerAssemblyRequestedEventArgs args = new ExternalServerAssemblyRequestedEventArgs();
+                    args.AssemblyRequestGuid = request.AssemblyRequestGuid;
+                    args.ComponentGuid = request.ComponentGuid;
+
+                    if (message.Item2.Length != 0)
+                    {
+                        // Handle binary content
+
+                        args.BinaryContent = message.Item2;
+                    }
+                    else
+                    {
+                        args.Processed = false;
+                    }
+
+                    // fire event
+                    if (this.OnAssemblyResponseReceived != null)
+                    {
+                        this.OnAssemblyResponseReceived(this, args);
+                    }
+                }
+            }
+
+            /*
+
+            byte[] begin = new byte[5];
+             
             if (stream.Read(begin, 0, begin.Length) == 5)
             {
                 if (begin[0] == (int)MessageCode.RequestAssembly)
@@ -542,7 +586,10 @@ namespace Server
                         // Handle binary content
 
                         args.BinaryContent = binaryContent;
-                        args.Processed = true;
+                    }
+                    else
+                    {
+                        args.Processed = false;
                     }
 
                     // fire event
@@ -553,7 +600,7 @@ namespace Server
                 }
             }
 
-            client.Close();
+            client.Close();*/
         }
 
         // --------------------------------------------------------------
@@ -609,8 +656,11 @@ namespace Server
                         if (response != null && response.ClientUpdateRequestGuid.Equals(request.ClientUpdateRequestGuid))
                         {
                             args.ClientUpdateRequestGuid = response.ClientUpdateRequestGuid;
-                            args.Processed = true;
                         }
+                    }
+                    else
+                    {
+                        args.Processed = false;
                     }
 
                     if (this.OnInternalClientUpdatedResponseReceived != null)
@@ -651,25 +701,30 @@ namespace Server
 
             Tuple<byte, string> message = this.ReadSpecifiedDataFromStream(stream);
 
-            byte[] buff;
+            byte[] buff = new byte[] { };
 
             if (message != null)
             {
-                if (message.Item1 == (int)MessageCode.RequestAssembly)
+                object msg = GetHandledMessage(message.Item1, message.Item2, stream);
+
+                if (msg != null)
                 {
-                    buff = Protocol.GetBytesFromAssemblyResponse((byte[])GetHandledMessage(message.Item1, message.Item2, stream));
+                    if (message.Item1 == (int)MessageCode.RequestAssembly)
+                    {
+                        buff = Protocol.GetBytesFromAssemblyResponse((byte[])msg);
+                    }
+                    else
+                    {
+                        buff = Protocol.GetBytesFromMessage(msg, (MessageCode)((int)message.Item1));
+                    }
                 }
                 else
                 {
-                    buff = Protocol.GetBytesFromMessage(GetHandledMessage(message.Item1, message.Item2, stream), (MessageCode)((int)message.Item1));
+                    buff = Protocol.GetBytesFromEmptyResponse((MessageCode)((int)message.Item1));
                 }
-            }
-            else
-            {
-                buff = Protocol.GetBytesFromEmptyResponse((MessageCode)((int)message.Item1));
-            }
 
-            stream.Write(buff, 0, buff.Length);
+                stream.Write(buff, 0, buff.Length);
+            }
 
             stream.Close();
             client.Close();
@@ -933,6 +988,40 @@ namespace Server
             }
 
             return response;
+        }
+
+        private Tuple<byte, byte[]> ReadSpecifiedAssemblyFromStream(NetworkStream stream)
+        {
+            try
+            {
+                byte[] buffer = new byte[5];
+
+                if (stream.Read(buffer, 0, buffer.Length) == 5)
+                {
+                    byte[] messBuff = new byte[BitConverter.ToInt32(buffer, 1)];
+
+                    // Length is 0 means that the message could not be processed
+                    if (messBuff.Length == 0)
+                    {
+                        return new Tuple<byte, byte[]>(buffer[0], new byte[] { });
+                    }
+                    else
+                    {
+                        stream.Read(messBuff, 0, messBuff.Length);
+
+                        return new Tuple<byte, byte[]>(buffer[0], messBuff);
+                    }
+                }
+            }
+            catch (Exception)
+            {
+
+            }
+
+            // It seems that the external server doesn't want to communicate anymore, because he sent invalid messages. Other ways to handle this?
+            this.TerminateExternalServer();
+
+            return null;
         }
 
         private Tuple<byte, string> ReadSpecifiedDataFromStream(NetworkStream stream)

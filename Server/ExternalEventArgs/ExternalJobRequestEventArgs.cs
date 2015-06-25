@@ -10,6 +10,11 @@ namespace Server
 {
     public class ExternalJobRequestEventArgs : System.EventArgs
     {
+        public ExternalJobRequestEventArgs()
+        {
+            this.Processed = true;
+        }
+
         /// <summary>
         /// Gets or sets the unique id for this message.
         /// </summary>

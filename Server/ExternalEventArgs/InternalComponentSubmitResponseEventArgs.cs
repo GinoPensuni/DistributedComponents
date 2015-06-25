@@ -8,6 +8,11 @@ namespace Server
 {
     public class InternalComponentSubmitResponseEventArgs : System.EventArgs
     {
+        public InternalComponentSubmitResponseEventArgs()
+        {
+            this.Processed = true;
+        }
+
         public Guid ComponentSubmitRequestGuid
         {
             get;

@@ -19,6 +19,8 @@ namespace Server
 
         private DiscoveryManager discMan;
 
+        private object locker = new object();
+
         public ExternalServersManager(CommonServer masterServer)
         {
             this.masterServer = masterServer;
@@ -64,15 +66,20 @@ namespace Server
 
         public bool AddExternalServer(IPAddress address)
         {
-            if (!this.ExternalServers.ContainsKey(address))
+            lock (locker)
             {
-                ExternalServer extServer = new ExternalServer(address, masterServer);
-                extServer.SendLogonRequest();
+                if (!this.ExternalServers.ContainsKey(address))
+                {
+                    ExternalServer extServer = new ExternalServer(address, masterServer);
+                    extServer.SendLogonRequest();
 
-                extServer.OnLogonCompleted += extServer_OnLogonCompleted;
-                extServer.OnTerminated += extServer_OnDied;
+                    extServer.OnLogonCompleted += extServer_OnLogonCompleted;
+                    extServer.OnTerminated += extServer_OnDied;
 
-                this.ExternalServers.Add(address, extServer);
+                    this.ExternalServers.Add(address, extServer);
+
+                    return true;
+                }
             }
 
             return false;
