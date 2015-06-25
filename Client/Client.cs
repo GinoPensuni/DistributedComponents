@@ -159,6 +159,18 @@ namespace Client
                     this.OnErrorReceived(this, args);
                 }
             }
+            else if (ma is AvailableComponentsMessage)
+            {
+                AvailableComponentsMessage avMsg = (AvailableComponentsMessage)ma;
+
+                if (this.OnAllAvailableComponentsResponseReceived != null)
+                {
+                    RequestForAllComponentsReceivedEventArgs args = new RequestForAllComponentsReceivedEventArgs();
+                    args.AllAvailableComponents = avMsg.AllAvailableComponents;
+
+                    this.OnAllAvailableComponentsResponseReceived(this, args);
+                }
+            }
         }
 
         // Please run in a new thread!!
@@ -328,5 +340,8 @@ namespace Client
         public event EventHandler<ResultReceivedEventArgs> OnFinalResultReceived;
 
         public event EventHandler<ErrorReceivedEventArgs> OnErrorReceived;
+
+
+        public event EventHandler<RequestForAllComponentsReceivedEventArgs> OnAllAvailableComponentsResponseReceived;
     }
 }

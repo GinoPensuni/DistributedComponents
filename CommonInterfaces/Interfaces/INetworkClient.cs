@@ -33,6 +33,8 @@ namespace CommonRessources
 
         event EventHandler<ErrorReceivedEventArgs> OnErrorReceived;
 
+        event EventHandler<RequestForAllComponentsReceivedEventArgs> OnAllAvailableComponentsResponseReceived;
+
         void Connect(string ip);
 
         void Disconnect();

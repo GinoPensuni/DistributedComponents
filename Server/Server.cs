@@ -156,13 +156,16 @@ namespace Server
             else if (e.Msg is AvailableComponentsMessage)
             {
                 RequestForAllComponentsReceivedEventArgs args = new RequestForAllComponentsReceivedEventArgs();
+                AvailableComponentsMessage msg = (AvailableComponentsMessage)e.Msg;
                 
                 if (this.OnAllAvailableComponentsRequestReceived != null)
                 {
                     this.OnAllAvailableComponentsRequestReceived(this, args);
                 }
 
+                msg.AllAvailableComponents = args.AllAvailableComponents;
 
+                slave.SendMessage(msg);
             }
         }
 
