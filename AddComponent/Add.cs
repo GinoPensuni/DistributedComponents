@@ -3,11 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using CommonRessources;
 
 namespace AddComponent
 {
-    public class Add : IComponent
+    public class Add : Core.Component.IComponent
     {
         private Guid componentGuid;
 
