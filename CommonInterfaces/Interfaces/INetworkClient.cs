@@ -14,6 +14,13 @@ namespace CommonRessources
             set;
         }
 
+        /// <summary>
+        /// Uplpoads the component to the server which sends it to the logic for storing propuses.
+        /// </summary>
+        /// <param name="dynamit">The component</param>
+        /// <returns>True if uploaded</returns>
+        bool UploadComponent(Core.Network.Component component);
+
         bool SendResult(List<object> Result, Guid id);
 
         bool SendJobRequest(Guid jobRequestGuid, Core.Network.Component component);
@@ -27,12 +34,5 @@ namespace CommonRessources
         void Connect(string ip);
 
         void Disconnect();
-
-        /// <summary>
-        /// Uplpoads the component to the server which sends it to the logic for storing propuses.
-        /// </summary>
-        /// <param name="dynamit">The component</param>
-        /// <returns>True if uploaded</returns>
-        bool UploadComponent(Core.Network.Component bomb);
     }
 }

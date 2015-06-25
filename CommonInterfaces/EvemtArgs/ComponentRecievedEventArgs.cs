@@ -14,7 +14,7 @@ namespace CommonRessources
         }
 
 
-        public Guid ToBeExceuted
+        public Guid JobRequestGuid
         {
             get;
             set;

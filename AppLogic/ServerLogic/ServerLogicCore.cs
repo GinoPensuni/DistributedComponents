@@ -36,7 +36,7 @@ namespace AppLogic.ServerLogic
                 {
                     this.master = new Server.Server();
                     this.master.OnJobRequestReceived += ServerReference_RequestEvent;
-                    this.master.OnBombRevieced += ServerReference_OnBombRevieced;
+                    this.master.OnUploadRequestReceived += ServerReference_OnBombRevieced;
                     this.master.Run();
 
                     this.serverManager = new ExternalServersManager((Server.Server)this.master);
@@ -236,7 +236,7 @@ namespace AppLogic.ServerLogic
             {
                 Component = e.Component,
                 Input = e.Input,
-                JobGuid = e.ToBeExceuted,
+                JobGuid = e.JobRequestGuid,
                 Server = this.master,
             });
         }
@@ -293,7 +293,7 @@ namespace AppLogic.ServerLogic
 
                 if (server == this.master)
                 {
-                    this.master.sendFinalResult(guid, outputList);
+                    this.master.SendFinalResult(guid, outputList);
                 }
                 else
                 {
@@ -311,7 +311,7 @@ namespace AppLogic.ServerLogic
             {
                 if (server == this.master)
                 {
-                    this.master.sendFinalResult(guid, new List<object>() { ex });
+                    this.master.SendFinalResult(guid, new List<object>() { ex });
                 }
                 else
                 {

@@ -137,7 +137,7 @@ namespace Server
                     ComponentRecievedEventArgs args = new ComponentRecievedEventArgs();
 
                     args.Component = ((JobRequestMessage)e.Msg).Component;
-                    args.ToBeExceuted = e.Msg.ID;
+                    args.JobRequestGuid = e.Msg.ID;
                     args.Input = ((ComponentMessage)e.Msg).Values.ToList();
 
                     this.OnJobRequestReceived(this, args);
@@ -148,9 +148,9 @@ namespace Server
                 SaveComponentEventArgs args = new SaveComponentEventArgs();
                 args.Component = ((SaveComponentMessage)e.Msg).Component;
                 
-                if (this.OnBombRevieced != null)
+                if (this.OnUploadRequestReceived != null)
                 {
-                    this.OnBombRevieced(this, args);
+                    this.OnUploadRequestReceived(this, args);
                 }
             }
         }
@@ -204,9 +204,9 @@ namespace Server
         public event EventHandler<CommonRessources.ResultReceivedEventArgs> OnResultReceived;
 
 
-        public event EventHandler<SaveComponentEventArgs> OnBombRevieced;
+        public event EventHandler<SaveComponentEventArgs> OnUploadRequestReceived;
 
-        public bool sendFinalResult(Guid id, IEnumerable<object> result)
+        public bool SendFinalResult(Guid id, IEnumerable<object> result)
         {
             ResultMessage res = new ResultMessage(ResultStatusCode.Successful, id);
 
