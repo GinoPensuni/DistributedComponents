@@ -49,7 +49,7 @@ namespace DistributedComponentsFinal
             aaa.OutputHints = new List<string>();
             aaa.FriendlyName = "aaa";
 
-            c.SendJobRequest(aaa);
+            c.SendJobRequest(Guid.NewGuid(), aaa);
             
             
             /*CommonServer cm = new CommonServer(2);

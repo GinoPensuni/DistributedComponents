@@ -8,7 +8,7 @@ namespace CommonRessources
 {
     public class ErrorReceivedEventArgs
     {
-        public Guid ID
+        public Guid JobRequestGuid
         {
             get;
             set;

@@ -26,10 +26,6 @@ namespace Client
 
         private bool isListening;
 
-        public delegate void ResultReceived(List<object> result);
-
-        public event ResultReceived OnResultReceived;
-
         // work work
 
         private List<WorkTask> workTasks; // A list of currently running tasks, which get executed by the client.
@@ -138,9 +134,26 @@ namespace Client
             {
                 ResultMessage resMsg = (ResultMessage)ma;
 
-                if (this.OnResultReceived != null)
+                if (this.OnFinalResultReceived != null)
                 {
-                    this.OnResultReceived(resMsg.Result.ToList());
+                    ResultReceivedEventArgs args = new ResultReceivedEventArgs();
+                    args.Results = resMsg.Result;
+                    args.JobGuid = resMsg.ID;
+
+                    this.OnFinalResultReceived(this, args);
+                }
+            }
+            else if (ma is ErrorMessage)
+            {
+                ErrorMessage errMsg = (ErrorMessage)ma;
+
+                if (this.OnErrorReceived != null)
+                {
+                    ErrorReceivedEventArgs args = new ErrorReceivedEventArgs();
+                    args.JobRequestGuid = errMsg.JobRequestGuid;
+                    args.Exception = errMsg.Exception;
+
+                    this.OnErrorReceived(this, args);
                 }
             }
         }
@@ -250,27 +263,6 @@ namespace Client
             }
         }
 
-        public bool SendResult(List<object> Result, Guid id)
-        {
-            ResultMessage resMessage = new ResultMessage(ResultStatusCode.Successful, id);
-            resMessage.Result = Result;
-
-            this.workTasks.Remove(this.workTasks.First(i => i.ID.Equals(id)));
-
-            return this.SendMessage(resMessage);
-        }
-
-        public bool SendJobRequest(Core.Network.Component component)
-        {
-            JobRequestMessage jrMess = new JobRequestMessage(Guid.NewGuid());
-            jrMess.Component = component;
-            jrMess.Values = new List<object>();
-
-            return this.SendMessage(jrMess);
-        }
-
-        public event EventHandler<ClientComponentEventArgs> OnComponentExecutionRequestEvent;
-
         public void Connect(string ip)
         {
             IPAddress outIP;
@@ -289,12 +281,37 @@ namespace Client
             this.state = NetworkState.Stopped;
         }
 
-        public bool UploadComponent(Core.Network.Component bomb)
+        public bool UploadComponent(Core.Network.Component component)
         {
             SaveComponentMessage saveMess = new SaveComponentMessage(Guid.NewGuid());
-            saveMess.Component = bomb;
+            saveMess.Component = component;
 
             return this.SendMessage(saveMess);
         }
+
+        public bool SendJobRequest(Guid jobRequestGuid, Core.Network.Component component)
+        {
+            JobRequestMessage jrMess = new JobRequestMessage(jobRequestGuid);
+            jrMess.Component = component;
+            jrMess.Values = new List<object>();
+
+            return this.SendMessage(jrMess);
+        }
+
+        public bool SendResult(List<object> Result, Guid id)
+        {
+            ResultMessage resMessage = new ResultMessage(ResultStatusCode.Successful, id);
+            resMessage.Result = Result;
+
+            this.workTasks.Remove(this.workTasks.First(i => i.ID.Equals(id)));
+
+            return this.SendMessage(resMessage);
+        }
+
+        public event EventHandler<ClientComponentEventArgs> OnComponentExecutionRequestEvent;
+
+        public event EventHandler<ResultReceivedEventArgs> OnFinalResultReceived;
+
+        public event EventHandler<ErrorReceivedEventArgs> OnErrorReceived;
     }
 }
