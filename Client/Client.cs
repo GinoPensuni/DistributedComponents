@@ -55,8 +55,6 @@ namespace Client
 
                 this.isListening = true;
 
-                // this.NetworkClient = NetworkState.Running; // no guid :-(
-
                 Thread thread = new Thread(new ThreadStart(this.Listen));
                 thread.Start();
 
@@ -153,7 +151,10 @@ namespace Client
             ComponentMessage msg = (ComponentMessage)data;
             WorkTask task = new WorkTask(msg.ID, msg.Component);
 
+            this.workTasks.Add(task);
+
             // Maybe the message already contains all values?
+            // This should be the general case.
             if (msg.Values.Count() == msg.Component.InputHints.Count())
             {
                 int index = 0;
@@ -164,19 +165,19 @@ namespace Client
                     index++;
                 }
             }
-
-            this.workTasks.Add(task);
-
-            // Nah, stuipd server :-(
-            while (!task.HasAllInputParameters())
+            else
             {
-                Thread.Sleep(1000);
-                Console.WriteLine("Waiting for input parameter");
+                // Nah, stuipd server :-(
+                while (!task.HasAllInputParameters())
+                {
+                    Thread.Sleep(1000);
+                    Console.WriteLine("Waiting for input parameter");
+                }
+
+                msg.Values = task.InputParameters.ToList();
             }
 
-            msg.Values = task.InputParameters.ToList();
-
-            if (this.OnRequestEvent != null)
+            if (this.OnComponentExecutionRequestEvent != null)
             {
                 ClientComponentEventArgs e = new ClientComponentEventArgs();
 
@@ -185,7 +186,7 @@ namespace Client
                 e.ToBeExceuted = msg.ToBeExecuted;
                 e.Assembly = msg.Assembly;
 
-                this.OnRequestEvent(this, e);
+                this.OnComponentExecutionRequestEvent(this, e);
             }
 
             // will be taken over to the logic class
@@ -259,18 +260,6 @@ namespace Client
             return this.SendMessage(resMessage);
         }
 
-        public bool SendJobRequest(IComponent component)
-        {
-            /*
-            ComponentMessage compMessage = new ComponentMessage(MessageType.RequestForJob, Guid.NewGuid());
-            compMessage.Component = component;
-            compMessage.Values = new List<object>();
-
-            return this.SendMessage(compMessage);
-            */
-            return false;
-        }
-
         public bool SendJobRequest(Core.Network.Component component)
         {
             JobRequestMessage jrMess = new JobRequestMessage(Guid.NewGuid());
@@ -280,7 +269,7 @@ namespace Client
             return this.SendMessage(jrMess);
         }
 
-        public event EventHandler<ClientComponentEventArgs> OnRequestEvent;
+        public event EventHandler<ClientComponentEventArgs> OnComponentExecutionRequestEvent;
 
         public void Connect(string ip)
         {
@@ -292,7 +281,6 @@ namespace Client
             }
         }
 
-
         public void Disconnect()
         {
             this.isListening = false;
@@ -301,8 +289,7 @@ namespace Client
             this.state = NetworkState.Stopped;
         }
 
-
-        public bool uploadComponent(Core.Network.Component bomb)
+        public bool UploadComponent(Core.Network.Component bomb)
         {
             SaveComponentMessage saveMess = new SaveComponentMessage(Guid.NewGuid());
             saveMess.Component = bomb;

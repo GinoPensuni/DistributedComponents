@@ -16,9 +16,13 @@ namespace CommonRessources
 
         bool SendResult(List<object> Result, Guid id);
 
-        bool SendJobRequest(Core.Network.Component component);
+        bool SendJobRequest(Guid jobRequestGuid, Core.Network.Component component);
 
-        event EventHandler<ClientComponentEventArgs> OnRequestEvent;
+        event EventHandler<ClientComponentEventArgs> OnComponentExecutionRequestEvent;
+
+        event EventHandler<ResultReceivedEventArgs> OnFinalResultReceived;
+
+        event EventHandler<ErrorReceivedEventArgs> OnErrorReceived;
 
         void Connect(string ip);
 
@@ -29,6 +33,6 @@ namespace CommonRessources
         /// </summary>
         /// <param name="dynamit">The component</param>
         /// <returns>True if uploaded</returns>
-        bool uploadComponent(Core.Network.Component bomb);
+        bool UploadComponent(Core.Network.Component bomb);
     }
 }

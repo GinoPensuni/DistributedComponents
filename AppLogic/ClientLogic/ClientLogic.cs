@@ -163,7 +163,7 @@ namespace AppLogic.ClientLogic
         {
             var saveTask = new Task(() =>
             {
-                this.NetworkClient.uploadComponent(component);
+                this.NetworkClient.UploadComponent(component);
             });
 
             saveTask.Start();

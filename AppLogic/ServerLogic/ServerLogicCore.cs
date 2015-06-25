@@ -35,7 +35,7 @@ namespace AppLogic.ServerLogic
                 else
                 {
                     this.master = new Server.Server();
-                    this.master.OnRequestEvent += ServerReference_RequestEvent;
+                    this.master.OnJobRequestReceived += ServerReference_RequestEvent;
                     this.master.OnBombRevieced += ServerReference_OnBombRevieced;
                     this.master.Run();
 

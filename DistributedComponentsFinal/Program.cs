@@ -10,6 +10,9 @@ using Client;
 using InputComponentWpf;
 using StringInputComponent;
 using Server;
+using Client;
+using Core.Component;
+using Core.Network;
 
 namespace DistributedComponentsFinal
 {
@@ -33,7 +36,23 @@ namespace DistributedComponentsFinal
 
             // e.Evaluate(new List<object>() { });
 
-            CommonServer cm = new CommonServer(2);
+            Client.Client c = new Client.Client();
+
+            c.Connect("10.101.150.29");
+
+            Component aaa = new Component();
+            aaa.ComponentGuid = Guid.NewGuid();
+            aaa.IsAtomic = true;
+            aaa.InputDescriptions = new List<string>();
+            aaa.InputHints = new List<string>();
+            aaa.OutputDescriptions = new List<string>();
+            aaa.OutputHints = new List<string>();
+            aaa.FriendlyName = "aaa";
+
+            c.SendJobRequest(aaa);
+            
+            
+            /*CommonServer cm = new CommonServer(2);
 
             ExternalServersManager esm = new ExternalServersManager(cm);
             esm.StartListening();
@@ -43,7 +62,7 @@ namespace DistributedComponentsFinal
 
             Console.WriteLine(uint.MaxValue);
 
-            Console.WriteLine((uint)0);
+            Console.WriteLine((uint)0);*/
 
             Console.ReadLine();
         }

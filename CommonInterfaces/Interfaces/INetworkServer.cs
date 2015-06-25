@@ -18,7 +18,7 @@ namespace CommonRessources
 
         bool SendError(Guid id, Exception logicException);
 
-        event EventHandler<ComponentRecievedEventArgs> OnRequestEvent;
+        event EventHandler<ComponentRecievedEventArgs> OnJobRequestReceived;
 
         event EventHandler<ResultReceivedEventArgs> OnResultReceived;
        
@@ -26,6 +26,7 @@ namespace CommonRessources
         /// The component to be uploaded.
         /// </summary>
         event EventHandler<SaveComponentEventArgs> OnBombRevieced;
+
         bool sendFinalResult(Guid id, IEnumerable<object> result);
 
         void Run();

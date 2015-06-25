@@ -132,7 +132,7 @@ namespace Server
             {
                 this.ExecutionCustomers.Add(e.Msg.ID, slave);
 
-                if (this.OnRequestEvent != null)
+                if (this.OnJobRequestReceived != null)
                 {
                     ComponentRecievedEventArgs args = new ComponentRecievedEventArgs();
 
@@ -140,7 +140,7 @@ namespace Server
                     args.ToBeExceuted = e.Msg.ID;
                     args.Input = ((ComponentMessage)e.Msg).Values.ToList();
 
-                    this.OnRequestEvent(this, args);
+                    this.OnJobRequestReceived(this, args);
                 }
             }
             else if (e.Msg is SaveComponentMessage)
@@ -176,7 +176,7 @@ namespace Server
             }
         }
 
-        public event EventHandler<ComponentRecievedEventArgs> OnRequestEvent;
+        public event EventHandler<ComponentRecievedEventArgs> OnJobRequestReceived;
 
 
         private void SendComponentToSlave(Tuple<Guid, IComponent, byte[]> component)
