@@ -40,10 +40,10 @@ namespace AppLogic.ServerLogic
                     this.master.OnAllAvailableComponentsRequestReceived += OnAllAvailableComponentsRequestReceived;
                     this.master.Run();
 
-                    this.serverManager = manager;
-                    this.serverManager.OnExternalServerLoggedOn += ServerManager_OnExternalServerLoggedOn;
-                    this.serverManager.OnExternalServerTerminated += ServerManager_OnExternalServerTerminated;
-                    this.serverManager.StartListening();
+                    //this.serverManager = manager;
+                    //this.serverManager.OnExternalServerLoggedOn += ServerManager_OnExternalServerLoggedOn;
+                    //this.serverManager.OnExternalServerTerminated += ServerManager_OnExternalServerTerminated;
+                    //this.serverManager.StartListening();
 
                     this.store = store;
 

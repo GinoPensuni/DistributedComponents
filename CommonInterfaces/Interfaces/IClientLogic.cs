@@ -13,7 +13,7 @@ namespace CommonRessources
 
         Task SaveComponent(Core.Network.Component component);
 
-        Task ConnenctToServer(string ip);
+        void ConnenctToServer(string ip);
 
         Task LoadComponents();
 

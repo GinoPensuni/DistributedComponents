@@ -142,10 +142,8 @@ namespace AppLogic.ClientLogic
             return disconnectionTask;
         }
 
-        Task IClientLogic.ConnenctToServer(string ip)
+        void IClientLogic.ConnenctToServer(string ip)
         {
-            var connectionTask = new Task(() =>
-            {
                 try
                 {
                     this.NetworkClient.Connect(ip);
@@ -153,10 +151,7 @@ namespace AppLogic.ClientLogic
                 catch
                 {
                 }
-            });
 
-            connectionTask.Start();
-            return connectionTask;
         }
 
 

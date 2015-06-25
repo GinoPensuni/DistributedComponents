@@ -42,9 +42,9 @@ namespace GuiClientWPF
             await Manager.Disconnect();
         }
 
-        private async void ConnectAction_Click(object sender, RoutedEventArgs e)
+        private void ConnectAction_Click(object sender, RoutedEventArgs e)
         {
-            await Manager.ConnectAction();
+            Manager.ConnectAction();
         }
 
         private async void SaveAction_Click(object sender, RoutedEventArgs e)

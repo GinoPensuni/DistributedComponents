@@ -68,12 +68,9 @@ namespace GuiClientWPF
             return disconnectionTask;
         }
 
-        internal Task ConnectAction()
+        internal void ConnectAction()
         {
-            var connectionTask = new Task(async () => { await logic.ConnenctToServer("10.101.150.10"); });
-
-            connectionTask.Start();
-            return connectionTask;
+            logic.ConnenctToServer("10.101.150.10");
         }
 
         internal Task SaveComponent(ICollection<Tuple<Tuple<GuiComponent, InputNodeComponent, Ellipse, Point>, Tuple<GuiComponent, InputNodeComponent, Ellipse, Point>, LineContainer>> componentList, System.Windows.Threading.Dispatcher disp)
