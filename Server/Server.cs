@@ -138,7 +138,7 @@ namespace Server
 
                     args.Component = ((JobRequestMessage)e.Msg).Component;
                     args.JobRequestGuid = e.Msg.ID;
-                    args.Input = ((ComponentMessage)e.Msg).Values.ToList();
+                    args.Input = ((JobRequestMessage)e.Msg).Values.ToList();
 
                     this.OnJobRequestReceived(this, args);
                 }
@@ -184,9 +184,22 @@ namespace Server
             ComponentMessage mess = new ComponentMessage(component.Item1);
         }
 
-        public bool SendError(Guid id, Exception logicException)
+        public bool SendError(Guid jobRequestGuid, Exception logicException)
         {
-            throw new NotImplementedException();
+            ErrorMessage errMsg = new ErrorMessage(Guid.NewGuid());
+            errMsg.JobRequestGuid = jobRequestGuid;
+            errMsg.Exception = logicException;
+
+            try
+            {
+                Slave slave = this.ExecutionCustomers[jobRequestGuid];
+
+                return slave.SendMessage(errMsg);
+            }
+            catch (Exception)
+            {
+                return false;
+            }
         }
 
         public bool SendCalculatedResult(Guid id, Tuple<Guid, IEnumerable<object>, byte[]> job)
@@ -206,15 +219,15 @@ namespace Server
 
         public event EventHandler<SaveComponentEventArgs> OnUploadRequestReceived;
 
-        public bool SendFinalResult(Guid id, IEnumerable<object> result)
+        public bool SendFinalResult(Guid jobRequestGuid, IEnumerable<object> result)
         {
-            ResultMessage res = new ResultMessage(ResultStatusCode.Successful, id);
+            ResultMessage res = new ResultMessage(ResultStatusCode.Successful, jobRequestGuid);
 
             res.Result = result;
 
             try
             {
-                Slave slave = this.ExecutionCustomers[id];
+                Slave slave = this.ExecutionCustomers[jobRequestGuid];
 
                 return slave.SendFinalResult(res);
             }
