@@ -15,7 +15,7 @@ namespace CommonRessources
 
         Task ConnenctToServer(string ip);
 
-        Task<List<Tuple<ComponentType, Core.Network.Component>>> LoadComponents();
+        Task LoadComponents();
 
         event EventHandler<LoadedCompoentEventArgs> OnComponentsLoaded;
     }
