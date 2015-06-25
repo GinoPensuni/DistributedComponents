@@ -24,7 +24,7 @@ namespace AppLogic.ServerLogic
         private static readonly Object syncRoot = new Object();
         private static bool isInstantiated = false;
 
-        public ServerLogicCore()
+        public ServerLogicCore(Server.Server master, ExternalServersManager manager, ComponentStore store)
         {
             lock (ServerLogicCore.syncRoot)
             {
@@ -34,17 +34,17 @@ namespace AppLogic.ServerLogic
                 }
                 else
                 {
-                    this.master = new Server.Server();
+                    this.master = master;
                     this.master.OnJobRequestReceived += ServerReference_RequestEvent;
                     this.master.OnUploadRequestReceived += ServerReference_OnBombRevieced;
                     this.master.Run();
 
-                    this.serverManager = new ExternalServersManager((Server.Server)this.master);
+                    this.serverManager = manager;
                     this.serverManager.OnExternalServerLoggedOn += ServerManager_OnExternalServerLoggedOn;
                     this.serverManager.OnExternalServerTerminated += ServerManager_OnExternalServerTerminated;
                     this.serverManager.StartListening();
 
-                    this.store = new ComponentStore();
+                    this.store = store;
 
                     isInstantiated = true;
                 }

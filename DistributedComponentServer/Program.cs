@@ -1,4 +1,5 @@
 ﻿using AppLogic;
+using AppLogic.ServerLogic;
 using DataStore;
 using System;
 using System.Collections.Generic;
@@ -23,7 +24,7 @@ namespace DistributedComponentServer
 
             ComponentStore store = new ComponentStore();
 
-            foreach (var loadedComponent in componentManager.LoadedComponents.Select(x => (LoadedComponent) x.Item2))
+            foreach (var loadedComponent in componentManager.LoadedComponents.Select(x => (LoadedComponent)x.Item2))
             {
                 try
                 {
@@ -35,10 +36,9 @@ namespace DistributedComponentServer
                 }
             }
 
-            foreach (var storedAssembly in store.LoadAssemblies())
-            {
-                Console.WriteLine(storedAssembly.Name);
-            }
+            Server.Server masterServer = new Server.Server();
+            Server.ExternalServersManager serverManager = new Server.ExternalServersManager((Server.CommonServer)masterServer);
+            ServerLogicCore serverLogic = new ServerLogicCore(masterServer, serverManager, store);
 
             Console.WriteLine();
             Console.ReadLine();
