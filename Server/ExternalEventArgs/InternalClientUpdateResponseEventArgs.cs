@@ -10,6 +10,11 @@ namespace Server
 {
     public class InternalClientUpdateResponseEventArgs : EventArgs
     {
+        public InternalClientUpdateResponseEventArgs()
+        {
+            this.Processed = true;
+        }
+
         /// <summary>
         /// Gets or sets the unique id of the confirmed message.
         /// </summary>

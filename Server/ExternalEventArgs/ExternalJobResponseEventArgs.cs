@@ -8,6 +8,11 @@ namespace Server
 {
     public class ExternalJobResponseEventArgs : EventArgs
     {
+        public ExternalJobResponseEventArgs()
+        {
+            this.Processed = true;
+        }
+
         /// <summary>
         /// Gets or sets the unique id of the received message.
         /// </summary>

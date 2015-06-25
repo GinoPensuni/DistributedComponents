@@ -10,6 +10,11 @@ namespace Server
 {
     public class ExternalClientUpdateRequestEventArgs : EventArgs
     {
+        public ExternalClientUpdateRequestEventArgs()
+        {
+            this.Processed = true;
+        }
+
         /// <summary>
         /// Gets or sets the unique id for this message.
         /// </summary>

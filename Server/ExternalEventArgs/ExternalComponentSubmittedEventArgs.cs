@@ -8,6 +8,11 @@ namespace Server
 {
     public class ExternalComponentSubmittedEventArgs : System.EventArgs
     {
+        public ExternalComponentSubmittedEventArgs()
+        {
+            this.Processed = true;
+        }
+
         public Core.Network.Component Component { get; set; }
 
         public bool IsAccepted { get; set; }

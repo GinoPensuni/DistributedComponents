@@ -8,6 +8,11 @@ namespace Server
 {
     public class ExternalServerAssemblyRequestedEventArgs : System.EventArgs
     {
+        public ExternalServerAssemblyRequestedEventArgs()
+        {
+            this.Processed = true;
+        }
+
         public Guid AssemblyRequestGuid { get; set; }
 
         public Guid ComponentGuid { get; set; }
