@@ -34,6 +34,14 @@ namespace AppLogic
             }
         }
 
+        public List<Tuple<ComponentType, Core.Component.IComponent>> LoadedIComponents
+        {
+            get
+            {
+                return this.loadedComponents.Select(component => new Tuple<ComponentType, Core.Component.IComponent>(ComponentType.Simple, (Core.Component.IComponent)component)).ToList();
+            }
+        }
+
         public void LoadAssemblyContents(byte[] assemblyBytes) 
         {
             if (assemblyBytes == null)

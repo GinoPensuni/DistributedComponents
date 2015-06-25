@@ -17,6 +17,7 @@ namespace AppLogic.ClientLogic
         private static readonly INetworkClient client = new NetworkClient();
         private static readonly ComponentManager componentManager = ComponentManager.Instance;
         private static readonly ComponentStore componentStore = new ComponentStore();
+        private List<Tuple<ComponentType, Core.Component.IComponent>> LoadedCompoents;
 
         internal ComponentManager ComponentManager
         {
@@ -64,6 +65,21 @@ namespace AppLogic.ClientLogic
             {
 
             }
+        }
+
+        private  ClientLogic()
+        {
+            client.OnAllAvailableComponentsResponseReceived += client_OnAllAvailableComponentsResponseReceived;
+        }
+
+        void client_OnAllAvailableComponentsResponseReceived(object sender, RequestForAllComponentsReceivedEventArgs e)
+        {
+            this.LoadedCompoents = new List<Tuple<ComponentType, Core.Component.IComponent>>();
+            foreach (var entry in e.AllAvailableComponents)
+            {
+                this.ComponentManager.LoadAssemblyContents(entry.Item2);
+            }
+            this.LoadedCompoents = this.ComponentManager.LoadedIComponents;
         }
 
         public Task SaveComponent(IComponent component)
