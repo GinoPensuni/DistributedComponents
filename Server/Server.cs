@@ -76,22 +76,22 @@ namespace Server
             // Only for testing purposes!!!!!
             //
 
-            Thread.Sleep(1000);
-            Component comp = new Component(Guid.NewGuid(), "test", new List<string>() { typeof(int).ToString(), typeof(int).ToString() }, new List<string>() { typeof(int).ToString(), typeof(string).ToString() });
+            //Thread.Sleep(1000);
+            //Component comp = new Component(Guid.NewGuid(), "test", new List<string>() { typeof(int).ToString(), typeof(int).ToString() }, new List<string>() { typeof(int).ToString(), typeof(string).ToString() });
 
-            ComponentMessage compmsg = new ComponentMessage(Guid.NewGuid());
-            compmsg.Component = comp;
-            compmsg.Values = new List<object>();
+            //ComponentMessage compmsg = new ComponentMessage(Guid.NewGuid());
+            //compmsg.Component = comp;
+            //compmsg.Values = new List<object>();
 
-            slave.SendMessage(compmsg);
+            //slave.SendMessage(compmsg);
 
-            Thread.Sleep(2000);
+            //Thread.Sleep(2000);
 
-            slave.SendInputParameter(compmsg.ID, 2, 0);
+            //slave.SendInputParameter(compmsg.ID, 2, 0);
 
-            Thread.Sleep(2000);
+            //Thread.Sleep(2000);
 
-            slave.SendInputParameter(compmsg.ID, 2, 1);
+            //slave.SendInputParameter(compmsg.ID, 2, 1);
         }
 
         void Slave_OnSlaveDied(object sender, SlaveDiedEventArgs e)
@@ -116,7 +116,7 @@ namespace Server
                     Console.WriteLine(msg.ToString());
                 }
 
-                if(this.OnResultReceived != null)
+                if (this.OnResultReceived != null)
                 {
                     ResultReceivedEventArgs resultArgs = new ResultReceivedEventArgs();
                     resultArgs.JobGuid = e.Msg.ID;
@@ -126,31 +126,31 @@ namespace Server
             }
             else if (e.Msg is ComponentMessage)
             {
-                
+
             }
             else if (e.Msg is JobRequestMessage)
             {
                 this.ExecutionCustomers.Add(e.Msg.ID, slave);
 
-                if (this.OnRequestEvent != null)
+                if (this.OnJobRequestReceived != null)
                 {
                     ComponentRecievedEventArgs args = new ComponentRecievedEventArgs();
 
                     args.Component = ((JobRequestMessage)e.Msg).Component;
-                    args.ToBeExceuted = e.Msg.ID;
-                    args.Input = ((ComponentMessage)e.Msg).Values.ToList();
+                    args.JobRequestGuid = e.Msg.ID;
+                    args.Input = ((JobRequestMessage)e.Msg).Values.ToList();
 
-                    this.OnRequestEvent(this, args);
+                    this.OnJobRequestReceived(this, args);
                 }
             }
             else if (e.Msg is SaveComponentMessage)
             {
                 SaveComponentEventArgs args = new SaveComponentEventArgs();
                 args.Component = ((SaveComponentMessage)e.Msg).Component;
-                
-                if (this.OnBombRevieced != null)
+
+                if (this.OnUploadRequestReceived != null)
                 {
-                    this.OnBombRevieced(this, args);
+                    this.OnUploadRequestReceived(this, args);
                 }
             }
         }
@@ -176,25 +176,34 @@ namespace Server
             }
         }
 
-        public event EventHandler<ComponentRecievedEventArgs> OnRequestEvent;
+        public event EventHandler<ComponentRecievedEventArgs> OnJobRequestReceived;
 
-
-        private void SendComponentToSlave(Tuple<Guid, IComponent, byte[]> component)
+        public bool SendError(Guid jobRequestGuid, Exception logicException)
         {
-            ComponentMessage mess = new ComponentMessage(component.Item1);
-        }
+            ErrorMessage errMsg = new ErrorMessage(Guid.NewGuid());
+            errMsg.JobRequestGuid = jobRequestGuid;
+            errMsg.Exception = logicException;
 
-        public bool SendError(Guid id, Exception logicException)
-        {
-            throw new NotImplementedException();
+            try
+            {
+                Slave slave = this.ExecutionCustomers[jobRequestGuid];
+
+                return slave.SendMessage(errMsg);
+            }
+            catch (Exception)
+            {
+                return false;
+            }
         }
 
         public bool SendCalculatedResult(Guid id, Tuple<Guid, IEnumerable<object>, byte[]> job)
         {
             ComponentMessage compMsg = new ComponentMessage(id);
             compMsg.Values = job.Item2;
-
+            compMsg.Assembly = job.Item3;
             compMsg.ComponentGuid = job.Item1;
+
+            compMsg.ToBeExecuted = id;
 
             Random rand = new Random();
 
@@ -204,17 +213,17 @@ namespace Server
         public event EventHandler<CommonRessources.ResultReceivedEventArgs> OnResultReceived;
 
 
-        public event EventHandler<SaveComponentEventArgs> OnBombRevieced;
+        public event EventHandler<SaveComponentEventArgs> OnUploadRequestReceived;
 
-        public bool sendFinalResult(Guid id, IEnumerable<object> result)
+        public bool SendFinalResult(Guid jobRequestGuid, IEnumerable<object> result)
         {
-            ResultMessage res = new ResultMessage(ResultStatusCode.Successful, id);
+            ResultMessage res = new ResultMessage(ResultStatusCode.Successful, jobRequestGuid);
 
             res.Result = result;
 
             try
             {
-                Slave slave = this.ExecutionCustomers[id];
+                Slave slave = this.ExecutionCustomers[jobRequestGuid];
 
                 return slave.SendFinalResult(res);
             }
