@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using CommonRessources.Interfaces;
+using CommonRessources;
 
 namespace CommonRessources
 {
@@ -17,6 +17,6 @@ namespace CommonRessources
 
         Task<List<Tuple<ComponentType, Core.Network.Component>>> LoadComponents();
 
-        public event EventHandler<LoadedCompoentEventArgs> OnComponentsLoaded;
+        event EventHandler<LoadedCompoentEventArgs> OnComponentsLoaded;
     }
 }
