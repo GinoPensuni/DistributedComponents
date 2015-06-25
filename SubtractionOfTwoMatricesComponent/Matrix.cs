@@ -98,5 +98,35 @@ namespace SubtractionOfTwoMatricesComponent
                 return false;
             }
         }
+
+        public override string ToString()
+        {
+            string matrix = "[";
+
+            for (int i = 0; i < this._Matrix.GetLength(0); i++)
+            {
+                for (int j = 0; j < this._Matrix.GetLength(1); j++)
+                {
+                    if (j == this._Matrix.GetLength(1) - 1 && i == this._Matrix.GetLength(0) - 1)
+                    {
+                        matrix = matrix + this._Matrix[i, j].ToString() + "]";
+                    }
+                    else if (j == this._Matrix.GetLength(1) - 1)
+                    {
+                        matrix = matrix + this._Matrix[i, j].ToString();
+                    }
+                    else
+                    {
+                        matrix = matrix + this._Matrix[i, j].ToString() + ",";
+                    }
+                }
+                if (i != this._Matrix.GetLength(0) - 1)
+                {
+                    matrix = matrix + ";";
+                }
+            }
+
+            return matrix;
+        }
     }
 }

@@ -1,0 +1,8 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <BitmapImage x:Key="Arrow" UriSource="Images/Fotolia_54504713_XS.png"></BitmapImage>
+    <BitmapImage x:Key="RedArrow" UriSource= "Images/Arrow.png"></BitmapImage>
+    <BitmapImage x:Key="Vector" UriSource="Images/Vector.png"></BitmapImage>
+    <BitmapImage x:Key="Skalar" UriSource="Images/Skalar.png"></BitmapImage>
+    <BitmapImage x:Key="Hand" UriSource="Images/Hand.png"/>
+</ResourceDictionary>
