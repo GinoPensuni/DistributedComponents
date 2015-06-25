@@ -14,20 +14,20 @@ namespace CommonRessources
             get;
         }
 
+        bool SendCalculatedResult(Guid id, Tuple<Guid, IEnumerable<object>, byte[]> job);
+
+        bool SendError(Guid id, Exception logicException);
+
+        event EventHandler<ComponentRecievedEventArgs> OnRequestEvent;
+
+        event EventHandler<ResultReceivedEventArgs> OnResultReceived;
+       
         /// <summary>
         /// The component to be uploaded.
         /// </summary>
-        event EventHandler<SaveComponentEventArgs> OnUploadRequestReceived;
+        event EventHandler<SaveComponentEventArgs> OnBombRevieced;
 
-        event EventHandler<ResultReceivedEventArgs> OnResultReceived;
-
-        event EventHandler<ComponentRecievedEventArgs> OnJobRequestReceived;
-
-        bool SendCalculatedResult(Guid id, Tuple<Guid, IEnumerable<object>, byte[]> job);
-
-        bool SendFinalResult(Guid id, IEnumerable<object> result);
-
-        bool SendError(Guid id, Exception logicException);
+        bool sendFinalResult(Guid id, IEnumerable<object> result);
 
         void Run();
     }

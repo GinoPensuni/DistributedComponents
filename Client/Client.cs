@@ -26,6 +26,8 @@ namespace Client
 
         private bool isListening;
 
+        private List<Guid> pendingExecutionWorkTasks;
+
         // work work
 
         private List<WorkTask> workTasks; // A list of currently running tasks, which get executed by the client.
@@ -34,6 +36,7 @@ namespace Client
         {
             this.lastAliveMessageFromServer = DateTime.Now;
             this.workTasks = new List<WorkTask>();
+            this.pendingExecutionWorkTasks = new List<Guid>();
         }
 
         
@@ -162,7 +165,10 @@ namespace Client
         private void HandleComponentMessage(object data)
         {
             ComponentMessage msg = (ComponentMessage)data;
-            WorkTask task = new WorkTask(msg.ID, msg.Component);
+
+            this.pendingExecutionWorkTasks.Add(msg.ID);
+            
+            /*WorkTask task = new WorkTask(msg.ID, msg.Component);
 
             this.workTasks.Add(task);
 
@@ -188,7 +194,7 @@ namespace Client
                 }
 
                 msg.Values = task.InputParameters.ToList();
-            }
+            }*/
 
             if (this.OnComponentExecutionRequestEvent != null)
             {
@@ -203,7 +209,7 @@ namespace Client
             }
 
             // will be taken over to the logic class
-            this.ExecuteComponent(msg);
+            //this.ExecuteComponent(msg);
         }
 
         private void ExecuteComponent(object obj)

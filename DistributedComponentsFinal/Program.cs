@@ -13,6 +13,7 @@ using Server;
 using Client;
 using Core.Component;
 using Core.Network;
+using System.Threading;
 
 namespace DistributedComponentsFinal
 {
@@ -40,6 +41,8 @@ namespace DistributedComponentsFinal
 
             c.Connect("10.101.150.29");
 
+            Thread.Sleep(3000);
+
             Component aaa = new Component();
             aaa.ComponentGuid = Guid.NewGuid();
             aaa.IsAtomic = true;
@@ -49,7 +52,12 @@ namespace DistributedComponentsFinal
             aaa.OutputHints = new List<string>();
             aaa.FriendlyName = "aaa";
 
-            c.SendJobRequest(Guid.NewGuid(), aaa);
+            c.OnComponentExecutionRequestEvent += c_OnComponentExecutionRequestEvent;
+
+            if (c.SendJobRequest(Guid.NewGuid(), aaa))
+            {
+                Console.WriteLine("job request sent!!!!!!!!!!!!!!!!!!");
+            }
             
             
             /*CommonServer cm = new CommonServer(2);
@@ -65,6 +73,11 @@ namespace DistributedComponentsFinal
             Console.WriteLine((uint)0);*/
 
             Console.ReadLine();
+        }
+
+        static void c_OnComponentExecutionRequestEvent(object sender, CommonRessources.ClientComponentEventArgs e)
+        {
+            int a = 22;
         }
 
         static void esm_OnExternalServerTerminated(ExternalServer extServer)
