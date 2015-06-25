@@ -53,6 +53,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="IComponent.cs" />
     <Compile Include="Input.cs" />
     <Compile Include="TextEventArgs.cs" />
     <Page Include="MainWindow.xaml">
@@ -94,16 +95,6 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\CommonInterfaces\CommonRessources.csproj">
-      <Project>{3467a53a-21d2-4b8a-9928-7f5cc5f6cb2e}</Project>
-      <Name>CommonRessources</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Core.Component\Core.Component.csproj">
-      <Project>{3cbff49b-e085-49af-8aa5-e3bab177b179}</Project>
-      <Name>Core.Component</Name>
-    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

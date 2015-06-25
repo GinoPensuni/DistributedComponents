@@ -4,13 +4,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Runtime.InteropServices;
-using CommonRessources;
 using System.Threading;
 
 
 namespace InputComponentWpf
 {
-    public class Input : IComponent
+    public class Input : Core.Component.IComponent
     {
         private Guid componentGuid;
 
@@ -34,11 +33,11 @@ namespace InputComponentWpf
 
             this.friendlyName = "Integer-Input";
 
-            this.inputHints = new List<string>() { typeof(String).ToString() };
+            this.inputHints = new List<string>() { };
 
             this.outputHints = new List<string>() { typeof(Int32).ToString() };
 
-            this.inputDescriptions = new List<string>() { "Parameter: A number typed in as string." };
+            this.inputDescriptions = new List<string>() { /*"Parameter: A number typed in as string."*/ };
             this.outputDescriptions = new List<string>() { "Output: The input string converted to an integer." };
         }
         public Guid ComponentGuid
