@@ -139,16 +139,21 @@ namespace GuiClientWPF
         }
 
         private async Task<NetworkComponent> GenerateComponent(ICollection<Tuple<Tuple<GuiComponent, InputNodeComponent, Ellipse, Point>, Tuple<GuiComponent, InputNodeComponent, Ellipse, Point>, LineContainer>> componentList)
-        {
-           var list = await ParsingTask(componentList);
-           foreach (var entry in list)
-           {
-               MessageBox.Show(entry.Item1.FriendlyName.Text);
-           }
-           await NetworkGenerator(await ParsingTask(componentList));
-          
-           MessageBox.Show(this.currentGui.Edges.ToString());
-            return this.currentGui;
+        { var list = await ParsingTask(componentList);
+            foreach (var entry in list)
+                {
+                    MessageBox.Show(entry.Item1.FriendlyName.Text);
+                }
+                await NetworkGenerator(await ParsingTask(componentList));
+            while (this.currentGui.Edges == null)
+            {
+               
+               
+
+                MessageBox.Show(this.currentGui.Edges.ToString());
+
+            }
+                return this.currentGui;
         }
 
         private Task<ICollection<Tuple<GuiComponent, GuiComponent, LineContainer>>> ParsingTask(ICollection<Tuple<Tuple<GuiComponent, InputNodeComponent, Ellipse, Point>, Tuple<GuiComponent, InputNodeComponent, Ellipse, Point>, LineContainer>> componentList)
@@ -304,7 +309,7 @@ namespace GuiClientWPF
                 return componentList.Where(tupleinfo => tupleinfo.Item1.FreeOutputNodes > 0 || tupleinfo.Item2.FreeOutputNodes > 0)
                 .SelectMany(tupleinfo => tupleinfo.Item1.FreeOutputNodesList.Select(node => node.Hint)
                 .Concat(tupleinfo.Item2.FreeOutputNodesList.Select(node => node.Hint)))
-                .Distinct();
+                .Distinct().ToList();
                
             });
 
@@ -320,7 +325,7 @@ namespace GuiClientWPF
                 return componentList.Where(tupleinfo => tupleinfo.Item1.FreeInputNodes > 0 || tupleinfo.Item2.FreeInputNodes > 0)
                 .SelectMany(tupleinfo => tupleinfo.Item1.FreeInputNodesList.Select(node => node.Hint)
                 .Concat(tupleinfo.Item2.FreeInputNodesList.Select(node => node.Hint)))
-                .Distinct();
+                .Distinct().ToList();
 
             });
 
