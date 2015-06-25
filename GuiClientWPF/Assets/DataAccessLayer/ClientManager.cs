@@ -116,7 +116,7 @@ namespace GuiClientWPF
             {
                return this.disp.Invoke(() =>
                 {
-                    return componentList.Select(tuple => new Tuple<GuiComponent, GuiComponent, LineContainer>(tuple.Item1.Item1, tuple.Item2.Item1, tuple.Item3)).Distinct().ToList();
+                    return componentList.Select(tuple => new Tuple<GuiComponent, GuiComponent, LineContainer>(tuple.Item1.Item1, tuple.Item2.Item1, tuple.Item3)).ToList();
                     });
             });
 
@@ -156,62 +156,79 @@ namespace GuiClientWPF
                     
                     if (entry.Item1.FreeInputNodes > 0)
                     {
-                        foreach (var connection in entry.Item1.FreeInputNodesList)
+                        if (!entry.Item1.InputVisit)
                         {
-                            var edge = new Core.Network.ComponentEdge();
-                            edge.OutputComponentGuid = id;
-                            edge.InputComponentGuid = entry.Item1.Component.Entry.UniqueID;
-                            edge.OutputValueID = ++componentInputport;
-                            edge.InputValueID = (uint)entry.Item1.InputNodesList.IndexOf(connection);
-                            edge.InternalInputComponentGuid = Guid.Empty;
-                            edge.InternalOutputComponentGuid = entry.Item1.Id;
-                            edgeList.Add(edge);
+                            foreach (var connection in entry.Item1.FreeInputNodesList)
+                            {
+                                var edge = new Core.Network.ComponentEdge();
+                                edge.OutputComponentGuid = id;
+                                edge.InputComponentGuid = entry.Item1.Component.Entry.UniqueID;
+                                edge.OutputValueID = ++componentInputport;
+                                edge.InputValueID = (uint)entry.Item1.InputNodesList.IndexOf(connection);
+                                edge.InternalInputComponentGuid = Guid.Empty;
+                                edge.InternalOutputComponentGuid = entry.Item1.Id;
+                                edgeList.Add(edge);
+                            }
                         }
                     }
                     if(entry.Item2.FreeInputNodes >0)
                     {
-                        foreach (var connection in entry.Item2.FreeInputNodesList)
+                        if (!entry.Item2.InputVisit)
                         {
-                            var edge = new Core.Network.ComponentEdge();
-                            edge.OutputComponentGuid = id;
-                            edge.InputComponentGuid = entry.Item2.Component.Entry.UniqueID;
-                            edge.OutputValueID = ++componentInputport;
-                            edge.InputValueID = (uint)entry.Item2.InputNodesList.IndexOf(connection);
-                            edge.InternalInputComponentGuid = Guid.Empty;
-                            edge.InternalOutputComponentGuid = entry.Item2.Id;
-                            edgeList.Add(edge);
+
+                            foreach (var connection in entry.Item2.FreeInputNodesList)
+                            {
+                                var edge = new Core.Network.ComponentEdge();
+                                edge.OutputComponentGuid = id;
+                                edge.InputComponentGuid = entry.Item2.Component.Entry.UniqueID;
+                                edge.OutputValueID = ++componentInputport;
+                                edge.InputValueID = (uint)entry.Item2.InputNodesList.IndexOf(connection);
+                                edge.InternalInputComponentGuid = Guid.Empty;
+                                edge.InternalOutputComponentGuid = entry.Item2.Id;
+                                edgeList.Add(edge);
+                            }
                         }
+
                     }
                     if(entry.Item1.FreeOutputNodes > 0)
                     {
-                        foreach (var connection in entry.Item1.FreeOutputNodesList)
+                        if (!entry.Item1.OutputVisit)
                         {
-                            var edge = new Core.Network.ComponentEdge();
-                            edge.OutputComponentGuid = entry.Item1.Component.Entry.UniqueID;
-                            edge.InputComponentGuid = id;
-                            edge.OutputValueID = (uint)entry.Item1.OutputNodesList.IndexOf(connection);
-                            edge.InputValueID = ++componentOutputport;
-                            edge.InternalInputComponentGuid = entry.Item1.Id;
-                            edge.InternalOutputComponentGuid = Guid.Empty;
-                            edgeList.Add(edge);
+                            foreach (var connection in entry.Item1.FreeOutputNodesList)
+                            {
+                                var edge = new Core.Network.ComponentEdge();
+                                edge.OutputComponentGuid = entry.Item1.Component.Entry.UniqueID;
+                                edge.InputComponentGuid = id;
+                                edge.OutputValueID = (uint)entry.Item1.OutputNodesList.IndexOf(connection);
+                                edge.InputValueID = ++componentOutputport;
+                                edge.InternalInputComponentGuid = entry.Item1.Id;
+                                edge.InternalOutputComponentGuid = Guid.Empty;
+                                edgeList.Add(edge);
+                            }
                         }
                     }
                     if (entry.Item2.FreeOutputNodes > 0)
                     {
-                        foreach (var connection in entry.Item2.FreeOutputNodesList)
+                        if (!entry.Item2.OutputVisit)
                         {
-                            var edge = new Core.Network.ComponentEdge();
-                            edge.OutputComponentGuid = entry.Item2.Component.Entry.UniqueID;
-                            edge.InputComponentGuid = id;
-                            edge.OutputValueID = (uint)entry.Item2.OutputNodesList.IndexOf(connection);
-                            edge.InputValueID = ++componentOutputport;
-                            edge.InternalInputComponentGuid = entry.Item2.Id;
-                            edge.InternalOutputComponentGuid = Guid.Empty;
-                            edgeList.Add(edge);
+                            foreach (var connection in entry.Item2.FreeOutputNodesList)
+                            {
+                                var edge = new Core.Network.ComponentEdge();
+                                edge.OutputComponentGuid = entry.Item2.Component.Entry.UniqueID;
+                                edge.InputComponentGuid = id;
+                                edge.OutputValueID = (uint)entry.Item2.OutputNodesList.IndexOf(connection);
+                                edge.InputValueID = ++componentOutputport;
+                                edge.InternalInputComponentGuid = entry.Item2.Id;
+                                edge.InternalOutputComponentGuid = Guid.Empty;
+                                edgeList.Add(edge);
+                            }
                         }
-                    }                   
+                    }
+                    entry.Item1.InputVisit = true;
+                    entry.Item1.OutputVisit = true;
+                    entry.Item2.InputVisit = true;
+                    entry.Item2.OutputVisit = true;
                 }
-
                 this.GenerateInnerNodes(componentList,ref edgeList);
                 return edgeList;
             });

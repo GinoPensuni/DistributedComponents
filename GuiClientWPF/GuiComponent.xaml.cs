@@ -158,5 +158,9 @@ namespace GuiClientWPF
                 this.InputOutputNodeClicked(this, e);
             }
         }
+
+        public bool OutputVisit { get; set; }
+
+        public bool InputVisit { get; set; }
     }
 }
