@@ -98,14 +98,14 @@ namespace AppLogic.ClientLogic
                 this.LoadedCompoents = this.ComponentManager.LoadedIComponents;
                 if (this.OnComponentsLoaded != null)
                 {
-                    try
-                    {
+                    //try
+                    //{
                         this.OnComponentsLoaded(this, new LoadedCompoentEventArgs() { Components = this.LoadedCompoents });
-                    }
-                    catch
-                    {
+                    //}
+                    //catch
+                    //{
 
-                    }
+                    //}
                 }
             }
         }

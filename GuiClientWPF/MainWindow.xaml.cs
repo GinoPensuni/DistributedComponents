@@ -44,7 +44,13 @@ namespace GuiClientWPF
 
         private void ConnectAction_Click(object sender, RoutedEventArgs e)
         {
-            Manager.ConnectAction();
+            Window1 w = new Window1();
+            bool? b = w.ShowDialog();
+
+            if (b == true)
+            {
+                Manager.ConnectAction(w.IpAddress);
+            }
         }
 
         private async void SaveAction_Click(object sender, RoutedEventArgs e)
@@ -81,7 +87,7 @@ namespace GuiClientWPF
 
         private void InsertDebug_Click(object sender, RoutedEventArgs e)
         {
-            this.Manager.FillTestDataAsync();
+            this.Manager.FillTestDataAsync(this.Dispatcher);
         }
 
         private void DeleteDebug_Click(object sender, RoutedEventArgs e)

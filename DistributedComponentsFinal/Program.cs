@@ -39,7 +39,7 @@ namespace DistributedComponentsFinal
 
             Client.Client c = new Client.Client();
 
-            c.Connect("10.101.150.29");
+            c.Connect("10.101.100.11");
 
             Thread.Sleep(3000);
 
@@ -71,6 +71,7 @@ namespace DistributedComponentsFinal
             {
                 Console.WriteLine("al req sent!!!");
             }
+
 
             /*CommonServer cm = new CommonServer(2);
 

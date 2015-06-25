@@ -67,10 +67,14 @@ namespace Client
 
         private void Listen()
         {
+            int counter = 0;
+
             while (this.isListening)
             {
                 if (this.networkStream.DataAvailable)
                 {
+                    counter = 0;
+
                     byte[] received = new byte[4];
 
                     networkStream.Read(received, 0, 4);
@@ -87,8 +91,16 @@ namespace Client
                 {
                     Thread.Sleep(1000);
                     Console.WriteLine("waiting...");
-
-                    if ((DateTime.Now.Ticks - this.lastAliveMessageFromServer.Ticks) / TimeSpan.TicksPerMillisecond > Client.liveCheckIntervall)
+                    counter++;
+                    //if ((DateTime.Now.Ticks - this.lastAliveMessageFromServer.Ticks) / TimeSpan.TicksPerMillisecond > Client.liveCheckIntervall)
+                    //{
+                    //    long fa = DateTime.Now.Ticks - this.lastAliveMessageFromServer.Ticks;
+                    //    double fe = fa / TimeSpan.TicksPerMillisecond;
+                    //    Console.WriteLine("Server ist anscheinend zu dumm zum antworten");
+                    //    //this.Disconnect();
+                    //}
+                    
+                    if (counter > 5)
                     {
                         this.Disconnect();
                     }

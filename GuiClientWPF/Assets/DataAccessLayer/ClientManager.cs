@@ -55,7 +55,48 @@ namespace GuiClientWPF
 
         void logic_OnComponentsLoaded(object sender, LoadedCompoentEventArgs e)
         {
-            throw new NotImplementedException();
+            foreach (var entry in e.Components)
+            {
+                this.disp.Invoke(() =>
+                {
+                    if (entry.Item1 == ComponentType.Simple)
+                    {
+                        this.CathegoryCollection[0].Components.Add(
+                            new Components()
+                            {
+                                ComponentGuid = entry.Item2.ComponentGuid,
+                                FriendlyName = entry.Item2.FriendlyName,
+                                UniqueID = entry.Item2.ComponentGuid,
+                                InputHints = entry.Item2.InputDescriptions,
+                                OutputHints = entry.Item2.OutputDescriptions
+                            });
+                    }
+                    if (entry.Item1 == ComponentType.Complex)
+                    {
+                        this.CathegoryCollection[1].Components.Add(
+                            new Components()
+                            {
+                                ComponentGuid = entry.Item2.ComponentGuid,
+                                FriendlyName = entry.Item2.FriendlyName,
+                                UniqueID = entry.Item2.ComponentGuid,
+                                InputHints = entry.Item2.InputDescriptions,
+                                OutputHints = entry.Item2.OutputDescriptions
+                            });
+                    }
+                    if (entry.Item1 == ComponentType.Other)
+                    {
+                        this.CathegoryCollection[2].Components.Add(
+                            new Components()
+                            {
+                                ComponentGuid = entry.Item2.ComponentGuid,
+                                FriendlyName = entry.Item2.FriendlyName,
+                                UniqueID = entry.Item2.ComponentGuid,
+                                InputHints = entry.Item2.InputDescriptions,
+                                OutputHints = entry.Item2.OutputDescriptions
+                            });
+                    }
+                });
+            }
         }
 
         internal Task Disconnect()
@@ -68,9 +109,9 @@ namespace GuiClientWPF
             return disconnectionTask;
         }
 
-        internal void ConnectAction()
+        internal void ConnectAction(string ip)
         {
-            logic.ConnenctToServer("10.101.150.10");
+            logic.ConnenctToServer(ip);
         }
 
         internal Task SaveComponent(ICollection<Tuple<Tuple<GuiComponent, InputNodeComponent, Ellipse, Point>, Tuple<GuiComponent, InputNodeComponent, Ellipse, Point>, LineContainer>> componentList, System.Windows.Threading.Dispatcher disp)
@@ -290,22 +331,24 @@ namespace GuiClientWPF
 
 
 
-        internal void FillTestDataAsync()
+        internal async void FillTestDataAsync(System.Windows.Threading.Dispatcher disp)
         {
-            this.CathegoryCollection[0].Components.Add(new SimpleComponent("Addition"));
-            this.CathegoryCollection[0].Components.Add(new SimpleComponent("Substraction"));
-            this.CathegoryCollection[0].Components.Add(new SimpleComponent("Division"));
-            this.CathegoryCollection[0].Components.Add(new SimpleComponent("Multiplication"));
+            this.disp = disp;
+            await this.LoadComponents();
+            //this.CathegoryCollection[0].Components.Add(new SimpleComponent("Addition"));
+            //this.CathegoryCollection[0].Components.Add(new SimpleComponent("Substraction"));
+            //this.CathegoryCollection[0].Components.Add(new SimpleComponent("Division"));
+            //this.CathegoryCollection[0].Components.Add(new SimpleComponent("Multiplication"));
 
-            this.CathegoryCollection[1].Components.Add(new ComplexComponent("Complex Addition"));
-            this.CathegoryCollection[1].Components.Add(new ComplexComponent("Complex Substraction"));
-            this.CathegoryCollection[1].Components.Add(new ComplexComponent("Complex Division"));
-            this.CathegoryCollection[1].Components.Add(new ComplexComponent("Complex Multiplication"));
+            //this.CathegoryCollection[1].Components.Add(new ComplexComponent("Complex Addition"));
+            //this.CathegoryCollection[1].Components.Add(new ComplexComponent("Complex Substraction"));
+            //this.CathegoryCollection[1].Components.Add(new ComplexComponent("Complex Division"));
+            //this.CathegoryCollection[1].Components.Add(new ComplexComponent("Complex Multiplication"));
 
-            this.CathegoryCollection[2].Components.Add(new SimpleComponent("Simple other Addition"));
-            this.CathegoryCollection[2].Components.Add(new ComplexComponent("Complex other Substraction"));
-            this.CathegoryCollection[2].Components.Add(new ComplexComponent("Complex other Division"));
-            this.CathegoryCollection[2].Components.Add(new SimpleComponent("Simple otherMultiplication"));
+            //this.CathegoryCollection[2].Components.Add(new SimpleComponent("Simple other Addition"));
+            //this.CathegoryCollection[2].Components.Add(new ComplexComponent("Complex other Substraction"));
+            //this.CathegoryCollection[2].Components.Add(new ComplexComponent("Complex other Division"));
+            //this.CathegoryCollection[2].Components.Add(new SimpleComponent("Simple otherMultiplication"));
         }
 
         internal void AddCanvasComponent(Guid? id)
