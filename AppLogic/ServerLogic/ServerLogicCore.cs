@@ -37,6 +37,7 @@ namespace AppLogic.ServerLogic
                     this.master = master;
                     this.master.OnJobRequestReceived += ServerReference_RequestEvent;
                     this.master.OnUploadRequestReceived += ServerReference_OnBombRevieced;
+                    this.master.OnAllAvailableComponentsRequestReceived += OnAllAvailableComponentsRequestReceived;
                     this.master.Run();
 
                     this.serverManager = manager;
@@ -49,6 +50,11 @@ namespace AppLogic.ServerLogic
                     isInstantiated = true;
                 }
             }
+        }
+
+        private void OnAllAvailableComponentsRequestReceived(object sender, RequestForAllComponentsReceivedEventArgs e)
+        {
+            e.AllAvailableComponents = this.store.LoadAssemblies().Select(ass => new Tuple<ComponentType, byte[]>(ComponentType.Simple, ass.Assembly)).ToList();
         }
 
         private void ServerManager_OnExternalServerTerminated(ExternalServer extServer)
