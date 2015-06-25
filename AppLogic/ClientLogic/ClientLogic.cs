@@ -13,10 +13,9 @@ namespace AppLogic.ClientLogic
 {
     public class ClientLogic : ILogic, IClientLogic
     {
-        private static readonly IClientLogic instance = new ClientLogic();
-        private static readonly INetworkClient client = new NetworkClient();
-        private static readonly ComponentManager componentManager = ComponentManager.Instance;
-        private static readonly ComponentStore componentStore = new ComponentStore();
+        private static readonly IClientLogic instance;
+        private static readonly INetworkClient client; 
+        private static readonly ComponentManager componentManager;
         private List<Tuple<ComponentType, Core.Component.IComponent>> LoadedCompoents;
 
         internal ComponentManager ComponentManager
@@ -24,18 +23,6 @@ namespace AppLogic.ClientLogic
             get
             {
                 return componentManager;
-            }
-            set
-            {
-
-            }
-        }
-
-        internal ComponentStore ComponentStore
-        {
-            get
-            {
-                return componentStore;
             }
             set
             {
@@ -55,7 +42,7 @@ namespace AppLogic.ClientLogic
             }
         }
 
-        public IClientLogic LogicClient
+        public static IClientLogic LogicClient
         {
             get
             {
@@ -65,6 +52,14 @@ namespace AppLogic.ClientLogic
             {
 
             }
+        }
+
+        static ClientLogic() : this()
+        {
+            client = new NetworkClient();
+            instance = new ClientLogic();
+            componentManager = ComponentManager.Instance;
+            
         }
 
         private  ClientLogic()
@@ -94,34 +89,9 @@ namespace AppLogic.ClientLogic
             }
         }
 
-        public Task SaveComponent(IComponent component)
+        public Task LoadComponents()
         {
-            var saveTask = new Task(() =>
-            {
-                Type componentType = component.GetType();
-                Assembly assembly = componentType.Assembly;
-                var stream = assembly.GetFiles().FirstOrDefault();
-
-                try
-                {
-                    var length = (int)stream.Length;
-                    byte[] content = new byte[length];
-                    stream.Read(content, 0, length);
-                    this.ComponentStore.Store(content);
-                }
-                catch
-                {
-                    throw new FileLoadException();
-                }
-            });
-
-            saveTask.Start();
-            return saveTask;
-        }
-
-        public Task<List<Tuple<ComponentType, Core.Network.Component>>> LoadComponents()
-        {
-            var loadingTask = new Task<List<Tuple<ComponentType, Core.Network.Component>>>(() =>
+            var loadingTask = new Task(() =>
             {
                 this.NetworkClient.RequestAllAvailableComponents();
             });
