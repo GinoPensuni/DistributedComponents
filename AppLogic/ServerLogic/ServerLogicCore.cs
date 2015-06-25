@@ -236,7 +236,7 @@ namespace AppLogic.ServerLogic
             {
                 Component = e.Component,
                 Input = e.Input,
-                JobGuid = e.ToBeExceuted,
+                JobGuid = e.JobRequestGuid,
                 Server = this.master,
             });
         }
