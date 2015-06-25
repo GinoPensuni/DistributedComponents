@@ -11,6 +11,7 @@ namespace CommonRessources
     /// Request requires the property AllAvailableComponents to be null
     /// Response requires the property AllAvailableComponents to be not null!!
     /// </summary>
+    [Serializable]
     public class AvailableComponentsMessage : Message
     {
         public AvailableComponentsMessage(MessageType type, Guid ID) : base(ID,type)

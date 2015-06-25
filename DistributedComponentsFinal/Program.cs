@@ -55,6 +55,7 @@ namespace DistributedComponentsFinal
             c.OnComponentExecutionRequestEvent += c_OnComponentExecutionRequestEvent;
             c.OnFinalResultReceived += c_OnFinalResultReceived;
             c.OnErrorReceived += c_OnErrorReceived;
+            c.OnAllAvailableComponentsResponseReceived += c_OnAllAvailableComponentsResponseReceived;
 
             if (c.UploadComponent(aaa))
             {
@@ -66,6 +67,10 @@ namespace DistributedComponentsFinal
                 Console.WriteLine("job request sent!!!!!!!!!!!!!!!!!!");
             }
 
+            if (c.RequestAllAvailableComponents())
+            {
+                Console.WriteLine("al req sent!!!");
+            }
 
             /*CommonServer cm = new CommonServer(2);
 
@@ -80,6 +85,12 @@ namespace DistributedComponentsFinal
             Console.WriteLine((uint)0);*/
 
             Console.ReadLine();
+        }
+
+        static void c_OnAllAvailableComponentsResponseReceived(object sender, CommonRessources.RequestForAllComponentsReceivedEventArgs e)
+        {
+            Console.WriteLine("all available components received!");
+            int b = 839;
         }
 
         static void c_OnErrorReceived(object sender, CommonRessources.ErrorReceivedEventArgs e)
