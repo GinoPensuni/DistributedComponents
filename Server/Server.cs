@@ -76,22 +76,22 @@ namespace Server
             // Only for testing purposes!!!!!
             //
 
-            Thread.Sleep(1000);
-            Component comp = new Component(Guid.NewGuid(), "test", new List<string>() { typeof(int).ToString(), typeof(int).ToString() }, new List<string>() { typeof(int).ToString(), typeof(string).ToString() });
+            //Thread.Sleep(1000);
+            //Component comp = new Component(Guid.NewGuid(), "test", new List<string>() { typeof(int).ToString(), typeof(int).ToString() }, new List<string>() { typeof(int).ToString(), typeof(string).ToString() });
 
-            ComponentMessage compmsg = new ComponentMessage(Guid.NewGuid());
-            compmsg.Component = comp;
-            compmsg.Values = new List<object>();
+            //ComponentMessage compmsg = new ComponentMessage(Guid.NewGuid());
+            //compmsg.Component = comp;
+            //compmsg.Values = new List<object>();
 
-            slave.SendMessage(compmsg);
+            //slave.SendMessage(compmsg);
 
-            Thread.Sleep(2000);
+            //Thread.Sleep(2000);
 
-            slave.SendInputParameter(compmsg.ID, 2, 0);
+            //slave.SendInputParameter(compmsg.ID, 2, 0);
 
-            Thread.Sleep(2000);
+            //Thread.Sleep(2000);
 
-            slave.SendInputParameter(compmsg.ID, 2, 1);
+            //slave.SendInputParameter(compmsg.ID, 2, 1);
         }
 
         void Slave_OnSlaveDied(object sender, SlaveDiedEventArgs e)
