@@ -26,11 +26,11 @@ namespace AppLogic
             this.loadedAssemblies = new HashSet<Assembly>();
         }
 
-        public List<Tuple<ComponentType, IComponent>> LoadedComponents
+        public List<Tuple<ComponentType, LoadedComponent>> LoadedComponents
         {
             get
             {
-                return this.loadedComponents.Select(component => new Tuple<ComponentType, IComponent>(ComponentType.Simple, component)).ToList();
+                return this.loadedComponents.Select(component => new Tuple<ComponentType, LoadedComponent>(ComponentType.Simple, component)).ToList();
             }
         }
 
@@ -52,7 +52,7 @@ namespace AppLogic
                     }
                     else
                     {
-                        this.loadedComponents.UnionWith(newAssembly.GetTypes().Where(type => type.IsSubclassOf(typeof(Core.Component.IComponent))).Select(component => new LoadedComponent(component)));
+                        this.loadedComponents.UnionWith(newAssembly.GetTypes().Where(type => type.GetInterfaces().Contains(typeof(Core.Component.IComponent))).Select(component => new LoadedComponent(assemblyBytes, component)));
                     }
                 }
                 catch (System.BadImageFormatException)

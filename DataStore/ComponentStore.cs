@@ -8,7 +8,7 @@ using System.Data;
 
 namespace DataStore
 {
-    public class ComponentStore : IStore
+    public class ComponentStore
     {
         public ComponentStore()
         {
@@ -38,26 +38,35 @@ namespace DataStore
             }
         }
 
-        public bool Store(byte[] assemblyCode)
+        public bool Store(Guid componentGuid, string name, bool isAtomic, byte[] assemblyCode)
         {
 
-             int hash = assemblyCode.GetHashCode();
-             if (this.DbContext.Components.Any(component => component.HashCode.CompareTo(hash).Equals(0)))
-             {
-                 throw new DuplicateNameException("Assemly hash already stored");
-             }
+            int hash = assemblyCode.GetHashCode();
+            if (this.DbContext.Components.Any(component => component.HashCode.CompareTo(hash).Equals(0)))
+            {
+                throw new DuplicateNameException("Assemly hash already stored");
+            }
 
-             var datacomponent = new DataComponent();
-             datacomponent.HashCode = hash;
-             datacomponent.Assembly = assemblyCode;
-             this.DbContext.SaveChanges();
-             return true;
+            var datacomponent = new DataComponent();
+            datacomponent.HashCode = hash;
+            datacomponent.Assembly = assemblyCode;
+            datacomponent.Id = componentGuid;
+            datacomponent.IsAtomic = isAtomic;
+            datacomponent.Name = name;
+            this.DbContext.SaveChanges();
+            return true;
         }
 
 
-        public List<byte[]> LoadAssemblies()
+        public List<DataComponent> LoadAssemblies()
         {
-            return this.DbContext.Components.Select(component => component.Assembly).ToList();
+            return this.DbContext.Components.ToList();
+        }
+
+
+        public bool Store(byte[] assemblyCode)
+        {
+            throw new NotImplementedException();
         }
     }
 }

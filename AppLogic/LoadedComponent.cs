@@ -7,12 +7,13 @@ using System.Text;
 
 namespace AppLogic
 {
-    class LoadedComponent : CommonRessources.IComponent
+    public class LoadedComponent : Core.Component.IComponent
     {
 
-        private readonly Type componentType;
+        public readonly byte[] AssemblyCode;
+        public readonly Type ComponentType;
 
-        public LoadedComponent(Type component)
+        public LoadedComponent(byte[] assemblyCode, Type component)
         {
             if (component == null)
             {
@@ -20,7 +21,7 @@ namespace AppLogic
             }
             else
             {
-                this.componentType = component;
+                this.ComponentType = component;
             }
         }
 
@@ -48,7 +49,7 @@ namespace AppLogic
         {
             get
             {
-                return Activator.CreateInstance<Core.Component.IComponent>().InputDescriptions;
+                return this.InstanceOfComponent.InputDescriptions;
             }
             set
             {
@@ -60,7 +61,7 @@ namespace AppLogic
         {
             get
             {
-                return Activator.CreateInstance<Core.Component.IComponent>().OutputDescriptions;
+                return this.InstanceOfComponent.OutputDescriptions;
             }
             set
             {
@@ -72,7 +73,7 @@ namespace AppLogic
         {
             get
             {
-                return Activator.CreateInstance<Core.Component.IComponent>();
+                return (Core.Component.IComponent) Activator.CreateInstance(this.ComponentType);
             }
         }
 

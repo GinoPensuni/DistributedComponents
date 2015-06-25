@@ -67,7 +67,13 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CreateVectorOfPointsCompone
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VectorAngleCalculator", "VectorAngleCalculator\VectorAngleCalculator.csproj", "{44DE4834-CA0C-4473-A4A0-EE9C566E3434}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Assemblies", "Assemblies", "{AC56756D-90C5-4B74-A031-9902286B67BA}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DistributedComponentServer", "DistributedComponentServer\DistributedComponentServer.csproj", "{AC80427E-A9BB-44FC-984B-D3CFBE692E97}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{AACAAAE5-D3B2-4B85-A685-8F135B2568AC}"
+	ProjectSection(SolutionItems) = preProject
+		Assemblies\AddComponent.dll = Assemblies\AddComponent.dll
+		Assemblies\InputComponentWpf.exe = Assemblies\InputComponentWpf.exe
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -203,6 +209,10 @@ Global
 		{44DE4834-CA0C-4473-A4A0-EE9C566E3434}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{44DE4834-CA0C-4473-A4A0-EE9C566E3434}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{44DE4834-CA0C-4473-A4A0-EE9C566E3434}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AC80427E-A9BB-44FC-984B-D3CFBE692E97}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AC80427E-A9BB-44FC-984B-D3CFBE692E97}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AC80427E-A9BB-44FC-984B-D3CFBE692E97}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AC80427E-A9BB-44FC-984B-D3CFBE692E97}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
