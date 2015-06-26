@@ -60,7 +60,7 @@
     <Content Include="Assemblies\AddComponent.dll">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Assemblies\InputComponentWpf.exe">
+    <Content Include="Assemblies\Input.exe">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Assemblies\Int32ToStringComponent.dll">

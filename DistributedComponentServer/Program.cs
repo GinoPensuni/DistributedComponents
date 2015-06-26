@@ -23,7 +23,7 @@ namespace DistributedComponentServer
             assemblies.ToList().ForEach(ass => componentManager.LoadAssemblyContents(ass));
 
             ComponentStore store = new ComponentStore();
-            // store.ClearDatabase();
+            store.ClearDatabase();
 
             foreach (var loadedComponent in componentManager.LoadedComponents.Select(x => (LoadedComponent)x.Item2))
             {
@@ -40,6 +40,7 @@ namespace DistributedComponentServer
             Server.Server masterServer = new Server.Server();
             Server.ExternalServersManager serverManager = new Server.ExternalServersManager((Server.CommonServer)masterServer);
             ServerLogicCore serverLogic = new ServerLogicCore(masterServer, serverManager, store);
+            //componentManager.LoadedComponents[1].Item2.Evaluate(new List<object>());
 
             Console.WriteLine();
             Console.ReadLine();
