@@ -20,6 +20,7 @@ namespace Server
         private Thread listenThread;
         private TcpListener tcpListener;
         private NetworkState state;
+        private Slave excludedSlave;
 
         public List<Slave> Slaves { get; private set; }
 
@@ -131,6 +132,7 @@ namespace Server
             else if (e.Msg is JobRequestMessage)
             {
                 this.ExecutionCustomers.Add(e.Msg.ID, slave);
+                this.excludedSlave = slave;
 
                 if (this.OnJobRequestReceived != null)
                 {
@@ -226,8 +228,9 @@ namespace Server
             compMsg.ToBeExecuted = id;
 
             Random rand = new Random();
+            var usedSlaves = this.Slaves.Where(sla => this.excludedSlave != sla).ToList();
 
-            return this.Slaves[rand.Next(0, this.Slaves.Count)].SendComponent(compMsg);
+            return this.Slaves[rand.Next(0, usedSlaves.Count)].SendComponent(compMsg);
         }
 
         public bool SendFinalResult(Guid jobRequestGuid, IEnumerable<object> result)
