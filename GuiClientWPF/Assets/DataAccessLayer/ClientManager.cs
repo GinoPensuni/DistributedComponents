@@ -70,6 +70,8 @@ namespace GuiClientWPF
                                 UniqueID = entry.Item2.ComponentGuid,
                                 InputHints = entry.Item2.InputHints,
                                 OutputHints = entry.Item2.OutputHints,
+                                OutputDescriptions = entry.Item2.OutputDescriptions,
+                                InputDescriptions = entry.Item2.InputDescriptions,
                             });
                     }
                     if (entry.Item1 == ComponentType.Complex)
@@ -82,6 +84,8 @@ namespace GuiClientWPF
                                 UniqueID = entry.Item2.ComponentGuid,
                                 InputHints = entry.Item2.InputHints,
                                 OutputHints = entry.Item2.OutputHints,
+                                OutputDescriptions = entry.Item2.OutputDescriptions,
+                                InputDescriptions = entry.Item2.InputDescriptions,
                             });
                     }
                     if (entry.Item1 == ComponentType.Other)
@@ -94,6 +98,8 @@ namespace GuiClientWPF
                                 UniqueID = entry.Item2.ComponentGuid,
                                 InputHints = entry.Item2.InputHints,
                                 OutputHints = entry.Item2.OutputHints,
+                                OutputDescriptions = entry.Item2.OutputDescriptions,
+                                InputDescriptions = entry.Item2.InputDescriptions,
                             });
                     }
                 });

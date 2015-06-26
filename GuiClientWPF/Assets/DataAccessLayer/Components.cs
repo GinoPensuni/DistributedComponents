@@ -96,26 +96,14 @@ namespace GuiClientWPF
 
         public IEnumerable<string> InputDescriptions
         {
-            get
-            {
-               return this.InputHints;
-            }
-            set
-            {
-                this.InputHints = value;
-            }
+            get;
+            set;
         }
 
         public IEnumerable<string> OutputDescriptions
         {
-            get
-            {
-                return this.OutputHints;
-            }
-            set
-            {
-                this.OutputHints = value ;
-            }
+            get;
+            set;
         }
     }
 }
