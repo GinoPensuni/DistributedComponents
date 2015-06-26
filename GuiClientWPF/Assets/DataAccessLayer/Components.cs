@@ -15,9 +15,8 @@ namespace GuiClientWPF
 
         public Components()
         {
-            this.UniqueID = Guid.NewGuid();
-            this.inputHints = new List<string> { "System.Int32", "System.String" };
-            this.outputHints = new List<string> { "System.String" };
+            //this.inputHints = new List<string> { "System.Int32", "System.String" };
+            //this.outputHints = new List<string> { "System.String" };
         }
 
         public string FriendlyName

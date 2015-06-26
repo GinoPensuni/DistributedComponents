@@ -91,7 +91,7 @@ namespace Client
                 else
                 {
                     Thread.Sleep(1000);
-                    //Console.WriteLine("waiting...");
+                    Console.WriteLine("waiting...");
                     counter++;
                     //if ((DateTime.Now.Ticks - this.lastAliveMessageFromServer.Ticks) / TimeSpan.TicksPerMillisecond > Client.liveCheckIntervall)
                     //{
@@ -100,10 +100,10 @@ namespace Client
                     //    Console.WriteLine("Server ist anscheinend zu dumm zum antworten");
                     //    //this.Disconnect();
                     //}
-                    
+
                     if (counter > 5)
                     {
-                        //this.Disconnect();
+                        this.Disconnect();
                     }
                 }
             }
@@ -132,8 +132,6 @@ namespace Client
             {
                 ComponentMessage compmsg = (ComponentMessage)ma;
 
-                Console.WriteLine("> Got a new component, which has to be executed.");
-
                 Thread thread = new Thread(new ParameterizedThreadStart(this.HandleComponentMessage));
                 thread.Start(compmsg);
             }
@@ -152,8 +150,6 @@ namespace Client
             {
                 ResultMessage resMsg = (ResultMessage)ma;
 
-                Console.WriteLine("> Got the final result from my job request.");
-
                 if (this.OnFinalResultReceived != null)
                 {
                     ResultReceivedEventArgs args = new ResultReceivedEventArgs();
@@ -167,8 +163,6 @@ namespace Client
             {
                 ErrorMessage errMsg = (ErrorMessage)ma;
 
-                Console.WriteLine("> An error occurred. Exception description: " + errMsg.Exception);
-
                 if (this.OnErrorReceived != null)
                 {
                     ErrorReceivedEventArgs args = new ErrorReceivedEventArgs();
@@ -181,7 +175,7 @@ namespace Client
             else if (ma is AvailableComponentsMessage)
             {
                 AvailableComponentsMessage avMsg = (AvailableComponentsMessage)ma;
-                
+
                 if (this.OnAllAvailableComponentsResponseReceived != null)
                 {
                     RequestForAllComponentsReceivedEventArgs args = new RequestForAllComponentsReceivedEventArgs();
@@ -232,6 +226,7 @@ namespace Client
                 ClientComponentEventArgs e = new ClientComponentEventArgs();
 
                 //e.Component = msg.Component;
+                e.ComponentGuid = msg.ComponentGuid;
                 e.Input = msg.Values.ToList();
                 e.ToBeExceuted = msg.ToBeExecuted;
                 e.Assembly = msg.Assembly;

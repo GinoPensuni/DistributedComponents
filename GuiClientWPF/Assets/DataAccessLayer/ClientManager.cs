@@ -200,8 +200,8 @@ namespace GuiClientWPF
                                 edge.InputComponentGuid = entry.Item1.Component.Entry.UniqueID;
                                 edge.OutputValueID = ++componentInputport;
                                 edge.InputValueID = (uint)entry.Item1.InputNodesList.IndexOf(connection);
-                                edge.InternalInputComponentGuid = Guid.Empty;
-                                edge.InternalOutputComponentGuid = entry.Item1.Id;
+                                edge.InternalInputComponentGuid = entry.Item1.Id;
+                                edge.InternalOutputComponentGuid =Guid.Empty;
                                 edgeList.Add(edge);
                             }
                         }
@@ -218,8 +218,8 @@ namespace GuiClientWPF
                                 edge.InputComponentGuid = entry.Item2.Component.Entry.UniqueID;
                                 edge.OutputValueID = ++componentInputport;
                                 edge.InputValueID = (uint)entry.Item2.InputNodesList.IndexOf(connection);
-                                edge.InternalInputComponentGuid = Guid.Empty;
-                                edge.InternalOutputComponentGuid = entry.Item2.Id;
+                                edge.InternalInputComponentGuid = entry.Item2.Id;
+                                edge.InternalOutputComponentGuid = Guid.Empty;
                                 edgeList.Add(edge);
                             }
                         }
@@ -236,8 +236,8 @@ namespace GuiClientWPF
                                 edge.InputComponentGuid = id;
                                 edge.OutputValueID = (uint)entry.Item1.OutputNodesList.IndexOf(connection);
                                 edge.InputValueID = ++componentOutputport;
-                                edge.InternalInputComponentGuid = entry.Item1.Id;
-                                edge.InternalOutputComponentGuid = Guid.Empty;
+                                edge.InternalInputComponentGuid = Guid.Empty;
+                                edge.InternalOutputComponentGuid = entry.Item1.Id;
                                 edgeList.Add(edge);
                             }
                         }
@@ -253,8 +253,8 @@ namespace GuiClientWPF
                                 edge.InputComponentGuid = id;
                                 edge.OutputValueID = (uint)entry.Item2.OutputNodesList.IndexOf(connection);
                                 edge.InputValueID = ++componentOutputport;
-                                edge.InternalInputComponentGuid = entry.Item2.Id;
-                                edge.InternalOutputComponentGuid = Guid.Empty;
+                                edge.InternalInputComponentGuid = Guid.Empty;
+                                edge.InternalOutputComponentGuid = entry.Item2.Id;
                                 edgeList.Add(edge);
                             }
                         }
