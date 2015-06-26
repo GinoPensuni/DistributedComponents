@@ -53,14 +53,15 @@ namespace AppLogic
                 try
                 {
                     var newAssembly = Assembly.Load(assemblyBytes);
+                    var newComp = newAssembly.GetTypes().Where(type => type.GetInterfaces().Contains(typeof(Core.Component.IComponent))).Select(component => new LoadedComponent(assemblyBytes, component));
 
-                    if (!this.loadedAssemblies.Add(newAssembly))
+                    if (newComp.Any(ncomp => this.loadedComponents.Any(lcomp => ncomp.ComponentGuid == lcomp.ComponentGuid)))
                     {
-
                     }
                     else
                     {
-                        this.loadedComponents.UnionWith(newAssembly.GetTypes().Where(type => type.GetInterfaces().Contains(typeof(Core.Component.IComponent))).Select(component => new LoadedComponent(assemblyBytes, component)));
+                        this.loadedAssemblies.Add(newAssembly);
+                        this.loadedComponents.UnionWith(newComp);
                     }
                 }
                 catch (System.BadImageFormatException)

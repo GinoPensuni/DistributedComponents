@@ -9,7 +9,7 @@ using System.Text.RegularExpressions;
 
 namespace MatrixInputComponentWPF
 {
-    class MatrixInput : IComponent
+    public class MatrixInput : IComponent
     {
         private Guid componentGuid;
 
@@ -40,6 +40,8 @@ namespace MatrixInputComponentWPF
             this.inputDescriptions = new List<string>() {"Parameter: Job Identifier"};
 
             this.outputDescriptions = new List<string>() { "Two dimensional integer array [,] representing a Matrix." };
+
+            this.matrix = new List<int[,]>();
         }
         public Guid ComponentGuid
         {
@@ -109,17 +111,18 @@ namespace MatrixInputComponentWPF
         {
             string info = (string)obj;
             inputBox = new MainWindow(info);
-            inputBox.MouseLeftButtonDown += inputBox_MouseLeftButtonDown;
+            inputBox.OnSubmitted += inputBox_OnSubmitted;
             System.Windows.Application application = new System.Windows.Application();
             application.Run(inputBox);
         }
 
-        void inputBox_MouseLeftButtonDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
+        void inputBox_OnSubmitted(object sender, TextEventArgs e)
         {
-            string toConvert = (string)sender; 
+            string toConvert = (string)e.Message;
 
-            if (testRegEx(toConvert))
-            {
+            if (!testRegEx(toConvert))
+                return;
+
                 toConvert = toConvert.Substring(1, toConvert.Length - 2);
                 string[] splitted = toConvert.Split(';');
 
@@ -149,12 +152,10 @@ namespace MatrixInputComponentWPF
                 }
 
                 this.matrix.Add(matrix);
-            }
-            else
-            {
-                throw new ArgumentException("Error: Wrong format! Couldn't convert string to int[,]!");
-            }
+
+                e.Valid = true;
         }
+
         private bool testRegEx(string eval)
         {
             string query = "(\\[([0-9]+(,[0-9]+)*;)*([0-9]+(,[0-9]+)*\\]))";
