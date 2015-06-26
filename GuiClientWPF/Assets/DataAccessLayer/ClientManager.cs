@@ -67,8 +67,8 @@ namespace GuiClientWPF
                                 ComponentGuid = entry.Item2.ComponentGuid,
                                 FriendlyName = entry.Item2.FriendlyName,
                                 UniqueID = entry.Item2.ComponentGuid,
-                                InputHints = entry.Item2.InputDescriptions,
-                                OutputHints = entry.Item2.OutputDescriptions
+                                InputHints = entry.Item2.InputHints,
+                                OutputHints = entry.Item2.OutputHints,
                             });
                     }
                     if (entry.Item1 == ComponentType.Complex)
@@ -79,8 +79,8 @@ namespace GuiClientWPF
                                 ComponentGuid = entry.Item2.ComponentGuid,
                                 FriendlyName = entry.Item2.FriendlyName,
                                 UniqueID = entry.Item2.ComponentGuid,
-                                InputHints = entry.Item2.InputDescriptions,
-                                OutputHints = entry.Item2.OutputDescriptions
+                                InputHints = entry.Item2.InputHints,
+                                OutputHints = entry.Item2.OutputHints,
                             });
                     }
                     if (entry.Item1 == ComponentType.Other)
@@ -91,8 +91,8 @@ namespace GuiClientWPF
                                 ComponentGuid = entry.Item2.ComponentGuid,
                                 FriendlyName = entry.Item2.FriendlyName,
                                 UniqueID = entry.Item2.ComponentGuid,
-                                InputHints = entry.Item2.InputDescriptions,
-                                OutputHints = entry.Item2.OutputDescriptions
+                                InputHints = entry.Item2.InputHints,
+                                OutputHints = entry.Item2.OutputHints,
                             });
                     }
                 });

@@ -61,10 +61,10 @@ namespace DataStore
             return this.DbContext.Components.ToList();
         }
 
-
-        public bool Store(byte[] assemblyCode)
+        public void ClearDatabase()
         {
-            throw new NotImplementedException();
+            this.DbContext.Components.RemoveRange(this.DbContext.Components);
+            this.DbContext.SaveChanges();
         }
     }
 }

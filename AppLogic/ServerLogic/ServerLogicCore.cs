@@ -54,7 +54,13 @@ namespace AppLogic.ServerLogic
 
         private void OnAllAvailableComponentsRequestReceived(object sender, RequestForAllComponentsReceivedEventArgs e)
         {
-            e.AllAvailableComponents = this.store.LoadAssemblies().Select(ass => new Tuple<ComponentType, byte[]>(ComponentType.Simple, ass.Assembly)).ToList();
+            //e.AllAvailableComponents = this.store.LoadAssemblies().Select(ass => new Tuple<ComponentType, byte[]>(ComponentType.Simple, ass.Assembly)).ToList();
+
+            var simpleComponentTuples = this.store.LoadAssemblies().Where(ass => ass.IsAtomic).Select(ass => new Tuple<ComponentType, byte[]>(ComponentType.Simple, ass.Assembly));
+            var complexComponentTuples = this.store.LoadAssemblies().Where(ass => !ass.IsAtomic).Select(ass => new Tuple<ComponentType, byte[]>(ComponentType.Complex, ass.Assembly));
+            e.AllAvailableComponents = new List<Tuple<ComponentType, byte[]>>();
+            e.AllAvailableComponents.AddRange(simpleComponentTuples);
+            e.AllAvailableComponents.AddRange(complexComponentTuples);
         }
 
         private void ServerManager_OnExternalServerTerminated(ExternalServer extServer)
@@ -231,7 +237,7 @@ namespace AppLogic.ServerLogic
             BinaryFormatter bf = new BinaryFormatter();
             MemoryStream outputStream = new MemoryStream();
             bf.Serialize(outputStream, component);
-            this.store.Store(outputStream.ToArray());
+            this.store.Store(component.ComponentGuid, component.FriendlyName, false, outputStream.ToArray());
         }
 
         private void ServerReference_RequestEvent(object sender, ComponentRecievedEventArgs e)

@@ -23,6 +23,7 @@ namespace DistributedComponentServer
             assemblies.ToList().ForEach(ass => componentManager.LoadAssemblyContents(ass));
 
             ComponentStore store = new ComponentStore();
+            store.ClearDatabase();
 
             foreach (var loadedComponent in componentManager.LoadedComponents.Select(x => (LoadedComponent)x.Item2))
             {

@@ -7,7 +7,7 @@ namespace CommonRessources
 {
     public class LoadedCompoentEventArgs : EventArgs
     {
-        public List<Tuple<ComponentType, Core.Component.IComponent>> Components
+        public List<Tuple<ComponentType, Core.Network.Component>> Components
         {
             get;
             set;

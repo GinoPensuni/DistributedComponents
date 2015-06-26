@@ -55,6 +55,7 @@ namespace Client
                 this.isListening = true;
 
                 Thread thread = new Thread(new ThreadStart(this.Listen));
+                thread.IsBackground = true;
                 thread.Start();
 
                 return true;
