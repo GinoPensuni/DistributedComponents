@@ -21,6 +21,8 @@ namespace MatrixInputComponentWPF
     /// </summary>
     public partial class MainWindow : Window
     {
+        public event EventHandler<TextEventArgs> OnSubmitted;
+
         public MainWindow()
         {
             InitializeComponent();
@@ -70,7 +72,17 @@ namespace MatrixInputComponentWPF
 
         private void Image_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
-            
+            if (OnSubmitted != null)
+            {
+                TextEventArgs args = new TextEventArgs() { Message = InputBox.Text };
+
+                OnSubmitted(this, args);
+
+                if (args.Valid)
+                {
+                    this.Close();
+                }
+            }
         }
     }
 }
