@@ -55,6 +55,7 @@ namespace GuiClientWPF
 
         void logic_OnComponentsLoaded(object sender, LoadedCompoentEventArgs e)
         {
+            
             foreach (var entry in e.Components)
             {
                 this.disp.Invoke(() =>
