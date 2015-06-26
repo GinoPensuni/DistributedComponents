@@ -91,7 +91,7 @@ namespace Client
                 else
                 {
                     Thread.Sleep(1000);
-                    Console.WriteLine("waiting...");
+                    //Console.WriteLine("waiting...");
                     counter++;
                     //if ((DateTime.Now.Ticks - this.lastAliveMessageFromServer.Ticks) / TimeSpan.TicksPerMillisecond > Client.liveCheckIntervall)
                     //{
@@ -103,7 +103,7 @@ namespace Client
                     
                     if (counter > 5)
                     {
-                        this.Disconnect();
+                        //this.Disconnect();
                     }
                 }
             }
@@ -132,6 +132,8 @@ namespace Client
             {
                 ComponentMessage compmsg = (ComponentMessage)ma;
 
+                Console.WriteLine("> Got a new component, which has to be executed.");
+
                 Thread thread = new Thread(new ParameterizedThreadStart(this.HandleComponentMessage));
                 thread.Start(compmsg);
             }
@@ -150,6 +152,8 @@ namespace Client
             {
                 ResultMessage resMsg = (ResultMessage)ma;
 
+                Console.WriteLine("> Got the final result from my job request.");
+
                 if (this.OnFinalResultReceived != null)
                 {
                     ResultReceivedEventArgs args = new ResultReceivedEventArgs();
@@ -163,6 +167,8 @@ namespace Client
             {
                 ErrorMessage errMsg = (ErrorMessage)ma;
 
+                Console.WriteLine("> An error occurred. Exception description: " + errMsg.Exception);
+
                 if (this.OnErrorReceived != null)
                 {
                     ErrorReceivedEventArgs args = new ErrorReceivedEventArgs();
@@ -175,7 +181,7 @@ namespace Client
             else if (ma is AvailableComponentsMessage)
             {
                 AvailableComponentsMessage avMsg = (AvailableComponentsMessage)ma;
-
+                
                 if (this.OnAllAvailableComponentsResponseReceived != null)
                 {
                     RequestForAllComponentsReceivedEventArgs args = new RequestForAllComponentsReceivedEventArgs();
