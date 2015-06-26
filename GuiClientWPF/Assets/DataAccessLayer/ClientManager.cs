@@ -128,6 +128,10 @@ namespace GuiClientWPF
                 this.disp.Invoke(async() =>
                 {
                     await logic.SaveComponent(await this.GenerateComponent(componentList));
+                    this.CathegoryCollection[0].Components.Clear();
+                    this.CathegoryCollection[1].Components.Clear();
+                    this.CathegoryCollection[2].Components.Clear();
+                    await this.LoadComponents();
                 });
             });
 
@@ -189,24 +193,22 @@ namespace GuiClientWPF
                     OutputHints = await this.FindOutPutHints(componentList),
                 };
 
-                this.currentGui.Edges = await this.GrenadeEdges(componentList, this.currentGui.ComponentGuid);
+                this.currentGui.Edges = this.GrenadeEdges(componentList, this.currentGui.ComponentGuid);
             });
 
             generator.Start();
             return generator;
         }
 
-        private Task<IEnumerable<Core.Network.ComponentEdge>> GrenadeEdges(ICollection<Tuple<GuiComponent, GuiComponent, LineContainer>> componentList, Guid id)
+        private IEnumerable<Core.Network.ComponentEdge> GrenadeEdges(ICollection<Tuple<GuiComponent, GuiComponent, LineContainer>> componentList, Guid id)
         {
-            var edgeCreationTask = new Task<IEnumerable<Core.Network.ComponentEdge>>(() => 
-            {
                 var componentInputport = (uint)0;
                 var componentOutputport = (uint)0;
                 var edgeList = new List<Core.Network.ComponentEdge>();
                 foreach (var entry in componentList)
                 {
                     var Componentedge = new List<Core.Network.ComponentEdge>();
-                    
+
                     if (entry.Item1.FreeInputNodes > 0)
                     {
                         if (!entry.Item1.InputVisit)
@@ -224,7 +226,7 @@ namespace GuiClientWPF
                             }
                         }
                     }
-                    if(entry.Item2.FreeInputNodes >0)
+                    if (entry.Item2.FreeInputNodes > 0)
                     {
                         if (!entry.Item2.InputVisit)
                         {
@@ -243,7 +245,7 @@ namespace GuiClientWPF
                         }
 
                     }
-                    if(entry.Item1.FreeOutputNodes > 0)
+                    if (entry.Item1.FreeOutputNodes > 0)
                     {
                         if (!entry.Item1.OutputVisit)
                         {
@@ -282,12 +284,9 @@ namespace GuiClientWPF
                     entry.Item2.InputVisit = true;
                     entry.Item2.OutputVisit = true;
                 }
-                this.GenerateInnerNodes(componentList,ref edgeList);
-                return edgeList;
-            });
 
-            edgeCreationTask.Start();
-            return edgeCreationTask;
+                this.GenerateInnerNodes(componentList, ref edgeList);
+                return edgeList;
         }
 
         private void GenerateInnerNodes(ICollection<Tuple<GuiComponent, GuiComponent, LineContainer>> componentList, ref List<Core.Network.ComponentEdge> edgeList)
@@ -347,20 +346,6 @@ namespace GuiClientWPF
         {
             this.disp = disp;
             await this.LoadComponents();
-            //this.CathegoryCollection[0].Components.Add(new SimpleComponent("Addition"));
-            //this.CathegoryCollection[0].Components.Add(new SimpleComponent("Substraction"));
-            //this.CathegoryCollection[0].Components.Add(new SimpleComponent("Division"));
-            //this.CathegoryCollection[0].Components.Add(new SimpleComponent("Multiplication"));
-
-            //this.CathegoryCollection[1].Components.Add(new ComplexComponent("Complex Addition"));
-            //this.CathegoryCollection[1].Components.Add(new ComplexComponent("Complex Substraction"));
-            //this.CathegoryCollection[1].Components.Add(new ComplexComponent("Complex Division"));
-            //this.CathegoryCollection[1].Components.Add(new ComplexComponent("Complex Multiplication"));
-
-            //this.CathegoryCollection[2].Components.Add(new SimpleComponent("Simple other Addition"));
-            //this.CathegoryCollection[2].Components.Add(new ComplexComponent("Complex other Substraction"));
-            //this.CathegoryCollection[2].Components.Add(new ComplexComponent("Complex other Division"));
-            //this.CathegoryCollection[2].Components.Add(new SimpleComponent("Simple otherMultiplication"));
         }
 
         internal void AddCanvasComponent(Guid? id)
