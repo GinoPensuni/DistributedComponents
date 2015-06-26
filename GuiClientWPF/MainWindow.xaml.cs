@@ -96,5 +96,13 @@ namespace GuiClientWPF
             this.Manager.CathegoryCollection[1].Components.Clear();
             this.Manager.CathegoryCollection[2].Components.Clear();
         }
+
+        private void Window_KeyUp(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.Delete)
+            {
+                this.WorkingSTATION.DeleteView();
+            }
+        }
     }
 }
