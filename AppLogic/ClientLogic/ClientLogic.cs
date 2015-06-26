@@ -76,7 +76,7 @@ namespace AppLogic.ClientLogic
                 try
                 {
                     this.ComponentManager.LoadAssemblyContents(e.Assembly);
-                    this.evalResult =  this.ComponentManager.LoadedComponents.Single(comp => e.Component.ComponentGuid == comp.Item2.ComponentGuid).Item2.Evaluate(e.Input);
+                    this.evalResult =  this.ComponentManager.LoadedComponents.Single(comp => e.ComponentGuid == comp.Item2.ComponentGuid).Item2.Evaluate(e.Input);
                     this.NetworkClient.SendResult(this.evalResult.ToList(),e.ToBeExceuted);
                 }
                 catch
