@@ -26,6 +26,11 @@ namespace MatrixInputComponentWPF
             InitializeComponent();
         }
 
+        public MainWindow(string windowName) : this()
+        {
+            this.Title = windowName;
+        }
+
         private void InputBox_KeyUp(object sender, KeyEventArgs e)
         {
             if (!this.testRegEx(this.InputBox.Text))
@@ -65,7 +70,7 @@ namespace MatrixInputComponentWPF
 
         private void Image_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
-            MessageBox.Show("Click");
+            
         }
     }
 }
