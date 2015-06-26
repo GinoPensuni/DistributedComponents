@@ -13,5 +13,11 @@ namespace MatrixInputComponentWPF
             get;
             set;
         }
+
+        public bool Valid
+        {
+            get;
+            set;
+        }
     }
 }
