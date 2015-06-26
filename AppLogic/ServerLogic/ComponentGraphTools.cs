@@ -29,7 +29,8 @@ namespace AppLogic.ServerLogic
 
                 if (nodeKey != Guid.Empty && !workerMap.ContainsKey(nodeKey))
                 {
-                    var componentEntry = store[nodeKey];
+                    var allComponents = store.LoadAssemblies().Select(dc => dc.Id).ToList();
+                    var componentEntry = store[componentKey];
                     var componentBinary = componentEntry.Item1;
                     var isAtomic = componentEntry.Item2;
                     ComponentWorker newWorker = null;

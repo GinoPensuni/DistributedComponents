@@ -68,6 +68,10 @@
       <Project>{d8acf8ab-40ad-4b6a-9997-6862556b33e9}</Project>
       <Name>InputComponentWpf</Name>
     </ProjectReference>
+    <ProjectReference Include="..\MatrixInputComponentWPF\MatrixInputComponentWPF.csproj">
+      <Project>{a5a4aa22-48c9-4be3-b896-329e69b19d1f}</Project>
+      <Name>MatrixInputComponentWPF</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Server\Server.csproj">
       <Project>{86ad65b2-2b9c-4e3e-b5b2-85377ffa6ba2}</Project>
       <Name>Server</Name>

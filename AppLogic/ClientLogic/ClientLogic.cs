@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using NetworkClient = Client.Client;
 using System.Reflection;
 using System.IO;
+using System.Runtime.Serialization.Formatters.Binary;
 
 namespace AppLogic.ClientLogic
 {
@@ -16,7 +17,7 @@ namespace AppLogic.ClientLogic
         private static readonly IClientLogic instance;
         private static readonly INetworkClient client; 
         private static readonly ComponentManager componentManager;
-        private List<Tuple<ComponentType, Core.Component.IComponent>> LoadedCompoents;
+        private List<Tuple<ComponentType, Core.Network.Component>> LoadedCompoents;
 
         internal ComponentManager ComponentManager
         {
@@ -89,13 +90,45 @@ namespace AppLogic.ClientLogic
         {
             if (sender == this.NetworkClient)
             {
-                this.LoadedCompoents = new List<Tuple<ComponentType, Core.Component.IComponent>>();
+                this.LoadedCompoents = new List<Tuple<ComponentType, Core.Network.Component>>();
                 foreach (var entry in e.AllAvailableComponents)
                 {
-                    this.ComponentManager.LoadAssemblyContents(entry.Item2);
+                    if (entry.Item1 == ComponentType.Simple)
+                    {
+                        this.ComponentManager.LoadAssemblyContents(entry.Item2);
+                    }
+                    else if (entry.Item1 == ComponentType.Complex)
+                    {
+                        MemoryStream ms = new MemoryStream(entry.Item2);
+                        BinaryFormatter bf = new BinaryFormatter();
+                        var component = bf.Deserialize(ms) as Core.Network.Component;
+                        this.LoadedCompoents.Add(new Tuple<ComponentType, Core.Network.Component>(ComponentType.Complex, component));
+                    }
                 }
 
-                this.LoadedCompoents = this.ComponentManager.LoadedIComponents;
+                Func<Tuple<ComponentType, Core.Component.IComponent>, Tuple<ComponentType, Core.Network.Component>> simpleComponentSelector =
+                    tuple =>
+                    {
+                        Core.Component.IComponent comp = tuple.Item2;
+
+                        var compTrans = new Core.Network.Component()
+                        {
+                            ComponentGuid = comp.ComponentGuid,
+                            Edges = null,
+                            FriendlyName = comp.FriendlyName,
+                            InputDescriptions = comp.InputDescriptions,
+                            InputHints = comp.InputHints,
+                            IsAtomic = true,
+                            OutputDescriptions = comp.OutputDescriptions,
+                            OutputHints = comp.OutputHints,
+                        };
+
+                        return new Tuple<ComponentType, Core.Network.Component>(ComponentType.Simple, compTrans);
+                    };
+
+
+                this.LoadedCompoents.AddRange(this.ComponentManager.LoadedIComponents.Select(simpleComponentSelector));
+
                 if (this.OnComponentsLoaded != null)
                 {
                     //try
@@ -170,7 +203,7 @@ namespace AppLogic.ClientLogic
         public event EventHandler<LoadedCompoentEventArgs> OnComponentsLoaded;
         private IEnumerable<object> evalResult;
 
-        public Task RunComponent(Core.Network.Component component)
+        public Task RunComponenet(Core.Network.Component component)
         {
             var runTask = new Task(() =>
             {

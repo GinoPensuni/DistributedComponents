@@ -309,5 +309,11 @@ namespace GuiClientWPF
             polyline.Visibility = Visibility.Visible;
             return polyline;
         }
+
+        internal void DeleteView()
+        {
+            this.ComponentBuilder.Children.Clear();
+            this.Manager.CanvasComponents.Clear();
+        }
     }
 }

@@ -14,6 +14,12 @@ namespace CommonRessources
             set;
         }
 
+        public Guid ComponentGuid
+        {
+            get;
+            set;
+        }
+
 
         public Guid ToBeExceuted
         {

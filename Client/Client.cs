@@ -55,6 +55,7 @@ namespace Client
                 this.isListening = true;
 
                 Thread thread = new Thread(new ThreadStart(this.Listen));
+                thread.IsBackground = true;
                 thread.Start();
 
                 return true;
@@ -99,7 +100,7 @@ namespace Client
                     //    Console.WriteLine("Server ist anscheinend zu dumm zum antworten");
                     //    //this.Disconnect();
                     //}
-                    
+
                     if (counter > 5)
                     {
                         this.Disconnect();
@@ -225,6 +226,7 @@ namespace Client
                 ClientComponentEventArgs e = new ClientComponentEventArgs();
 
                 //e.Component = msg.Component;
+                e.ComponentGuid = msg.ComponentGuid;
                 e.Input = msg.Values.ToList();
                 e.ToBeExceuted = msg.ToBeExecuted;
                 e.Assembly = msg.Assembly;

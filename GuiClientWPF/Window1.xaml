@@ -3,7 +3,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         Title="Window1" Height="90" Width="300">
     <Grid Margin="0,0,0,188">
-        <Button Content="Button" HorizontalAlignment="Left" Height="37" Margin="22,8,0,-45" VerticalAlignment="Top" Width="38" Click="Button_Click"/>
+        <Button Content="Connect" HorizontalAlignment="Left" Height="37" Margin="22,8,0,-45" VerticalAlignment="Top" Width="45" Click="Button_Click"/>
         <TextBox HorizontalAlignment="Left" Height="50" Margin="139,8,0,-58" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="120" Name="IpBox"/>
     </Grid>
 </Window>

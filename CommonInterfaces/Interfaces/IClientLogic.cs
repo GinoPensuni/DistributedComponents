@@ -17,6 +17,8 @@ namespace CommonRessources
 
         Task LoadComponents();
 
+        Task RunComponenet(Core.Network.Component component);
+
         event EventHandler<LoadedCompoentEventArgs> OnComponentsLoaded;
     }
 }
