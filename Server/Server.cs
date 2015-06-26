@@ -20,7 +20,6 @@ namespace Server
         private Thread listenThread;
         private TcpListener tcpListener;
         private NetworkState state;
-        private Slave excludedSlave;
 
         public List<Slave> Slaves { get; private set; }
 
@@ -98,7 +97,7 @@ namespace Server
         void Slave_OnSlaveDied(object sender, SlaveDiedEventArgs e)
         {
             this.Slaves.Remove((Slave)sender);
-            //Console.WriteLine("Client died");
+            Console.WriteLine("Client died");
         }
 
         public void Slave_OnMessageReceived(object sender, MessageReceivedEventArgs e)
@@ -109,14 +108,13 @@ namespace Server
 
             if (e.Msg is ResultMessage)
             {
-                //Console.Write("Result id vom Komponent: ");
+                Console.Write("Result id vom Komponent: ");
+                Console.WriteLine(((ResultMessage)e.Msg).ID);
 
-                //Console.WriteLine(((ResultMessage)e.Msg).ID);
-
-                //foreach (object msg in ((ResultMessage)e.Msg).Result)
-                //{
-                //    Console.WriteLine(msg.ToString());
-                //}
+                foreach (object msg in ((ResultMessage)e.Msg).Result)
+                {
+                    Console.WriteLine(msg.ToString());
+                }
 
                 if (this.OnResultReceived != null)
                 {
@@ -133,9 +131,6 @@ namespace Server
             else if (e.Msg is JobRequestMessage)
             {
                 this.ExecutionCustomers.Add(e.Msg.ID, slave);
-                this.excludedSlave = slave;
-
-                Console.WriteLine("> Got a new job request from the client " + slave.ClientGuid);
 
                 if (this.OnJobRequestReceived != null)
                 {
@@ -153,8 +148,6 @@ namespace Server
                 SaveComponentEventArgs args = new SaveComponentEventArgs();
                 args.Component = ((SaveComponentMessage)e.Msg).Component;
 
-                Console.WriteLine("> Client " + slave.ClientGuid + " asked me to save a component");
-
                 if (this.OnUploadRequestReceived != null)
                 {
                     this.OnUploadRequestReceived(this, args);
@@ -164,8 +157,6 @@ namespace Server
             {
                 RequestForAllComponentsReceivedEventArgs args = new RequestForAllComponentsReceivedEventArgs();
                 AvailableComponentsMessage msg = (AvailableComponentsMessage)e.Msg;
-
-                Console.WriteLine("> Client " + slave.ClientGuid + " asked me to send him all available components");
                 
                 if (this.OnAllAvailableComponentsRequestReceived != null)
                 {
@@ -217,8 +208,6 @@ namespace Server
             {
                 Slave slave = this.ExecutionCustomers[jobRequestGuid];
 
-                Console.WriteLine("Error message has been sent to client " + slave.Client + ". Description: " + errMsg.Exception.Message);
-
                 return slave.SendMessage(errMsg);
             }
             catch (Exception)
@@ -237,13 +226,8 @@ namespace Server
             compMsg.ToBeExecuted = id;
 
             Random rand = new Random();
-            var usedSlaves = this.Slaves.Where(sla => this.excludedSlave != sla).ToList();
 
-            Slave s = this.Slaves[rand.Next(0, usedSlaves.Count)];
-
-            Console.WriteLine("Send a component, which has to be executed, to the client " + s.ClientGuid);
-
-            return s.SendComponent(compMsg);
+            return this.Slaves[rand.Next(0, this.Slaves.Count)].SendComponent(compMsg);
         }
 
         public bool SendFinalResult(Guid jobRequestGuid, IEnumerable<object> result)
@@ -255,8 +239,6 @@ namespace Server
             try
             {
                 Slave slave = this.ExecutionCustomers[jobRequestGuid];
-
-                Console.WriteLine("Send the final result to client " + slave.ClientGuid);
 
                 return slave.SendFinalResult(res);
             }
