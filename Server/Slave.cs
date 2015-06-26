@@ -48,7 +48,7 @@ namespace Server
             try
             {
                 this.ClientStream.Write(message, 0, message.Length);
-                Console.WriteLine("Message sent");
+                //Console.WriteLine("Message sent");
                 return true;
             }
             catch
@@ -67,6 +67,8 @@ namespace Server
         {
             this.clientGuid = guid;
 
+            Console.WriteLine("> Assign a new GUID to the client: " + guid);
+
             AssignMessage assignmsg = new AssignMessage(Guid.NewGuid());
             assignmsg.ClientGuid = this.clientGuid;
 
@@ -79,7 +81,9 @@ namespace Server
             compmsg.Component = comp;
             compmsg.Values = values;
 
-            Console.Write("Request Component id: ");
+            Console.WriteLine("> Send the component " + compmsg.Component.FriendlyName + " to the client " + this.ClientGuid);
+
+            //Console.Write("Request Component id: ");
             Console.WriteLine(compmsg.ID);
 
             return this.SendComponent(compmsg);
@@ -103,11 +107,11 @@ namespace Server
 
         private void CheckAliveStatus()
         {
-            Console.WriteLine("checking alive...");
-            Thread.Sleep(2000); //30000
+            Console.WriteLine("> Check if the client " + this.clientGuid + " is still alive...");
+            Thread.Sleep(30000); //30000
             AliveMessage alivemsg = new AliveMessage(Guid.NewGuid());
             this.SendMessage(alivemsg);
-            Thread.Sleep(3000);
+            Thread.Sleep(30000);
 
             if (this.ConfirmMessage(alivemsg.ID))
             {
@@ -115,6 +119,8 @@ namespace Server
                 this.StopListening();
                 if (this.OnSlaveDied != null)
                 {
+                    Console.WriteLine("> Client " + this.clientGuid + " died.");
+
                     this.OnSlaveDied(this, new SlaveDiedEventArgs());
                 }
             }
@@ -153,13 +159,14 @@ namespace Server
                     this.ClientStream.Read(messageBytes, 0, messageBytes.Length);
 
                     Message msg = Protocol.GetComponentMessageFromByteArray(messageBytes);
-                    Console.WriteLine("Message received");
+                    //Console.WriteLine("Message received");
 
                     if (msg is AssignMessage)
                     {
                         if (this.ConfirmMessage(msg.ID))
                         {
                             this.IsAssigned = true;
+                            Console.WriteLine("> The client " + this.ClientGuid + " accepted his GUID");
                         }
                     }
                     else if (msg is AliveMessage)
@@ -173,6 +180,8 @@ namespace Server
                     else if (msg is ResultMessage)
                     {
                         this.ConfirmMessage(msg.ID);
+
+                        Console.WriteLine("> Got a result from the client " + this.ClientGuid);
                     }
 
                     if (this.OnMessageReceived != null)
@@ -183,7 +192,7 @@ namespace Server
                 }
                 else
                 {
-                    Console.WriteLine("waiting...");
+                    //Console.WriteLine("waiting...");
                     Thread.Sleep(1000);
                 }
             }
