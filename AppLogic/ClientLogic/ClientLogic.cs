@@ -203,7 +203,7 @@ namespace AppLogic.ClientLogic
         public event EventHandler<LoadedCompoentEventArgs> OnComponentsLoaded;
         private IEnumerable<object> evalResult;
 
-        public Task RunComponent(Core.Network.Component component)
+        public Task RunComponenet(Core.Network.Component component)
         {
             var runTask = new Task(() =>
             {

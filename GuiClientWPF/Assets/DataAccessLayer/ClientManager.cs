@@ -327,5 +327,24 @@ namespace GuiClientWPF
                 this.CanvasComponents.Add(queryRes);
         }
 
+
+        internal Task RunComponent(ICollection<Tuple<Tuple<GuiComponent, InputNodeComponent, Ellipse, Point>, Tuple<GuiComponent, InputNodeComponent, Ellipse, Point>, LineContainer>> componentList, System.Windows.Threading.Dispatcher disp)
+        {
+            var runTask = new Task(() =>
+            {
+                this.disp.Invoke(async () =>
+                {
+                    while (this.currentGui == null)
+                    {
+                        this.NetworkGenerator(ParsingTask(componentList));
+                    }
+                    await this.logic.RunComponenet(this.currentGui);
+                });
+            });
+
+            runTask.Start();
+            return runTask;
+            
+        }
     }
 }
