@@ -55,7 +55,7 @@ namespace VectorCrossProductCalculaterComponent
 
                 int firstNumber = first._Vector[1] * second._Vector[2] - first._Vector[2] * second._Vector[1];
 
-                int secondNumber = first._Vector[3] * second._Vector[0] - first._Vector[0] * second._Vector[2];
+                int secondNumber = first._Vector[2] * second._Vector[0] - first._Vector[0] * second._Vector[2];
 
                 int thirdNumber = first._Vector[0] * second._Vector[1] - first._Vector[1] * second._Vector[0];
 
