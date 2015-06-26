@@ -108,10 +108,10 @@ namespace Server
         private void CheckAliveStatus()
         {
             Console.WriteLine("> Check if the client " + this.clientGuid + " is still alive...");
-            Thread.Sleep(30000); //30000
+            Thread.Sleep(2000); //30000
             AliveMessage alivemsg = new AliveMessage(Guid.NewGuid());
             this.SendMessage(alivemsg);
-            Thread.Sleep(30000);
+            Thread.Sleep(2000);
 
             if (this.ConfirmMessage(alivemsg.ID))
             {
