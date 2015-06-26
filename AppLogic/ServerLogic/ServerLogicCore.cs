@@ -236,8 +236,15 @@ namespace AppLogic.ServerLogic
             var component = e.Component;
             BinaryFormatter bf = new BinaryFormatter();
             MemoryStream outputStream = new MemoryStream();
-            bf.Serialize(outputStream, component);
-            this.store.Store(component.ComponentGuid, component.FriendlyName, false, outputStream.ToArray());
+            try
+            {
+                bf.Serialize(outputStream, component);
+                this.store.Store(component.ComponentGuid, component.FriendlyName, false, outputStream.ToArray());
+            }
+            catch (Exception)
+            {
+
+            }
         }
 
         private void ServerReference_RequestEvent(object sender, ComponentRecievedEventArgs e)
